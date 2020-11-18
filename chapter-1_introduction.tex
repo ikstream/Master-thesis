@@ -1,0 +1,87 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%   CAPTER 1   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introduction}
+\label{chap:introduction}
+%
+Developing a multi-platform application is a challenging task. Especially if 
+there is no, or only sparse telemetry and deployment data.\\
+This chapter will discuss the problems developer are currently facing in \ref{sec:intro:probstatement} and how
+we intend to contribute with this thesis to solve this problem. Furthermore an 
+overview of the thesis structure is provided in \ref{sec:intro:outline}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Problem Statement}
+\label{sec:intro:probstatement}
+%
+In community-based software development projects for multi-platform systems, such as
+OpenWrt, Tasmota and similar, the access to information on which and on how many platforms
+the software is used is very limited to developers.
+Such statistics on the temporal spread of the hardware platforms used
+the end user (device life-cycle), can improve the software development process.
+Likewise the process of troubleshooting issues, development of patches and features can be prioritized based on:
+\begin{itemize}
+    \item Which platforms are currently most used and in need of additional testing
+    \item Detect end-of-life platforms to remove from development cycle
+    \item Identify systems with software faults
+    \item Distribution of software updates
+\end{itemize}
+
+As the testing process is intense in software engineering due to compile, flash and boot, as well as functionality testing targets with higher distributions could be prioritized.
+This would allow to roll out e.g. security updates to as many users as possible in short time.\\
+
+Additionally developer of open source projects, like Internet of Things (IoT) applications, could receive useful
+information on the update behavior of their user base. Based on these data, warnings to update the firmware of the
+connected device, could be issued on the control application of the device.\\
+This could lead to an overall increase in network security and hinder the creation of new botnets.\\
+
+Collecting hard- and software data on user devices is a delicate action. The collected data needs to be anonymized,
+so no conclusion about the user can be drawn from the data set. Therefore the collected information should exclude
+sensitive data, or should be anonymized. 
+In addition, the user location should not be derivable from the transnmitted data or the transmission itself. At the same time the data should be obscured from any eavesdropper during the client server communication.
+
+Furthermore, a valid database of software and hardware distribution for developers should emerge. In addition,
+each device should be recorded and included in the statistics only once.
+Thus a manipulation of the statistics is made more difficult.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Contributions}
+\label{sec:intro:contrib}
+%
+
+In this thesis we discuss known Systems for data collection and transmission anonymous. Based on the discussion we provide a blueprint for the given problem. In addition an open source implementation will be provided as reference.
+This will include data collection, transmission on the client site, as well as receiving data and evaluation on the server side
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Thesis outline}
+\label{sec:intro:outline}
+
+The rest of this thesis is organized as follows. In Chapter \ref{chap:related_work} we discuss related work to our research. Chapter \ref{chap:software_design} discusses the decision of the software design process and how we are going to solve the stated problem.  In chapter 
+The \ref{chap:mmeasurement}. chapter discusses our measurement methodology and in chapter \ref{chap:results} we present the results of our measurement and software design. In chapter \ref{chap:conclusion} we conclude this thesis and identify possibilities for future research and improvements.
+
+%\begin{compactitem}
+%  \item In chapter 2, we discuss work related to our research
+%  \item In chapter 3, the chosen algorithms and medical applications are outlined, as well as the Quality of Service requirements
+%  \item In chapter 4, the the hard- and software in described detail.
+%  \item In chapter 5, we discuss our measurement methods.
+%  %\item In Chapter 5, we present the design, the Linux implementation, the validation and performance evaluation of our controller.
+%  \item In chapter 6, we demonstrate our results
+%  \item Chapter 7, summarises the contributions and limitations of our systems, and outline several directions for future work.
+%\end{compactitem}
