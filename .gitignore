@@ -1,5 +1,5 @@
 # Latex files
- 
+
 *.aux
 *.glo
 *.idx
@@ -27,8 +27,9 @@
 *.mtc1
 *.out
 *.synctex.gz
+latex/build_log
 #*.pdf
- 
+
 # Mac IDE files
 *.swp
 *~
@@ -36,6 +37,6 @@
 Backup[ ]of[ ]*.pages/
 Backup[ ]of[ ]*.key/
 Backup[ ]of[ ]*.numbers/
- 
+
 # Mac finder files and hidden folders
 .DS_Store
