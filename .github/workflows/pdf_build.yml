@@ -1,0 +1,17 @@
+name: build pdf
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container: docker.pkg.github.com/ikstream/tex-builder/tex-builder:latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: make
+      run: make pdf
