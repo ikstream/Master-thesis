@@ -80,6 +80,10 @@ openright]{book}
 %for pdf includes
 \usepackage[final]{pdfpages}
 
+% allow captions for listings
+\usepackage{newfloat}
+\DeclareFloatingEnvironment[placement={!ht},name=List]{mylist}
+
 %to insert some clickable links
 \usepackage{hyperref}
 \definecolor{darkblue}{rgb}{0,0,.5}
@@ -138,7 +142,7 @@ openright]{book}
 	chapter-5_measurement_tools,
 	chapter-6_results,
 	chapter-7_conclusion,
-%	appendix,
+	appendix,
 }
 
 
