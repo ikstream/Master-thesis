@@ -12,8 +12,9 @@ jobs:
     
     container: 
       image: docker.pkg.github.com/ikstream/tex-builder/tex-builder:latest
-      username: ${{ github.actor }}
-      password: ${{ secrets.ghcr_token }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.ghcr_token }}
 
     steps:
     - uses: actions/checkout@v2
