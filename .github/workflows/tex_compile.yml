@@ -22,6 +22,10 @@ jobs:
     container: ghcr.io/ikstream/tex-builder
 
     steps:
-    - uses: actions/checkout@v2
-    - name: make
-      run: make pdf
+      - uses: actions/checkout@v2
+      
+      - name: Login to the GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        
+      - name: make
+        run: make pdf
