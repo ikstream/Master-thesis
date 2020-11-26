@@ -90,7 +90,13 @@ The Tor Project is probably the most known approach for anonymized data transmis
     Prio was developed by Corrigan-Gibbs et al.\cite{corrigan-gibbs_prio_2017} in 2017 as a privacy-preserving
     system for collecting aggregated statistics
     
-    Prio\cite{corrigan-gibbs_prio_2017}, which was developed at Stanford University's Computer Science department for nonsensitive data already covered by their Telemetry tool. Prio splits the collected client data into shares. The parts are send to different servers and aggregated with shares of other users before being published (see figure \ref{fig:prio_overview})\cite{corrigan-gibbs_prio_2017}.\\
+    Prio\cite{corrigan-gibbs_prio_2017}, which was developed at Stanford University's Computer Science department for nonsensitive data already covered by their Telemetry tool. 
+    Prio splits the collected client data into shares. 
+    The parts are send to different servers and aggregated with shares of other users before being published (see figure \ref{fig:prio_overview})\cite{corrigan-gibbs_prio_2017}.\\
+    Prio promises privacy, as long as one of the servers is honest, therefore providing strong cryptographic privacy. A limited form of robustness is provided. It can detect and discard
+    syntactically incorrect client data while preserving the privacy of the data. However, Prio can not
+    prevent a client from sending in range data, that is untrue.
+    
     \begin{figure}
         \centering
         \includegraphics[width=\textwidth]{latex/figures/prio_overview.jpg}
