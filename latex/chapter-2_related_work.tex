@@ -20,7 +20,7 @@ processes.\\
 
 Therefore many projects collect data on there users. In section \ref{sec:related_work:related_sw} we are
 going to discuss techniques used by different projects. Furthermore related research on anonymization of user data 
-(section \ref{sec:related_work:data_aononymization}) and it's transmission (section \ref{sec:related_work:data_transmission}) will be presented
+(section \ref{sec:related_work:data_aononymization}) and it's transmission (section \ref{sec:related:data_transmission}) will be presented
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -33,23 +33,26 @@ going to discuss techniques used by different projects. Furthermore related rese
 %
 %% privacy
 %% differential privacy
-Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic, that does not allow to identify a person directly or indirectly \cite{noauthor_din_2020}. It furthermore declares anonymization as a process, in which personally identifiable information (PII) is irrevocable transformed. This transformation denies the ability for an entity to identify a person indirectly or directly by itself or in cooperation with another entity.\\
 
-
-
-ISO standard (ISO 29100:2011) defines anonymization as a 
-“PROCESS BY WHICH PERSONALLY IDENTIFIABLE INFORMATION (PII) IS IRREVERSIBLY ALTERED IN SUCH A WAY THAT A PII PRINCIPAL CAN NO LONGER BE IDENTIFIED DIRECTLY OR INDIRECTLY, EITHER BY THE PII CONTROLLER ALONE OR IN COLLABORATION WITH ANY OTHER PARTY”
-2.1
-Anonymität
-Informationsmerkmal, das es nicht erlaubt, eine betroffene Person direkt oder indirekt zu identifizieren
-2.2
-Anonymisierung
-Prozess, durch den personenbezogene Daten (pbD) unwiderruflich so verändert werden, dass eine
-betroffene Person nicht mehr direkt oder indirekt von der verantwortlichen Stelle alleine oder in
-Zusammenarbeit mit einer anderen Partei identifiziert werden kann
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% Subsection %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\subsection{Law Regulations}
+\label{subsec:related:law}
+Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic, that does not allow to identify a person directly or indirectly\cite{noauthor_din_2020}. It furthermore declares anonymization as a process, in which personally identifiable information (PII) is irrevocable transformed. This transformation denies the ability for an entity to identify a person indirectly or directly by itself or in cooperation with another entity.\\
 
 A major advantage for anonymized data is the exclusion of the GDPR legislation. Recital 26 of the regulation excludes anonymized data explicitly.\\ 
 "The principles of data protection should therefore not apply to anonymous information, namely information which does not relate to an identified or identifiable natural person or to personal data rendered anonymous in such a manner that the data subject is not or no longer identifiable. This Regulation does not therefore concern the processing of such anonymous information, including for statistical or research purposes."\cite{european_union_regulation_2016}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% Subsection %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\subsection{\textit{k}-anonymity}
+\label{subsec:related:kanon}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,9 +60,11 @@ A major advantage for anonymized data is the exclusion of the GDPR legislation. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Transmission}
-\label{sec:related_work:data_transmission}
+\label{sec:related:data_transmission}
 %
 The Tor Project is probably the most known approach for anonymized data transmission over the Internet. Besides Tor we are going to discuss different approaches to transmit data over a network. In \ref{subsec:related:overlay} the Tor and I2P overlay network are going to be discussed, followed by systems used by current browser. Finally in \ref{subsec:related:protocols} we discuss different protocols available for data transmission.
+
+
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
@@ -93,9 +98,8 @@ The Tor Project is probably the most known approach for anonymized data transmis
     Prio\cite{corrigan-gibbs_prio_2017}, which was developed at Stanford University's Computer Science department for nonsensitive data already covered by their Telemetry tool. 
     Prio splits the collected client data into shares. 
     The parts are send to different servers and aggregated with shares of other users before being published (see figure \ref{fig:prio_overview})\cite{corrigan-gibbs_prio_2017}.\\
-    Prio promises privacy, as long as one of the servers is honest, therefore providing strong cryptographic privacy. A limited form of robustness is provided. It can detect and discard
-    syntactically incorrect client data while preserving the privacy of the data. However, Prio can not
-    prevent a client from sending in range data, that is untrue.
+    Prio promises privacy, as long as one of the servers is honest, therefore providing strong cryptographic privacy. A limited form of robustness is provided as long as all server are honest. It can detect and discard syntactically incorrect client data while preserving the privacy of the data. However, Prio can not prevent a client from sending in range data, that is untrue\cite{corrigan-gibbs_prio_2017}.\\
+    Prio is in experimental use by Firefox Origin Telemetry\\
     
     \begin{figure}
         \centering
@@ -103,8 +107,6 @@ The Tor Project is probably the most known approach for anonymized data transmis
         \caption{Overview of Prios processing pipeline\cite{corrigan-gibbs_prio_2017}}
         \label{fig:prio_overview}
     \end{figure}
-    
-    Prio is in experimental use by Firefox Origin Telemetry\\
 
 %%% Prochlo %%%
 \subsubsection{Prochlo}
@@ -131,7 +133,51 @@ The Tor Project is probably the most known approach for anonymized data transmis
 
 
 %%% DNS 
-\subsection{DNS}
+\subsection{Domain Name System - DNS}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Robustness}
+\label{sec:related:data_robustness}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% Subsection %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%% SNIP
+%
+\subsection{Secret-Shared Non-Interactive Proof - SNIP}
+\label{subsec:related:snip}
+%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% Subsection %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%% NIZK
+%
+\subsection{Non-Interactive Zero-Knowledge Proof - NIZK}
+\label{subsec:related:nizk}
+%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% Subsection %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%% SNARK
+%
+\subsection{Succinct Non-Interactive Arguments of Knowledge - SNARK}
+\label{subsec:snark}
+%
+
 
 
 
@@ -145,20 +191,39 @@ The Tor Project is probably the most known approach for anonymized data transmis
 %
 
 %%% Ubuntu %%%
-\subsubsection{Ubuntu}
+\subsection{Ubuntu}
 
 %%% KDE %%%
-\subsubsection{KDE}
+\subsection{KDE}
 
+
+\newpage
 %%% Firefox %%%
-\subsubsection{Firefox}
-    Firefox uses different types of telemetry services. 
-    Mozilla was experimenting with this new system in 2018 \cite{helmer_testing_2018} and based on the experiment they developed Firefox Origin Telemetry\cite{englehardt_next_2019} which is, at the time of writing, in use only for content blocking and still experimental\cite{noauthor_origin_nodate}.\\
+\subsection{Firefox}
+    By default Firefox collects a wide range of data. These data collections are called Pings. Each Ping contains a certain type of information. At the time of writing there are at least 27 different Ping types in use\cite{mozilla_telemetry_nodate}.
+    The "main" Ping is used for most telemetric data. It contains extensive health and performance information on Firefox, but also most system information. The JSON structure of a "main" Ping can be seen in Mozillas pipeline schema GitHub repository \cite{mozilla_mozilla-servicesmozilla-pipeline-schemas_2020}. 
+    Besides information on CPU, GPU and operating system it contains information on installed add-ons and the reason for sending the Ping.
+    It is send at least every 24 hours, but also on startup and other occasions. While basic telemetry, like the main ping can be disabled on the Settings page, Firefox will still send selected Pings to it's server, unless disabled in \textit{about:config}.
+    %TODO: verify with wireshark
+    To send the collected Telemetry, Firefox uses a program called Ping Sender.
+    This will send a HTTP POST to the Edge Server where it is forwarded to the data pipeline if it's is formatted correctly.
+    If a client IP address is available at the decoder, the geolocation will be determined and saved.
+    The IP address gets discarded from the data set in the process. \cite{mozilla_overview_2020},\cite{mozilla_http_2020},\cite{firefox_ping_nodate}.\\
+    A reduced data pipeline can be seen in figure \ref{fig:moz_data_flow}.
     
+    
+    \begin{wrapfigure}{R}{0.4\textwidth}
+        \centering
+        \includegraphics[clip, trim=0.5cm 8cm 8cm 3.5cm, width=0.5\textwidth]{latex/figures/firefox_telemetry_graph}
+        \caption{Firefox data flow based on \cite{mozilla_overview_2020}}
+        \label{fig:moz_data_flow}
+    \end{wrapfigure}
+
+    Mozilla was experimenting with Prio in 2018 \cite{helmer_testing_2018} and based on the experiment they developed Firefox Origin Telemetry\cite{englehardt_next_2019} which is, at the time of writing, in use only for content blocking and still experimental\cite{noauthor_origin_nodate}.\\
 
 
 %%% Brave %%%
-\subsubsection{Brave}
+\subsection{Brave}
     Brave uses a technique called Privacy Preserving Product Analytics (P3A) for telemetry data, which can be turned off at any time.
     They claim, that their P3A does cover way more, than expected by GDPR. No personally identifiable data (PII) is collected or transmitted.\\
     Therefore Braves telemetry process is split into two phases.\\
@@ -166,7 +231,7 @@ The Tor Project is probably the most known approach for anonymized data transmis
     Each question poses a number of answers. Quantifiable questions, like the the number of open tabs, provide ranges for each answer for enhanced privacy\cite{brave_privacy-preserving_2019}. These Questions and possible answers can be reviewed in Braves GitHub repository\cite{brave_software_inc_brave-browser_2019}.
     The questions of phase one can be seen in Listing \ref{list:brave_question} in the appendix as well.\\
     At a randomized time after opening the browser, the number of open tabs is counted and send out once an hour with further information\cite{brave_privacy-preserving_2019}.
-    As of Braves Blog\cite{brave_privacy-preserving_2019} an answer contains:
+    An answer contains:
     \begin{itemize}
         \item Question number, Answer number
         \item OS/Plattform
@@ -175,7 +240,7 @@ The Tor Project is probably the most known approach for anonymized data transmis
         \item Country (if fewer than 6000 installs per week this is removed)
         \item Referral code (only if within 90 days of install and referrer is big enough)
     \end{itemize}
-    Every answer is send to Braves content delivery network (CDN) and stripped of the IP address of the client at the edge of the CDN.
+    Every answer is send to Braves content delivery network (CDN) and stripped of the IP address of the client at the edge of the CDN\cite{brave_privacy-preserving_2019}.
     . 
     The Second Phase uses a protocol based on Prochlo(see \ref{sec:related_work:data_transmission}. 
     

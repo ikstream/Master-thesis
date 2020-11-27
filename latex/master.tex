@@ -22,6 +22,7 @@ openright]{book}
 \usepackage{tikz}
 \usepackage{ctable}
 \usepackage[utf8]{inputenc}
+\usepackage{wrapfig}
 
 % Fonts
 %\usepackage{lmodern}
@@ -137,11 +138,10 @@ openright]{book}
 	eid,
 	chapter-1_introduction,
 	chapter-2_related_work,
-	chapter-3_algorithms,
-	chapter-4_testbed,
-	chapter-5_measurement_tools,
-	chapter-6_results,
-	chapter-7_conclusion,
+	chapter-3_software_design,
+	chapter-4_measurement_tools,
+	chapter-5_results,
+	chapter-6_conclusion,
 	appendix,
 }
 
@@ -205,11 +205,10 @@ openright]{book}
 %\pagestyle{headings}
 \include{chapter-1_introduction}
 \include{chapter-2_related_work}
-\include{chapter-3_algorithms}
-%\include{chapter-4_testbed}
-\include{chapter-5_measurement_tools}
-\include{chapter-6_results}
-\include{chapter-7_conclusion}
+\include{chapter-3_software_design}
+\include{chapter-4_measurement_tools}
+\include{chapter-5_results}
+\include{chapter-6_conclusion}
 
 %BIBLIOGRAPHY
 \addcontentsline{toc}{chapter}{Bibliography}
@@ -220,8 +219,8 @@ openright]{book}
 
 
 %APPENDIX
-%\appendix
-%\include{appendix}
+\appendix
+\include{appendix}
 
 \backmatter
 %\include{cv}
