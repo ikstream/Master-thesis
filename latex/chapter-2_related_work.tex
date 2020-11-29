@@ -54,18 +54,18 @@ going to discuss techniques used by different projects. Furthermore related rese
     \subsection{\textit{k}-anonymity}
         \label{subsec:related:kanon}
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        \section{Data Transmission}
-        \label{sec:related:data_transmission}
-        %
-        The Tor Project is probably the most known approach for anonymized data transmission over the Internet. Besides Tor we are going to discuss different approaches to transmit data over a network. In \ref{subsec:related:overlay} the Tor and I2P overlay network are going to be discussed, followed by systems used by current browser. Finally in \ref{subsec:related:protocols} we discuss different protocols available for data transmission.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Transmission}
+\label{sec:related:data_transmission}
+%
+The Tor Project is probably the most known approach for anonymized data transmission over the Internet. Besides Tor we are going to discuss different approaches to transmit data over a network. In \ref{subsec:related:overlay} the Tor and I2P overlay network are going to be discussed, followed by systems used by current browser. Finally in \ref{subsec:related:protocols} we discuss different protocols available for data transmission.
         
         
-        %
+    %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,13 +92,19 @@ going to discuss techniques used by different projects. Furthermore related rese
     
     
     %%% I2P %%%
-    \subsubsection{I2P}
+    \subsubsection{The Invisible Internet Project - I2P}
+        I2P is an overlay network with privacy-by-design in mind, that is intended to connect services within a closed network.
+        Exit proxy-server are available, but not recommended by the developer. Within the network, nodes can communicate in any way they want. I2P is free open source software and can be added to a regular web service, to make it available on the closed network. Each network node has unidirectional inbound and outbound tunnel, and every node is visible on the network. However, the traffic of a node can not be seen by other network participants. The network is decentralized and uses distributed hash tables for a network database and contact information security\cite{i2p_intro_2014}.\\
+        To contact another client, a message is send out through it's own outbound tunnel, trying to reach the other clients inbound tunnel. Each client can choose the length of tunnels and thereby finding a trade-off between latency and anonymity\cite{anoncoin_i2p_2018}.\\
+        I2P requires additional software or setup steps on the client and server side to access the network.//
+        
+        
         
     
     %%% VPN %%%
     \subsubsection{Virtual Private Network - VPN}
         A VPN provides an encrypted connection from the users system to an exit point, the VPN server. For further communication the IP address of the VPN server is used. This may change the country of origin and prevent things like geoblocking or other restrictions imposed from the internet service provider\cite{microsoft_virtual_2009}.\\
-        A VPN provides privacy against prying eyes in the path from client to VPN server. It also provides anonymity towards the web service requested. Virtual private networks can be selfhosted, used from for-free provider or payed. To use it, additional steps, like configuration, are required on the users end.\\
+        A VPN provides privacy against prying eyes in the path from client to VPN server. It also provides anonymity towards the web service requested. Virtual private networks can be self-hosted, used from for-free provider or payed. To use it, additional steps, like configuration, are required on the users end.\\
 
     
 \newpage
