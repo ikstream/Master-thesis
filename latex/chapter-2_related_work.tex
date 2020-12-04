@@ -28,11 +28,13 @@ Furthermore we are going to discuss techniques used by different projects in sec
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Anonymization}
-\label{sec:related:data_aononymization}
-%
-    \subsection{privacy}
-    %% differential privacy
+    \label{sec:related:data_aononymization}
+    %
     
+    \subsection{privacy}
+    - Re-identification of anonymized data
+    -
+
     %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
@@ -40,7 +42,7 @@ Furthermore we are going to discuss techniques used by different projects in sec
     %
     \subsection{Regulations}
         \label{subsec:related:law}
-        Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic, that does not allow to identify a person directly or indirectly\cite{noauthor_din_2020}. It furthermore declares anonymization as a process, in which personally identifiable information (PII) is irrevocable transformed. This transformation denies the ability for an entity to identify a person indirectly or directly by itself or in cooperation with another entity.\\
+        Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic, that does not allow to identify a person directly or indirectly\cite{german_institute_for_standardization_din_2020}. It furthermore declares anonymization as a process, in which personally identifiable information (PII) is irrevocable transformed. This transformation denies the ability for an entity to identify a person indirectly or directly by itself or in cooperation with another entity\cite{german_institute_for_standardization_din_2020}.\\
         
         A major advantage for anonymized data is the exclusion of the GDPR legislation. Recital 26 of the regulation excludes anonymized data explicitly.\\ 
         "The principles of data protection should therefore not apply to anonymous information, namely information which does not relate to an identified or identifiable natural person or to personal data rendered anonymous in such a manner that the data subject is not or no longer identifiable. This Regulation does not therefore concern the processing of such anonymous information, including for statistical or research purposes."\cite{european_union_regulation_2016}
@@ -50,25 +52,34 @@ Furthermore we are going to discuss techniques used by different projects in sec
     %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %
-    \subsection{\textit{k}-anonymity}
-        \label{subsec:related:kanon}
-        To avoid the identification of a user, based on the published data and it's attributes, record linkage should not be possible. Therefore a system design should consider so-called quasi identifier (QI). These Quasi identifier may allow to draw a connection between the data set and an external source\cite{sweeney_k-anonymity_2002}.
-        If an set of attributes is contained in an external release, that might contain PII, and contained in a released data set, these sets of attributes are called Quasi identifiers, as it allows the linkage between these two data sets.
-        If a data set S has $QI_S$ associated with it, S satisfies \textit{k}-anonymity if each sequence of values S[$QI_S$] appears at least \textit{k} times. 
-		In addition, each sequence S[$QI_S$] need to belong to a different user.
-		This does protect the data set against linking, by using direct matching, as Sweeny proposes in \cite{sweeney_k-anonymity_2002}.\\
-        
-        One of the shortcomings of \textit{k}-anonymity is, that each touple of attribute need to belong to a different user as Fung demonstrates in \cite{fung_introduction_2011}.
+    \subsection{Private Data Publication}
+        \label{subsec:related:private_data_analysis}
+    
+        \subsubsection{\textit{k}-anonymity}
+            \label{subsec:related:kanon}
+            To avoid the identification of a user, based on the published data and it's attributes, record linkage should not be possible. Therefore a system design should consider so-called quasi identifier (QI). These Quasi identifier may allow to draw a connection between the data set and an external source\cite{sweeney_k-anonymity_2002}.
+            If an set of attributes is contained in an external release, that might contain PII, and contained in a released data set, these sets of attributes are called Quasi identifiers, as it allows the linkage between these two data sets.
+            If a data set S has $QI_S$ associated with it, S satisfies \textit{k}-anonymity if each sequence of values S[$QI_S$] appears at least \textit{k} times. 
+        	In addition, each sequence S[$QI_S$] need to belong to a different user.
+        	This does protect the data set against linking, by using direct matching, as Sweeny proposes in \cite{sweeney_k-anonymity_2002}.\\
+            
+            One of the shortcomings of \textit{k}-anonymity is, that each tuple of attribute need to belong to a different user as Fung demonstrates in \cite{fung_introduction_2011}.
 
+        % differential privacy
+        \subsubsection{Differential; Privacy}
+            \label{subsec:related:dif_privacy}
+            Differential privacy is a property of the data access mechanism and unrelated to auxiliary information available\cite{dwork_algorithmic_2013}. 
+            It garanties, that the addition, or removal of a single database entry
+            \cite{agrawal_differential_2008}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Transmission}
-\label{sec:related:data_transmission}
-%
-The Tor Project is probably the most known approach for anonymized data transmission over the Internet. Besides Tor we are going to discuss different approaches to transmit data over a network. In \ref{subsec:related:overlay} the Tor and I2P overlay network are going to be discussed, followed by domain name system in section \ref{subsec:related:dns}. 
+    \label{sec:related:data_transmission}
+    %
+    The Tor Project is probably the most known approach for anonymized data transmission over the Internet. Besides Tor we are going to discuss different approaches to transmit data over a network. In \ref{subsec:related:overlay} the Tor and I2P overlay network are going to be discussed, followed by domain name system in section \ref{subsec:related:dns}. 
         
         
     %
@@ -83,7 +94,7 @@ The Tor Project is probably the most known approach for anonymized data transmis
         %
         There are several overlay networks which provide different functionalities, like caching overlays, that enhance the serving static content, routing overlays, that provide different features for dynamic content than the underlying networks and security overlays,  that improve the security of networks and can help mitigate distributed denial of service (DDoS) attacks\cite{pathan_overlay_2014}.\\
         Two overlay networks will be discussed. On the one hand there is Tor\cite{dingledine_tor_2004}, on the other I2P\cite{}. Both systems aim to enhance the anonymity of the internet by adding additional layers to it.\\
-        Furthermore additional Protocols like P5\cite{sherwood_p_2005} and Herbivore\cite{goel_herbivore_2003} have been reviewed. As they are similar to the presented solutions, but are less known, or require addtional implementation steps or infrastructure, they are not described in this section.
+        Furthermore additional Protocols like P5\cite{sherwood_p_2005} and Herbivore\cite{goel_herbivore_2003} have been reviewed. As they are similar to the presented solutions, but are less known, or require additional implementation steps or infrastructure, they are not described in this section.
      
      
     %%% Tor %%%
