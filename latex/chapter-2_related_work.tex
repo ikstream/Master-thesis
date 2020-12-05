@@ -65,7 +65,12 @@ Furthermore we are going to discuss techniques used by different projects in sec
             
             One of the shortcomings of \textit{k}-anonymity is, that each tuple of attribute need to belong to a different user as Fung demonstrates in \cite{fung_introduction_2011}.
 
-        % differential privacy
+        \subsubsection{\textit{l}-diversity}
+            \label{subsec:related:l-div}
+            In \cite{machanavajjhala_l-diversity_2007} Machanavajjhala et al. show, that k-anonymity is succeptable the two attack vectors homogenity and background knowledge.
+            The homogenity attack works on datasets with groups that lack diversity in sensitive attributes. The background knowledge attack on the other hand uses available knowledge in addition to the provided dataset, that is not directly matched to attributes.
+
+   la     % differential privacy
         \subsubsection{Differential; Privacy}
             \label{subsec:related:dif_privacy}
             Differential privacy is a property of the data access mechanism and unrelated to auxiliary information available\cite{dwork_algorithmic_2013}. 
