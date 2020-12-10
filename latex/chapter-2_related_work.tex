@@ -67,15 +67,16 @@ Furthermore we are going to discuss techniques used by different projects in sec
 
         \subsubsection{\textit{l}-diversity}
             \label{subsec:related:l-div}
-            In \cite{machanavajjhala_l-diversity_2007} Machanavajjhala et al. show, that k-anonymity is succeptable the two attack vectors homogenity and background knowledge.
-            The homogenity attack works on datasets with groups that lack diversity in sensitive attributes. The background knowledge attack on the other hand uses available knowledge in addition to the provided dataset, that is not directly matched to attributes.
+            In \cite{machanavajjhala_l-diversity_2007} Machanavajjhala et al. show, that k-anonymity is susceptible the two attack vectors homogeneity and background knowledge.
+            The homogeneity attack works on datasets with groups that lack diversity in sensitive attributes. The background knowledge attack on the other hand uses available knowledge in addition to the provided dataset, that is not directly matched to attributes.
 
    la     % differential privacy
         \subsubsection{Differential; Privacy}
             \label{subsec:related:dif_privacy}
-            Differential privacy is a property of the data access mechanism and unrelated to auxiliary information available\cite{dwork_algorithmic_2013}. 
-            It garanties, that the addition, or removal of a single database entry
-            \cite{agrawal_differential_2008}
+            Differential privacy (DP) is a property of the data access mechanism and unrelated to auxiliary information available\cite{dwork_algorithmic_2013}. 
+            It promises, that the addition, or removal of a single dataset to an existing database does not affect the outcome of a analysis with a strong mathematical definition of privacy. A protection against privacy attacks like re-identification, record linkage and differencing is mathematically provable provided \cite{agrawal_differential_2008}, \cite{wood_differential_2018}. \\
+            This guarantees, that anyone will make the same inference about a individuals PII or private information whether the individuals dataset was included in the analysis or not\cite{wood_differential_2018}. Therefore making a post-processing impossible as an analyst can not make the output less differential private without additional knowledge of the the private database\cite{nguyen_understanding_2019}.
+            
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
