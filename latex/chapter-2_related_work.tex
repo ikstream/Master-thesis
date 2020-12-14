@@ -195,7 +195,10 @@ Furthermore we are going to discuss techniques used by different projects in sec
         The name system is structured in non overlapping zones as can be seen in the right segment in figure \ref{fig:dns_query} with the root domain on top\cite{herrmann_beobachtungsmoglichkeiten_2016}.
         A server containing all information about a subset of the name space is called authoritative server. To extract the information from the authoritative server, a so called resolver is used\cite{friedewald_privacy_2018}.
         As the hierarchical structure of the domain name system provides sender anonymity, meaning the receiver doesn't know the source of the message, the system can be used to transmit data anonymously to a collecting server. This can be achieved without any further additions to the protocol or configuration on the client side.
-        Advanced techniques like DNS over HTTPS (DOH)\cite{} and DNSSec\cite{} can add another layer of security and privacy on top.
+        Advanced techniques like DNS over HTTPS (DOH)\cite{} and DNSSec\cite{} can add another layer of security and privacy on top. The newly presented Oblivious DNS over HTTPS (ODoH) developed by Apple,Fastly and Cloudflare may add an additional privacy to every DNS query\cite{verma_improving_2020}.
+        
+        
+        %%% TODO: citation for DOH and DNSSec
         
         \begin{figure}
             \centering
@@ -209,53 +212,6 @@ Furthermore we are going to discuss techniques used by different projects in sec
         In DNS tunneling \cite{das_detection_2017}.\\
         To exfiltrate data in a DNS request, the information in question is Base32 encoded and split into 63 Byte sized chunks. Afterwards some request are started to a monitored or controlled domain with the encoded data as fields\cite{mertens_infosec_2017}.\\
         
-    
-    
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Data Robustness}
-    \label{sec:related:data_robustness}
-
-
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %
-    %%%% SNIP
-    %
-    \subsection{Secret-Shared Non-Interactive Proof - SNIP}
-        \label{subsec:related:snip}
-    %
-    
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %
-    %%%% NIZK
-    %
-    \subsection{Non-Interactive Zero-Knowledge Proof - NIZK}
-        \label{subsec:related:nizk}
-    %
-    
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %
-    %%%% SNARK
-    %
-    \subsection{Succinct Non-Interactive Arguments of Knowledge - SNARK}
-        \label{subsec:snark}
-    %
-
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
