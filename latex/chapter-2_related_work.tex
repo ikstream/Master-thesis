@@ -45,8 +45,8 @@ Furthermore we are going to discuss techniques used by different projects in sec
         Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic, that does not allow to identify a person directly or indirectly\cite{german_institute_for_standardization_din_2020}. It furthermore declares anonymization as a process, in which personally identifiable information (PII) is irrevocable transformed. This transformation denies the ability for an entity to identify a person indirectly or directly by itself or in cooperation with another entity\cite{german_institute_for_standardization_din_2020}.\\
         
         A major advantage for anonymized data is the exclusion of the GDPR legislation. Recital 26 of the regulation excludes anonymized data explicitly.\\ 
-        "The principles of data protection should therefore not apply to anonymous information, namely information which does not relate to an identified or identifiable natural person or to personal data rendered anonymous in such a manner that the data subject is not or no longer identifiable. This Regulation does not therefore concern the processing of such anonymous information, including for statistical or research purposes."\cite{european_union_regulation_2016}
-        
+        "The principles of data protection should therefore not apply to anonymous information, namely information which does not relate to an identified or identifiable natural person or to personal data rendered anonymous in such a manner that the data subject is not or no longer identifiable. This Regulation does not therefore concern the processing of such anonymous information, including for statistical or research purposes."\cite{european_union_regulation_2016}\\
+        Compared to the EU, the US have a wide range of privacy state laws
     %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
@@ -68,10 +68,12 @@ Furthermore we are going to discuss techniques used by different projects in sec
         \subsubsection{\textit{l}-diversity}
             \label{subsec:related:l-div}
             In \cite{machanavajjhala_l-diversity_2007} Machanavajjhala et al. show, that k-anonymity is susceptible the two attack vectors homogeneity and background knowledge.
-            The homogeneity attack works on datasets with groups that lack diversity in sensitive attributes. The background knowledge attack on the other hand uses available knowledge in addition to the provided dataset, that is not directly matched to attributes.
+            The homogeneity attack works on datasets with groups that lack diversity in sensitive attributes. The background knowledge attack on the other hand uses available knowledge in addition to the provided dataset, that is not directly matched to attributes.\\
+            
+            
 
-   la     % differential privacy
-        \subsubsection{Differential; Privacy}
+        % differential privacy
+        \subsubsection{Differential Privacy}
             \label{subsec:related:dif_privacy}
             Differential privacy (DP) is a property of the data access mechanism and unrelated to auxiliary information available\cite{dwork_algorithmic_2013}. 
             It promises, that the addition, or removal of a single dataset to an existing database does not affect the outcome of a analysis with a strong mathematical definition of privacy. A protection against privacy attacks like re-identification, record linkage and differencing is mathematically provable provided \cite{agrawal_differential_2008}, \cite{wood_differential_2018}. \\
@@ -120,7 +122,7 @@ Furthermore we are going to discuss techniques used by different projects in sec
         I2P is an overlay network with privacy-by-design in mind, that is intended to connect services within a closed network.
         Exit proxy-server are available, but not recommended by the developer. Within the network, nodes can communicate in any way they want. I2P is free open source software and can be added to a regular web service, to make it available on the closed network. Each network node has unidirectional inbound and outbound tunnel, and every node is visible on the network. However, the traffic of a node can not be seen by other network participants. The network is decentralized and uses distributed hash tables for a network database and contact information security\cite{i2p_intro_2014}.\\
         To contact another client, a message is send out through it's own outbound tunnel, trying to reach the other clients inbound tunnel. Each client can choose the length of tunnels and thereby finding a trade-off between latency and anonymity\cite{anoncoin_i2p_2018}.\\
-        I2P requires additional software or setup steps on the client and server side to access the network.//
+        I2P requires additional software or setup steps on the client and server side to access the network.\\
         
         
         
