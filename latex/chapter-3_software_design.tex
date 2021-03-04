@@ -27,9 +27,33 @@
 \section{Data Collection}
 \label{sec:software_design:data_collection}
 
-\subsection{ID generation}
-MTD \cite{woodhouse_memory_nodate}
+ %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %
+    \subsection{Data selection}
+        \label{subsec:software_design:selection}
+        We decided to restrict the collected data to non-PII. This will allow us to avoid GDPRs regulation. 
+        In addition we don't have to take care of anonymization, as the data does not allow any conclusions 
+        on the user.
+
+    \subsection{ID generation}
+        \label{subsec:software_design:id}
+        To identify devices on a reliable and reproducible basis the ID generation is based on hardware information available and is therefore persistent through a reboot, a re-flash or an update.\\
+        We recommend the use of the available MAC-addresses and combine them into one string which is then hashed with the a strong cryptographic hashing function.
+        This function should come from the Secure Hash Algorithm 2 (SHA-2) family. While SHA512 is the stronger function and is recommended, it is not available on all devices.\\
+        A single MAC consists of 48 bit, from which 24 bit are a vendor specific and equal over all devices from this vendor. The other 24 bit are a unique identifier for a given network interface. As most internet connected devices come with pre-installed/soldered network interfaces, this could lead to brute force attempts to regenerate the MAC-address from a hash, especially on hardware with only one physical network interface. Therefore the generated hash needs to be enhanced.\\
+        This enforcement can be achieved with a key derivation function (KDF). These functions have two usue cases. On the one hand they are used for password hashes in modern operating systems protecting the users password against easy access\cite{percival_stronger_nodate}. 
+        The other use case is the derivation of a key based on a token and another key\cite{camenisch_privacy_2011}. Attacking a KDF in itself is not feasible. An attacker would need to iterate over a range of passwords or regular expressions and apply the KDF to them\cite{percival_stronger_nodate}.
+        One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which applies a pseudorandom function to a given password and salt for a number of times. This reduces it's vulnerability against brute force attacks\cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
+        Computation time increases significantly for strong passwords and salts, making rainbow table attacks less feasible. 
+        To keep IDs reproducible we need to derive our password and salt from data provided by the device, which wont alter during a reinstall of a system. For devices with non volatile flash memory the Memory Technology Devices (MTD) are usually devices with solid state file systems\cite{giometti_mtd_2017}. These partitions can contain configuration information for wireless devices. This contains device-unique data which is ideal to use as key and/or salt.
+        
+        MTD \cite{woodhouse_memory_nodate}
 \newpage
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,7 +63,21 @@ MTD \cite{woodhouse_memory_nodate}
 \section{Data Transmission}
 \label{sec:software_design:tx}
 %
+     %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %
+    \subsection{Data Encryption}
+        \label{subsec:software_design:encryption}
 
+     %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %
+    \subsection{Fitting data to DNS request}
+        \label{subsec:software_design:fitting}
 \newpage
 
 
@@ -52,7 +90,13 @@ MTD \cite{woodhouse_memory_nodate}
 \label{sec:software_design:ref_impl}
 
 %
-
+\subsection{ID generation}
+    To generate a unique ID for a given device we are combining all available MAC addresses and combine them in one colon-free string.  
+    As we go for openssl as a dependency for PBKDF2 we are using it's SHA512 digest function to generate strong hashes.  
+     sha512
+     pbkdf2
+     aes256
+     mtd 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
