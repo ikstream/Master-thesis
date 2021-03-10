@@ -49,7 +49,8 @@
         One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which applies a pseudorandom function to a given password and salt for a number of times. This reduces it's vulnerability against brute force attacks\cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
         Computation time increases significantly for strong passwords and salts, making rainbow table attacks less feasible. 
         To keep IDs reproducible we need to derive our password and salt from data provided by the device, which wont alter during a reinstall of a system. For devices with non volatile flash memory the Memory Technology Devices (MTD) are usually devices with solid state file systems\cite{giometti_mtd_2017}. These partitions can contain configuration information for wireless devices. This contains device-unique data which is ideal to use as key and/or salt.
-        
+        To further strengthen the ID against brute forcing and decreasing the amount of character use in a DNS query, the generated ID should be reduced to fewer bytes.\\
+        This may lead to collisions
         MTD \cite{woodhouse_memory_nodate}
 \newpage
 
@@ -97,6 +98,9 @@
      pbkdf2
      aes256
      mtd 
+     
+     We further enhance the brute forcing protection in reducing the generated hash to the first 32 Byte, which leaves around $1.158e^{77}$ possible combinations. 
+     As shown in equation \ref{TODO} this increases the risk of a collision, but the risk is still very low. If an collision happens, it is handled on the server side.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
