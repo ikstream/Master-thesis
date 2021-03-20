@@ -44,9 +44,9 @@
         We recommend the use of the available MAC-addresses and combine them into one string which is then hashed with the a strong cryptographic hashing function.
         This function should come from the Secure Hash Algorithm 2 (SHA-2) family. While SHA512 is the stronger function and is recommended, it is not available on all devices.\\
         A single MAC consists of 48 bit, from which 24 bit are a vendor specific and equal over all devices from this vendor. The other 24 bit are a unique identifier for a given network interface. As most internet connected devices come with pre-installed/soldered network interfaces, this could lead to brute force attempts to regenerate the MAC-address from a hash, especially on hardware with only one physical network interface. Therefore the generated hash needs to be enhanced.\\
-        This enforcement can be achieved with a key derivation function (KDF). These functions have two usue cases. On the one hand they are used for password hashes in modern operating systems protecting the users password against easy access\cite{percival_stronger_nodate}. 
+        This enforcement can be achieved with a key derivation function (KDF). These functions have two use cases. On the one hand they are used for password hashes in modern operating systems protecting the users password against easy access\cite{percival_stronger_nodate}. 
         The other use case is the derivation of a key based on a token and another key\cite{camenisch_privacy_2011}. Attacking a KDF in itself is not feasible. An attacker would need to iterate over a range of passwords or regular expressions and apply the KDF to them\cite{percival_stronger_nodate}.
-        One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which applies a pseudorandom function to a given password and salt for a number of times. This reduces it's vulnerability against brute force attacks\cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
+        One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which applies a pseudo-random function to a given password and salt for a number of times. This reduces it's vulnerability against brute force attacks\cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
         Computation time increases significantly for strong passwords and salts, making rainbow table attacks less feasible. 
         To keep IDs reproducible we need to derive our password and salt from data provided by the device, which wont alter during a reinstall of a system. For devices with non volatile flash memory the Memory Technology Devices (MTD) are usually devices with solid state file systems\cite{giometti_mtd_2017}. These partitions can contain configuration information for wireless devices. This contains device-unique data which is ideal to use as key and/or salt.
         To further strengthen the ID against brute forcing and decreasing the amount of character use in a DNS query, the generated ID should be reduced to fewer bytes.\\
@@ -79,6 +79,8 @@
     %
     \subsection{Fitting data to DNS request}
         \label{subsec:software_design:fitting}
+        As elements from the domain name system are required to support [1-z], [0=9] and hyphens only the data needs to be transformed to a format, that can be transmitted reliable.
+        Therefore a base32 encoding would be feasible to keep the transmission size as low as possible. As base32 uses the equal sign as padding char, it would be required to exchange it with a hyphen, to make it conforming. 
 \newpage
 
 
@@ -91,9 +93,12 @@
 \label{sec:software_design:ref_impl}
 
 %
+\subsection{Data Collection}
+
+%
 \subsection{ID generation}
-    To generate a unique ID for a given device we are combining all available MAC addresses and combine them in one colon-free string.  
-    As we go for openssl as a dependency for PBKDF2 we are using it's SHA512 digest function to generate strong hashes.  
+    To generate a unique ID for a given device we are collecting all available MAC addresses and combine them in one colon-free string. This string is passed to the \textit{openssl sha512} hash function. These hashes are concatenated into one long string, which is than hashed again and called our ID. As we go for \textit{openssl} as a dependency for PBKDF2 we are using it's \textit{SHA512} digest function to generate stronger hashes. The resulting hash is than passed to the encrypt function of \textit{openssl} utilizing \textit{aes256-cbc} and PBKDF2 with 10.000 iterations.
+    The Salt and key depend on the devices hardware. If MTD partitions are available, we hash these partitions and use the first 16 byte of the resulting hash as salt. The remaining Bytes are used as the key. If no such partitions are available, the ID, generated in the  previous step, is used for salt and key
      sha512
      pbkdf2
      aes256
@@ -101,6 +106,12 @@
      
      We further enhance the brute forcing protection in reducing the generated hash to the first 32 Byte, which leaves around $1.158e^{77}$ possible combinations. 
      As shown in equation \ref{TODO} this increases the risk of a collision, but the risk is still very low. If an collision happens, it is handled on the server side.
+     If we there is an high amount of collisions, we may assume an attack on our database we process the received data anyway. Only data, that matches with the first entry
+     for the hash value is kept. Any additional data will be dropped to protect the integrity of the database.
+     
+% 
+\subsection{Data handling}
+    As base32 is a package in OpenWrt with multiple dependencies we decided to go for a base16 encoding instead. This is available with \textit{hexdump}, which is included in most basic OpenWrt setups. While this increases the numbers of messages, that are needed to be send, it reduces the memory footprint for the statistics tool.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
