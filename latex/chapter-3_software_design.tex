@@ -48,10 +48,9 @@
         The other use case is the derivation of a key based on a token and another key\cite{camenisch_privacy_2011}. Attacking a KDF in itself is not feasible. An attacker would need to iterate over a range of passwords or regular expressions and apply the KDF to them\cite{percival_stronger_nodate}.
         One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which applies a pseudo-random function to a given password and salt for a number of times. This reduces it's vulnerability against brute force attacks\cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
         Computation time increases significantly for strong passwords and salts, making rainbow table attacks less feasible. 
-        To keep IDs reproducible we need to derive our password and salt from data provided by the device, which wont alter during a reinstall of a system. For devices with non volatile flash memory the Memory Technology Devices (MTD) are usually devices with solid state file systems\cite{giometti_mtd_2017}. These partitions can contain configuration information for wireless devices. This contains device-unique data which is ideal to use as key and/or salt.
+        To keep IDs reproducible we need to derive our password and salt from data provided by the device, which wont alter during a reinstall of a system. For devices with non volatile flash memory the Memory Technology Devices (MTD) are usually devices with solid state file systems\cite{giometti_mtd_2017}\cite{woodhouse_memory_nodate}. These partitions can contain configuration information for wireless devices. This contains device-unique data which is ideal to use as key and/or salt.
         To further strengthen the ID against brute forcing and decreasing the amount of character use in a DNS query, the generated ID should be reduced to fewer bytes.\\
-        This may lead to collisions
-        MTD \cite{woodhouse_memory_nodate}
+        
 \newpage
 
 
@@ -71,6 +70,7 @@
     %
     \subsection{Data Encryption}
         \label{subsec:software_design:encryption}
+        
 
      %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,8 +79,12 @@
     %
     \subsection{Fitting data to DNS request}
         \label{subsec:software_design:fitting}
-        As elements from the domain name system are required to support [1-z], [0=9] and hyphens only the data needs to be transformed to a format, that can be transmitted reliable.
-        Therefore a base32 encoding would be feasible to keep the transmission size as low as possible. As base32 uses the equal sign as padding char, it would be required to exchange it with a hyphen, to make it conforming. 
+        As elements from the domain name system are required to support [a-z], [0-9] and hyphens only the data needs to be transformed to a format that can be transmitted reliable. Upper case letters are hereby treated the same as lower case ones.
+        For example EXAMPLE.COM. would lead to the same result as example.com. and ExAmPlE.com..
+        Therefore a base32 encoding would be feasible to keep the transmission size as low as possible. Base32 offers the widest set of supported symbols, while using only one symbol, that is not supported by DNS. The equal sign is used as a padding symbol, which needs to be exchanged with a hyphen, to make it conforming. The hyphen can be used as padding symbol, as it is not present in the RFC 4648 Base 32 alphabet\cite{josefsson_simonjosefssonorg_base16_2006}. Base 16 encoding would reduce the amount of available symbols below the supported range of symbols, while Base 64 encoding would add additional symbols, which are not supported in the domain name system. These are the plus '+' and and slash '/' symbol. Base 64 keeps the equal sign for padding, which makes a DNS conform substitution harder.\\
+        A URL and filename safe Base 64 alphabet variant is mentioned in RFC 4648 as well, which replaces the plus sign with the minus and the slash symbol with an underscore, while keeping '=' as the padding character. Again this makes a valid substitution hard and unnecessary as all relevant symbols are already covered in the Base 32 alphabet.\\
+        
+    TODO: DNS Label etc \cite{mockapetris_domain_1987}
 \newpage
 
 
