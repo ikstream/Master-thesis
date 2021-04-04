@@ -34,10 +34,24 @@
     %
     \subsection{Data selection}
         \label{subsec:software_design:selection}
-        We decided to restrict the collected data to non-PII. This will allow us to avoid GDPRs regulation. 
-        In addition we don't have to take care of anonymization, as the data does not allow any conclusions 
-        on the user.
-
+        To get the most out of data collection it needs to be relevant to the task it has to fulfill.
+        While a wide range of collected metrics might help to broaden the view over the landscape that is monitored, it may hinder in the evaluation and detection of relevant data points. Therefore data collection should always be kept to a minimum needed to help the cause for the collection.\\
+        In addition user are more willing to share non sensitive as \cite{TODO} has shown for medical data, \cite{TODO} for data sharing on social networks and \cite{TODO} for sharing information with online advertiser. Furthermore \cite{TODO} have shown, that the willingness of information sharing for sensory data is based on a positive or negative connotation of the data in question.\\
+        
+        As we discuss Internet connected data collections, there is always the possibility for a data breach, or an adversary actor, who may target the collected data. If PII is contained in the data set, the possible yield for an attacker is higher, compared to public non personal identifiable data.\\
+        To protect the devices and thereby the users identity, numerical data should always be collected in bins or ranges.\\
+        The exact amount of available memory in a system provided in byte or even kilobyte may fingerprint a device. IP and MAC addresses are sensitive data as well and should not be collected at all, as these could be connected to other Internet related activities and lead to an attack on the user, to gain control over their device. \\
+        As the National Academies of Science, Engineering and Medicine propose in their Consensus report \cite{TODO} https://www.nap.edu/read/24893/chapter/7#87, the more attributes are included in a data set the likelier the re-identification of individuals and the greater the threat for external data linking.\\
+        
+        Prior to collecting data large scale a project should define the intend behind the process. With a clear outline of objectives, relevant parameters can be identified 
+        Therefore we propose a minimal data collection set containing only information that are relevant to fulfill the purpose of the collection.
+        
+        The objective for an open source project could be to reduce the amount of defects in the released software, or  to collect usage statistics to improve the development of the software for a given target. A combination of objectives is possible as well.\\
+        Based on the objectives, a list of parameter can be compiled to retrieve data relevant to the purpose.
+        To e.g. detect system crashes, the time since last reboot (uptime) of a given device may be relevant, as well as the amount of memory available and the CPU/SoC. Further on, the software version in use needs to be included in this example.
+        
+        
+          
     \subsection{ID generation}
         \label{subsec:software_design:id}
         To identify devices on a reliable and reproducible basis the ID generation is based on hardware information available and is therefore persistent through a reboot, a re-flash or an update.\\
@@ -81,8 +95,8 @@
         \label{subsec:software_design:fitting}
         As elements from the domain name system are required to support [a-z], [0-9] and hyphens only the data needs to be transformed to a format that can be transmitted reliable. Upper case letters are hereby treated the same as lower case ones.
         For example EXAMPLE.COM. would lead to the same result as example.com. and ExAmPlE.com..
-        Therefore a base32 encoding would be feasible to keep the transmission size as low as possible. Base32 offers the widest set of supported symbols, while using only one symbol, that is not supported by DNS. The equal sign is used as a padding symbol, which needs to be exchanged with a hyphen, to make it conforming. The hyphen can be used as padding symbol, as it is not present in the RFC 4648 Base 32 alphabet\cite{josefsson_simonjosefssonorg_base16_2006}. Base 16 encoding would reduce the amount of available symbols below the supported range of symbols, while Base 64 encoding would add additional symbols, which are not supported in the domain name system. These are the plus '+' and and slash '/' symbol. Base 64 keeps the equal sign for padding, which makes a DNS conform substitution harder.\\
-        A URL and filename safe Base 64 alphabet variant is mentioned in RFC 4648 as well, which replaces the plus sign with the minus and the slash symbol with an underscore, while keeping '=' as the padding character. Again this makes a valid substitution hard and unnecessary as all relevant symbols are already covered in the Base 32 alphabet.\\
+        Therefore a base 32 encoding would be feasible to keep the transmission size as low as possible. In addition it offers the widest set of supported symbols, while using only one symbol, that is not supported by DNS. The equal sign is used as a padding character, which needs to be exchanged with a hyphen to make it conforming. The hyphen can be used as padding symbol, as it is not present in the RFC 4648 base 32 alphabet\cite{josefsson_simonjosefssonorg_base16_2006}. base 16 encoding would reduce the amount of available symbols below the supported range of symbols, while base 64 encoding would add additional symbols, which are not supported in the domain name system. These are the plus '+' and and slash '/' symbol. Base 64 keeps the equal sign for padding, which makes a DNS conform substitution harder.\\
+        A URL and filename safe base 64 alphabet variant is mentioned in RFC 4648 as well, which replaces the plus sign with the minus and the slash symbol with an underscore, while keeping '=' as the padding character. Again this makes a valid substitution hard and unnecessary as all relevant symbols are already covered in the Base 32 alphabet.\\
         
     TODO: DNS Label etc \cite{mockapetris_domain_1987}
 \newpage
@@ -108,10 +122,67 @@
      aes256
      mtd 
      
-     We further enhance the brute forcing protection in reducing the generated hash to the first 32 Byte, which leaves around $1.158e^{77}$ possible combinations. 
-     As shown in equation \ref{TODO} this increases the risk of a collision, but the risk is still very low. If an collision happens, it is handled on the server side.
-     If we there is an high amount of collisions, we may assume an attack on our database we process the received data anyway. Only data, that matches with the first entry
-     for the hash value is kept. Any additional data will be dropped to protect the integrity of the database.
+     We further enhance the brute forcing protection in reducing the generated hash to the first 32 Byte, which leaves around $1.158e^{77}$ possible combinations. While this makes it nearly impossible to recreate the original ID and MAC address, the probability of a hash collision (two hashes are equal to each other) is increased. In [TODO] the hash collision probability is calculated as seen in equation \ref{eq:base_prob_hash}.
+     
+     \begin{equation*}
+         N = 2^{Number\ of\ Bits\ in\ Hash}
+     \end{equation*}
+     
+     \begin{equation}
+         \label{eq:base_prob_hash}
+         P(k,N) = 1 - \exp{\frac{-k(k-1)}{2 * N}}
+     \end{equation}
+     
+     Based on \cite{TODO} equation \ref{eq:base_prob_hash} can be simplified for expected collisions probabilities of $\frac{1}{10}$ or less to
+     
+     \begin{equation}
+         \label{eq:simp_prob_hash}
+         P(k,N) = \frac{k(k - 1)}{2N} 
+     \end{equation}
+     
+     To calculate the number of hashes $k$ before a collision occurs under a given probability $P$, equation \ref{eq:simp_prob_hash} must be solved for $k$.
+     
+     \begin{equation*}
+         P = \frac{k(k - 1)}{2N}
+     \end{equation*}
+     \begin{equation*}
+         2NP = k (k - 1)
+     \end{equation*}
+     \begin{equation*}
+         2NP = k^2 - k
+     \end{equation*}
+
+     \begin{equation}
+        \label{eq:k_hash}
+         0 = k^2 - k - 2NP
+     \end{equation}
+     
+     Equation \ref{eq:k_hash} is a reduced quadratic equation and can be solved in a simplified variation as seen in \ref{eq:pq-simp}
+     
+     \begin{equation}
+         \label{eq:pq-simp}
+         k = \sqrt{2NP}
+     \end{equation}
+     
+     For a given collision probability of $P = \frac{1}{10^{18}}$ and $N = 2^{32 * 8} = 2^{256}$ bit equation \ref{eq:pq-simp} results in $x * 10^{29}$ hashes before two hashes may match each other.
+     
+     \begin{equation}
+         \label{eq:32B_solve}
+         k = \sqrt{2 * 2^{256} * \frac{1}{10^{18}}} = x * 10^{29}
+     \end{equation}
+     
+     If we compare equation \ref{eq:32B_solve} with \ref{eq:129B_solve}, which uses the original 129 Byte SHA512 the possibility for a hash collision is increased, but even with \ref{eq:32B_solve} the collision probability is very low.
+     
+     \begin{equation}
+         \label{eq:129B_solve}
+         k = \sqrt{2 * 2^{(129 * 8)} * \frac{1}{10^{18}}} = ...
+     \end{equation}
+     
+     Out of 245 octillion hashes two will match with a $\frac{1}{10^18}$ chance. 
+     
+     1 percent chance that two devices generate same hash
+     berechnen und ins verhältnis stellen
+     
      
 % 
 \subsection{Data handling}
