@@ -4,19 +4,9 @@
 \chapter{Background and Related Work}
 \label{chap:related_work}
 %
-Collecting data on user behavior or equipment is a delicate task. On the one hand there are legal hurdles like
-the European Unions General Data Protection Regulation (GDPR), on the other hand is the users trust
-in a software project. If a project looses the trust of users, it may face with a massive loss in
-user. This can lead to a drop in revenue for commercial projects and a major setback for any open source
-project. If a project violates the GDPR it can be considerably fined and take significant damage from it.\\
-
-Never the less, collecting data is important to evolve and improve a software project. Usage data can help
-to shape a project in a way, that it attracts more user, or increases it's security and reliability.
-It can help to identify no longer, or intensely used components, which can help to improve maintenance
-processes.\\ 
 
 %%% TODO: eine Seite füllen %%%
-
+While we discussed the developers need for accurate information in the last chapter, we are going to talk about the current state of systems that provide information to developer.
 Related research on anonymization of user data 
 (section \ref{sec:related:data_aononymization}) and it's transmission (section \ref{sec:related:data_transmission}) will be presented in this chapter. In addition section \ref{sec:related:data_robustness} will outline research on data robustness.
 Furthermore we are going to discuss techniques used by different projects in section \ref{sec:related:related_sw}. 
@@ -31,10 +21,10 @@ Furthermore we are going to discuss techniques used by different projects in sec
     \label{sec:related:data_aononymization}
     %
     
-    \subsection{privacy}
+    \subsection{Personal Identifiable Information}
     - Re-identification of anonymized data
     -
-
+    The US National Institute of Standards and Technology (NIST) define  \cite{mccallister_guide_2010}
     %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
@@ -42,11 +32,14 @@ Furthermore we are going to discuss techniques used by different projects in sec
     %
     \subsection{Regulations}
         \label{subsec:related:law}
-        Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic, that does not allow to identify a person directly or indirectly\cite{german_institute_for_standardization_din_2020}. It furthermore declares anonymization as a process, in which personally identifiable information (PII) is irrevocable transformed. This transformation denies the ability for an entity to identify a person indirectly or directly by itself or in cooperation with another entity\cite{german_institute_for_standardization_din_2020}.\\
+        Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic, that does not allow to identify a person directly or indirectly\cite{german_institute_for_standardization_din_2020}. It furthermore declares anonymization as a process, in which personally identifiable information is irrevocable transformed. This transformation denies the ability for an entity to identify a person indirectly or directly by itself or in cooperation with another entity\cite{german_institute_for_standardization_din_2020}.\\
         
         A major advantage for anonymized data is the exclusion of the GDPR legislation. Recital 26 of the regulation excludes anonymized data explicitly.\\ 
         "The principles of data protection should therefore not apply to anonymous information, namely information which does not relate to an identified or identifiable natural person or to personal data rendered anonymous in such a manner that the data subject is not or no longer identifiable. This Regulation does not therefore concern the processing of such anonymous information, including for statistical or research purposes."\cite{european_union_regulation_2016}\\
-        Compared to the EU, the US have a wide range of privacy state laws
+        Compared to the EU, the US have a wide range of privacy state laws. While the EU aims to provide one general regulation, the US privacy laws are split over four mayor regulations.
+        These four are the \textit{Health Insurance Portability and Accountability Act (HIPPAA)}\cite{rights_ocr_summary_2009}, which regulates healthcare provider, \textit{NIST 800-171}\cite{ross_protecting_2015}, that defines how to handle controlled unclassified Information in non-federal information systems, the \textit{The Gramm-Leach-Bliley Act (GLBA)}\cite{noauthor_gramm-leach-bliley_2013}, protecting personal information stored by financial institutes and the \textit{Federal Information Security Management Act (FISMA)}\cite{carper_s2521_2014} in which the requirements are stated for federal agencies information security programs. On top of these, states have additional privacy laws, which may be up to the GDPRs protection, depending on the state\cite{andrada_coos_eu_nodate}.\\
+        The European data protection regulation provides a strong set of rules, these may be extended by member state laws, but not weakened. This allows for even stronger data protections in some European countries.
+        
     %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%% Subsection %%%%%%%%%%%%%

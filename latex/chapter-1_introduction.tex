@@ -6,6 +6,18 @@
 %
 Developing a multi-platform application is a challenging task. Especially if 
 there is no, or only sparse telemetry and deployment data.\\
+
+Collecting data on user behavior or equipment is a delicate task. On the one hand there are legal hurdles like the European Unions General Data Protection Regulation (GDPR), on the other hand is the users trust in a software project. If a project looses the trust of users, it may face with a massive loss in user count. This can lead to a drop in revenue for commercial projects and a major setback for any open source project. If the GDPR was violated, it can lead to considerably fines and a project may be significantly damaged by it.\\
+
+Never the less, collecting data is important to evolve and improve software. This may be through
+user surveys, download statistics or automated collection on systems.
+Usage data can help to shape a project in a way, that it attracts more user, or increases it's security and reliability.
+It can help to identify no longer, or intensely used components, which can help to improve maintenance processes.\\
+While questionnaires allow a broad range of questions, the number of users participating is usually quite low. While Stack Overflow, the go to site for question around programming for many people, has about 50 Million visitors per month, only 65.000 developer participated in the 2020 developer survey\cite{noauthor_stack_nodate}.
+Especially with Open Source Software download numbers may be misleading to the actual numbers of users, as the software can be compiled by the user itself typically. In addition, one download may be responsible for multiple installed instances on a various number of different systems and alternative download possibilities like torrents may further reduce the number of downloads seen on a website.\\
+
+Compared to the two options prior, collecting data through the software, be it operating system or app, provides the most and most accurate results. Depending on the privacy awareness of a user this option may be counter productive, as users may shy away from overly nosy apps or operating systems. To improve the quality of a system and satisfy the user, both necessities, the user need for privacy and the developers urge to get reliable statistics, have to be brought together.\\
+
 This chapter will discuss the problems developer are currently facing in \ref{sec:intro:probstatement} and how
 we intend to contribute with this thesis to solve this problem. Furthermore an 
 overview of the thesis structure is provided in \ref{sec:intro:outline}
@@ -45,7 +57,7 @@ This could lead to an overall increase in network security and hinder the creati
 Collecting hard- and software data on user devices is a delicate action. The collected data needs to be anonymized,
 so no conclusion about the user can be drawn from the data set. Therefore the collected information should exclude
 sensitive data, or should be anonymized. 
-In addition, the user location should not be derivable from the transnmitted data or the transmission itself. At the same time the data should be obscured from any eavesdropper during the client server communication.
+In addition, the user location should not be derivable from the transmitted data or the transmission itself. At the same time the data should be obscured from any eavesdropper during the client server communication.
 
 Furthermore, a valid database of software and hardware distribution for developers should emerge. In addition,
 each device should be recorded and included in the statistics only once.
@@ -62,8 +74,9 @@ Thus a manipulation of the statistics is made more difficult.
 \label{sec:intro:contrib}
 %
 
-In this thesis we discuss known Systems for data collection and transmission anonymous. Based on the discussion we provide a blueprint for the given problem. In addition an open source implementation will be provided as reference.
-This will include data collection, transmission on the client site, as well as receiving data and evaluation on the server side
+In this thesis we discuss current systems for data collection and it's anonymous transmission. Based on the discussion we provide a blueprint how the problem of a right for privacy and urge to collect data may be solved.
+In addition an open source implementation will be provided for references.
+This will include data collection, transmission on the client site, as well as receiving data and storage on the server side.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
