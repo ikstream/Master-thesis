@@ -6,11 +6,13 @@
 %
 
 %%% TODO: eine Seite füllen %%%
-While we discussed the developers need for accurate information in the last chapter, we are going to talk about the current state of systems that provide information to developer.
-Related research on anonymization of user data 
-(section \ref{sec:related:data_aononymization}) and it's transmission (section \ref{sec:related:data_transmission}) will be presented in this chapter. In addition section \ref{sec:related:data_robustness} will outline research on data robustness.
-Furthermore we are going to discuss techniques used by different projects in section \ref{sec:related:related_sw}. 
+While we discussed the developers need for accurate information in the last chapter, we are going to talk about the current state of systems that provide information to developer. There are some well known open source projects, that already collect information and transmit them to evaluation server. We will have a look at how these systems operate and which drawbacks they bring.
+To discuss these systems, we start this chapter with an overview of regulations, define which type of data needs special care and how to publish relevant data (section \ref{sec:related:data_aononymization}).\\ 
+The next section is related to anonymized and secure data transmission technologies. In section \ref{sec:related:data_transmission} technologies like overlay networks like Tor, which provides user anonymization with the utilization of a wide spread network of nodes, through which participants data is transmitted. To the responding server the request looks like it was send from the exit node and not the original sender. The domain name system is also dissected in this section as it allows a transmission of data to a server without it having knowledge about the origin of the name lookup.
+Furthermore we are going to debate how different projects collect user data in section \ref{sec:related:related_sw}. These projects are the Ubuntu Linux distribution, two browser with focus on privacy and a tool designed to collect extensive information on user equipment.
+All these different applications use different techniques to strip personal identifiable information, which is added due to transmission from the collected data.
 
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -25,6 +27,8 @@ Furthermore we are going to discuss techniques used by different projects in sec
     - Re-identification of anonymized data
     -
     The US National Institute of Standards and Technology (NIST) define  \cite{mccallister_guide_2010}
+    
+    \newpage
     %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
@@ -126,8 +130,6 @@ Furthermore we are going to discuss techniques used by different projects in sec
         A VPN provides privacy against prying eyes in the path from client to VPN server. It also provides anonymity towards the web service requested. Virtual private networks can be self-hosted, used from for-free provider or payed. To use it, additional steps, like configuration, are required on the users end.\\
 
     
-\newpage
-    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -150,9 +152,16 @@ Furthermore we are going to discuss techniques used by different projects in sec
         Added noise and fragmentation on the encoder site, as well as shuffling may be sufficient to provide differential anonymity in this system.
         
         Prochlo is developed by Google and used by Chromium, as well as, in modified form, by Brave.
+        \begin{figure}[hb]
+            \centering
+            \includegraphics[width=\textwidth]{latex/figures/prio_overview.jpg}
+            \caption[Overview of Prios processing pipeline]{Overview of Prios processing pipeline\cite{corrigan-gibbs_prio_2017}}
+            \label{fig:prio_overview}
+        \end{figure}
     
     %%% Prio
     \subsubsection{Prio}
+
         Prio was developed by Corrigan-Gibbs et al.\cite{corrigan-gibbs_prio_2017} in 2017 as a privacy-preserving
         system for collecting aggregated statistics
         
@@ -162,15 +171,7 @@ Furthermore we are going to discuss techniques used by different projects in sec
         Prio promises privacy, as long as one of the servers is honest, therefore providing strong cryptographic privacy. A limited form of robustness is provided as long as all server are honest. It can detect and discard syntactically incorrect client data while preserving the privacy of the data. However, Prio can not prevent a client from sending in range data, that is untrue\cite{corrigan-gibbs_prio_2017}.\\
         Prio is in experimental use by Firefox Origin Telemetry\cite{englehardt_next_2019}.
         
-        \begin{figure}[ht]
-            \centering
-            \includegraphics[width=\textwidth]{latex/figures/prio_overview.jpg}
-            \caption[Overview of Prios processing pipeline]{Overview of Prios processing pipeline\cite{corrigan-gibbs_prio_2017}}
-            \label{fig:prio_overview}
-        \end{figure}
         
-    \newpage
-    
     %%% DNS 
     \subsection{Domain Name System - DNS}
         \label{subsec:related:dns}
@@ -181,7 +182,7 @@ Furthermore we are going to discuss techniques used by different projects in sec
         In figure \ref{fig:dns_tree} it is shown, how a hostname can be separated and traversed.
         The first field, following the, here omitted, root entry is the so called Top-Level Domain (TLD). In figure \ref{fig:dns_tree} this would be "com". The root and top-level domain are required to find the resposible authoritive nameserver for any related query\cite{jeftovic_managing_2018}.
         
-        \begin{wrapfigure}{L}{0.3\textwidth}
+        \begin{wrapfigure}{Lh}{0.3\textwidth}
             \includegraphics[width=0.3\textwidth]{latex/figures/domain_name_tree.jpg}
             \caption[Domain Name Tree for www.example.com.]{Domain Name Tree for www.example.com. \cite{jeftovic_managing_2018}}
             \label{fig:dns_tree}
@@ -207,7 +208,7 @@ Furthermore we are going to discuss techniques used by different projects in sec
         In DNS tunneling \cite{das_detection_2017}.\\
         To exfiltrate data in a DNS request, the information in question is Base32 encoded and split into 63 Byte sized chunks. Afterwards some request are started to a monitored or controlled domain with the encoded data as fields\cite{mertens_infosec_2017}.\\
         
-
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
@@ -255,6 +256,14 @@ Furthermore we are going to discuss techniques used by different projects in sec
     \subsection{Firefox}
         Firefox is a Browser which promises speed and privacy. It provides advertisement and tracker blocking. In addition it is available on all major platforms\\ 
         By default Firefox collects a wide range of data. These data collections are called Pings. Each Ping contains a certain type of information. At the time of writing there are at least 27 different Ping types in use\cite{mozilla_telemetry_nodate}.
+        
+        \begin{wrapfigure}{R}{0.4\textwidth}
+            \centering
+            \includegraphics[clip, trim=0.5cm 8cm 8cm 3.5cm, width=0.4\textwidth]{latex/figures/firefox_telemetry_graph}
+            \caption[Firefox data flow]{Firefox data flow based on \cite{mozilla_overview_2020}}
+            \label{fig:moz_data_flow}
+        \end{wrapfigure}
+        
         The "main" Ping is used for most telemetric data. It contains extensive health and performance information on Firefox, but also most system information. The JSON structure of a "main" Ping can be seen in Mozillas pipeline schema GitHub repository\cite{mozilla_mozilla-servicesmozilla-pipeline-schemas_2020}. 
         Besides information on CPU, GPU and operating system it contains information on installed add-ons and the reason for sending the Ping.
         It is send at least every 24 hours, but also on startup and other occasions. While basic telemetry, like the main ping can be disabled on the Settings page, Firefox will still send selected Pings to it's server, unless disabled in \textit{about:config}.
@@ -266,12 +275,7 @@ Furthermore we are going to discuss techniques used by different projects in sec
         A reduced data pipeline can be seen in figure \ref{fig:moz_data_flow}.
         
         
-        \begin{wrapfigure}{R}{0.4\textwidth}
-            \centering
-            \includegraphics[clip, trim=0.5cm 8cm 8cm 3.5cm, width=0.5\textwidth]{latex/figures/firefox_telemetry_graph}
-            \caption[Firefox data flow]{Firefox data flow based on \cite{mozilla_overview_2020}}
-            \label{fig:moz_data_flow}
-        \end{wrapfigure}
+        
     
         Mozilla was experimenting with Prio in 2018 \cite{helmer_testing_2018} and based on the experiment they developed Firefox Origin Telemetry \cite{englehardt_next_2019} which is, at the time of writing, in use only for content blocking and still     experimental\cite{noauthor_origin_nodate}.\\
     
@@ -311,8 +315,14 @@ Furthermore we are going to discuss techniques used by different projects in sec
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
-    In this chapter we summarized previous work on related topics. This allows us to narrow our research.
-    Prio and Prochlo require additional infrastructure. As open source organization are usually underfunded
+    In this chapter we discussed what personal information are and how they should be handled.
+    In addition we summarized previous work on related topics. This allows us to narrow our research.
+    Prio and Prochlo require additional infrastructure. As open source organization are usually underfunded, every additional server leaves a dent in the budget. Therefore these systems maybe
+    useful for organizations with sufficient funding, but not for small projects. Some of the mentioned systems in this chapter depend on trust of the user that their transmission information are stripped from the data.\\
+    The Domain Name System provides us a hierarchical structure, that strips the senders information
+    from the transmitted data in a reliable way. A user, can have trust in that and doesn't depend on an organization to handled that properly. Utilizing the name system faces new issues that need to be handled and will be discussed in the next chapter.\\ 
+    
+    
 %
 
 
