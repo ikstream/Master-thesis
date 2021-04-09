@@ -4,7 +4,8 @@
 \chapter{Software Design}
 \label{chap:software_design}
 
-As mentioned in the previous chapter, we are going to focus on the challenges faced when collecting 
+As mentioned in the previous chapter, we are going to focus on the challenges faced when utilizing the domain name system. Before we discuss the transport of data through the hierarchical name system in section \ref{sec:software_design:tx}, we will have at look at the data collection and ID generation (\ref{sec:software_design:data_collection}.\\
+Section \ref{sec:software_design:ref_impl} demonstrates how we realized the proposed solutions in the reference implementation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -26,7 +27,10 @@ As mentioned in the previous chapter, we are going to focus on the challenges fa
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Collection}
 \label{sec:software_design:data_collection}
-
+    As we have shown in \ref{subsec:related:pii} and \ref{subsec:related:law} it is wise to avoid the collection of PII. While it can be avoided for the statistical data and numeric values, that may identify device can be categorized as recommended in \cite{mccallister_guide_2010},
+    this might not be possible for ID generation.\\
+    
+    
  %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%% Subsection %%%%%%%%%%%%%
@@ -36,34 +40,56 @@ As mentioned in the previous chapter, we are going to focus on the challenges fa
         \label{subsec:software_design:selection}
         To get the most out of data collection it needs to be relevant to the task it has to fulfill.
         While a wide range of collected metrics might help to broaden the view over the landscape that is monitored, it may hinder in the evaluation and detection of relevant data points. Therefore data collection should always be kept to a minimum needed to help the cause for the collection.\\
-        In addition user are more willing to share non sensitive as \cite{TODO} has shown for medical data, \cite{TODO} for data sharing on social networks and \cite{TODO} for sharing information with online advertiser. Furthermore \cite{TODO} have shown, that the willingness of information sharing for sensory data is based on a positive or negative connotation of the data in question.\\
+        In addition user are more willing to share non sensitive as Woldaregay et al. \cite{woldaregay_user_2020} have shown for medical data, Ziefle et al.\cite{ziefle_users_2016} for data sharing on social networks and Leon et al. \cite{leon_what_2013} for sharing information with online advertiser. Furthermore Schneegrass et al. \cite{10.1145/3290605.3300753} have shown, that the willingness of information sharing for sensory data is based on a positive or negative connotation of the data in question.\\
         
         As we discuss Internet connected data collections, there is always the possibility for a data breach, or an adversary actor, who may target the collected data. If PII is contained in the data set, the possible yield for an attacker is higher, compared to public non personal identifiable data.\\
         To protect the devices and thereby the users identity, numerical data should always be collected in bins or ranges.\\
         The exact amount of available memory in a system provided in byte or even kilobyte may fingerprint a device. IP and MAC addresses are sensitive data as well and should not be collected at all, as these could be connected to other Internet related activities and lead to an attack on the user, to gain control over their device. \\
-        As the National Academies of Science, Engineering and Medicine propose in their Consensus report \cite{TODO} https://www.nap.edu/read/24893/chapter/7#87, the more attributes are included in a data set the likelier the re-identification of individuals and the greater the threat for external data linking.\\
+        As the National Academies of Science, Engineering and Medicine propose in their Consensus report \cite{groves_federal_2017}, the more attributes are included in a data set the likelier the re-identification of individuals and the greater the threat for external data linking.\\
         
         Prior to collecting data large scale a project should define the intend behind the process. With a clear outline of objectives, relevant parameters can be identified 
-        Therefore we propose a minimal data collection set containing only information that are relevant to fulfill the purpose of the collection.
+        Therefore we propose a minimal data collection set containing only information that are relevant to fulfill the purpose of the collection as recommended by NIST and OECD.\\
+        To be open about the collected information, the current state of the collection should be easily available to any user, as well as the reasoning for the collection of each date.
+        Following NISTs recommendations again, these data sets should be reviewed on a regular basis, to validate that each date is still needed.\\
         
         The objective for an open source project could be to reduce the amount of defects in the released software, or  to collect usage statistics to improve the development of the software for a given target. A combination of objectives is possible as well.\\
         Based on the objectives, a list of parameter can be compiled to retrieve data relevant to the purpose.
-        To e.g. detect system crashes, the time since last reboot (uptime) of a given device may be relevant, as well as the amount of memory available and the CPU/SoC. Further on, the software version in use needs to be included in this example.
+        To e.g. detect system crashes, the time since last reboot (uptime) of a given device may be relevant, as well as the amount of memory available and the CPU/SoC. Further on, the software version in use needs to be included in this example. These are all non-PII and may be collected without further obfuscation. As we have stated before, it is recommended to 
+        classify numeric values, like available memory into categories.\\
         
+        Although the collected information don't need to be obfuscated, the user should be made aware of the data collection. In some cases the users acknowledgment might be required as well. Therefore banner, push notifications or notifications on installation or first execution should be shown to the user. \\
+        In case of a Linux distribution this could be done by a pop message on first login to graphical screen or using a banner on a remote or serial login to the device.
+        The GDPR requires that consent must be given specifically and may be withdrawn at any time\cite{noauthor_gdpr_2020}.\\ 
+        Therefore a Linux distribution might require to click or set a value to enable data collection. An IoT firmware, like Tasmota might need to enable data collection via a web interface for a device. This needs to be done, before any user information is collected\\ 
         
           
     \subsection{ID generation}
         \label{subsec:software_design:id}
         To identify devices on a reliable and reproducible basis the ID generation is based on hardware information available and is therefore persistent through a reboot, a re-flash or an update.\\
         We recommend the use of the available MAC-addresses and combine them into one string which is then hashed with the a strong cryptographic hashing function.
+        As there are several different hash functions out there, the hashing should be one way and un-keyed. A one way hash function (OWHF) fulfills the requirements for a hash \textbf{\textit{h}} function, which can be seen in equation \ref{eq:hash}\cite{sobti_cryptographic_2012}.
+        
+        \begin{equation}
+            \label{eq:hash}
+            h : D \longrightarrow R
+        \end{equation}
+        
+        where domain $D = \{0,1\}^*$ and $R=\{0,1\}^n$ for $n >= 1$.
+        
+        In Addition an OWHF must meet five requirements defined by Merkle in \cite{merkle_secrecy_1979}.
+        \begin{itemize}
+            \item 
+        \end{itemize}
         This function should come from the Secure Hash Algorithm 2 (SHA-2) family. While SHA512 is the stronger function and is recommended, it is not available on all devices.\\
-        A single MAC consists of 48 bit, from which 24 bit are a vendor specific and equal over all devices from this vendor. The other 24 bit are a unique identifier for a given network interface. As most internet connected devices come with pre-installed/soldered network interfaces, this could lead to brute force attempts to regenerate the MAC-address from a hash, especially on hardware with only one physical network interface. Therefore the generated hash needs to be enhanced.\\
-        This enforcement can be achieved with a key derivation function (KDF). These functions have two use cases. On the one hand they are used for password hashes in modern operating systems protecting the users password against easy access\cite{percival_stronger_nodate}. 
-        The other use case is the derivation of a key based on a token and another key\cite{camenisch_privacy_2011}. Attacking a KDF in itself is not feasible. An attacker would need to iterate over a range of passwords or regular expressions and apply the KDF to them\cite{percival_stronger_nodate}.
+        A single MAC consists of 48 bit, from which 24 bit are a vendor specific and equal over all devices from this vendor. The other 24 bit are a unique identifier for a given network interface. As most internet connected devices come with pre-installed/soldered network interfaces, this could lead to brute force attempts to regenerate the MAC-address from a hash. Especially on hardware with only one physical network interface. With the power jump in recent graphic card generations a hash that is only based on 24 unique bits can be brute forced in very short time. Therefore the generated hash needs to be enhanced.\\
+        
+        This reinforcement can be achieved with a key derivation function (KDF). These functions have two use cases. On the one hand they are used for password hashes in modern operating systems protecting the users password against easy access\cite{percival_stronger_nodate}. 
+        The other use case is the derivation of a key based on a token and another key\cite{camenisch_privacy_2011}. Attacking a KDF in itself is not feasible. An attacker would need to iterate over a range of passwords or regular expressions and apply the KDF to them\cite{percival_stronger_nodate}.\\
         One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which applies a pseudo-random function to a given password and salt for a number of times. This reduces it's vulnerability against brute force attacks\cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
         Computation time increases significantly for strong passwords and salts, making rainbow table attacks less feasible. 
         To keep IDs reproducible we need to derive our password and salt from data provided by the device, which wont alter during a reinstall of a system. For devices with non volatile flash memory the Memory Technology Devices (MTD) are usually devices with solid state file systems\cite{giometti_mtd_2017}\cite{woodhouse_memory_nodate}. These partitions can contain configuration information for wireless devices. This contains device-unique data which is ideal to use as key and/or salt.
-        To further strengthen the ID against brute forcing and decreasing the amount of character use in a DNS query, the generated ID should be reduced to fewer bytes.\\
+        To further strengthen the ID against brute forcing and decreasing the amount of character used in a DNS query, the generated ID should be reduced to fewer bytes.\\
+        
         
 \newpage
 
