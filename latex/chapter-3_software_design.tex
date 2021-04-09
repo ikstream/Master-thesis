@@ -66,7 +66,7 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
     \subsection{ID generation}
         \label{subsec:software_design:id}
         To identify devices on a reliable and reproducible basis the ID generation is based on hardware information available and is therefore persistent through a reboot, a re-flash or an update.\\
-        We recommend the use of the available MAC-addresses and combine them into one string which is then hashed with the a strong cryptographic hashing function.
+        We recommend the use of the available MAC-addresses. These should be hashed individually and and combined into one string which is then hashed again. Both hashing operations should be done with a strong cryptographic hashing function.
         As there are several different hash functions out there, the hashing should be one way and un-keyed. A one way hash function (OWHF) fulfills the requirements for a hash \textbf{\textit{h}} function, which can be seen in equation \ref{eq:hash}\cite{sobti_cryptographic_2012}.
         
         \begin{equation}
@@ -78,15 +78,21 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         
         In Addition an OWHF must meet five requirements defined by Merkle in \cite{merkle_secrecy_1979}.
         \begin{itemize}
-            \item 
+            \item \textbf{\textit{h}} must be applicable to any length of data blocks
+            \item A fixed length output is created by \textbf{\textit{h}}
+            \item A message digest \textbf{\textit{h}}(x) with \textbf{\textit{h}} and x given
+            \item If \textbf{\textit{h}} and \textbf{\textit{h}}(x) are known, it is computationally infeasible to find x
+            \item If \textbf{\textit{h}} and \textbf{\textit{h}}(x) are known, it is computationally infeasible to find x and x' so that $\textbf{\textit{h}}(x) = \textbf{\textit{h}}(x')$
         \end{itemize}
+        
         This function should come from the Secure Hash Algorithm 2 (SHA-2) family. While SHA512 is the stronger function and is recommended, it is not available on all devices.\\
         A single MAC consists of 48 bit, from which 24 bit are a vendor specific and equal over all devices from this vendor. The other 24 bit are a unique identifier for a given network interface. As most internet connected devices come with pre-installed/soldered network interfaces, this could lead to brute force attempts to regenerate the MAC-address from a hash. Especially on hardware with only one physical network interface. With the power jump in recent graphic card generations a hash that is only based on 24 unique bits can be brute forced in very short time. Therefore the generated hash needs to be enhanced.\\
         
-        This reinforcement can be achieved with a key derivation function (KDF). These functions have two use cases. On the one hand they are used for password hashes in modern operating systems protecting the users password against easy access\cite{percival_stronger_nodate}. 
+        This reinforcement can be achieved with a key derivation function (KDF). These functions have two use cases. On the one hand they are used for password hashes in modern operating systems, protecting the users password against easy access\cite{percival_stronger_nodate}. 
         The other use case is the derivation of a key based on a token and another key\cite{camenisch_privacy_2011}. Attacking a KDF in itself is not feasible. An attacker would need to iterate over a range of passwords or regular expressions and apply the KDF to them\cite{percival_stronger_nodate}.\\
-        One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which applies a pseudo-random function to a given password and salt for a number of times. This reduces it's vulnerability against brute force attacks\cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
-        Computation time increases significantly for strong passwords and salts, making rainbow table attacks less feasible. 
+        One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which a pseudo-random function is applied to a given password and salt for a number of times. 
+        This reduces it's vulnerability against brute force and dictionary attacks attacks in which an adversary\cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
+        Computation time increases significantly for strong passwords and salts, making rainbow table attacks less feasible.
         To keep IDs reproducible we need to derive our password and salt from data provided by the device, which wont alter during a reinstall of a system. For devices with non volatile flash memory the Memory Technology Devices (MTD) are usually devices with solid state file systems\cite{giometti_mtd_2017}\cite{woodhouse_memory_nodate}. These partitions can contain configuration information for wireless devices. This contains device-unique data which is ideal to use as key and/or salt.
         To further strengthen the ID against brute forcing and decreasing the amount of character used in a DNS query, the generated ID should be reduced to fewer bytes.\\
         
