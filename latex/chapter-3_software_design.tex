@@ -91,11 +91,16 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         This function should come from the Secure Hash Algorithm 2 (SHA-2) family. While SHA512 is the stronger function and is recommended, it is not available on all devices.\\
         A single MAC consists of 48 bit, from which 24 bit are a vendor specific and equal over all devices from this vendor. The other 24 bit are a unique identifier for a given network interface. As most internet connected devices come with pre-installed/soldered network interfaces, this could lead to brute force attempts to regenerate the MAC-address from a hash. Especially on hardware with only one physical network interface. With the power jump in recent graphic card generations a hash that is only based on 24 unique bits can be brute forced in very short time. Therefore the generated hash needs to be enhanced.\\
         
-        There are some will known ways to enhance security on stored passwords and similar tasks. Three of them ar PBKDF2, Bcrypt and Scrypt.
+        There are some will known ways to enhance security on stored passwords and similar tasks. Three of them are PBKDF2\cite{kaliski_pkcs_2000}, Bcrypt\cite{provos_future-adaptable_1999} and Scrypt\cite{josefsson_scrypt_2016}.
+        
+        Bcrypt
+        
+        Scrypt is a password based key derivation function which was designed to be computational complex to increase the costs of hardware based attacks. It creates a key from a list of inputs, that define the cost of the function.
+        
         This reinforcement can be achieved with a key derivation function (KDF). These functions have two use cases. On the one hand they are used for password hashes in modern operating systems, protecting the users password against easy access\cite{percival_stronger_nodate}. 
         The other use case is the derivation of a key based on a token and another key\cite{camenisch_privacy_2011}. Attacking a KDF in itself is not feasible. An attacker would need to iterate over a range of passwords or regular expressions and apply the KDF to them\cite{percival_stronger_nodate}.\\
-        One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which a pseudo-random function is applied to a given password and salt for a number of times. 
-        This reduces it's vulnerability against brute force and dictionary attacks attacks in which an adversary\cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
+        One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which a pseudo-random function is applied to a given password and salt for a number of iterations. 
+        This reduces it's vulnerability against brute force and dictionary attacks attacks in which an adversary either starts guessing passwords and applies the function to it's guesses, or uses a set of rules or words from a list.  \cite{kaliski_bkaliskirsasecuritycom_pkcs_2000}. 
         Computation time increases significantly for strong passwords and salts, making rainbow table attacks less feasible.
         To keep IDs reproducible we need to derive our password and salt from data provided by the device, which wont alter during a reinstall of a system. For devices with non volatile flash memory the Memory Technology Devices (MTD) are usually devices with solid state file systems\cite{giometti_mtd_2017}\cite{woodhouse_memory_nodate}. These partitions can contain configuration information for wireless devices. This contains device-unique data which is ideal to use as key and/or salt.
         To further strengthen the ID against brute forcing and decreasing the amount of character used in a DNS query, the generated ID should be reduced to fewer bytes.\\
