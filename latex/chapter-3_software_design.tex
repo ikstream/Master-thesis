@@ -27,9 +27,9 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Data Collection}
 \label{sec:software_design:data_collection}
-    As we have shown in \ref{subsec:related:pii} and \ref{subsec:related:law} it is wise to avoid the collection of PII. While it can be avoided for the statistical data and numeric values, that may identify device can be categorized as recommended in \cite{mccallister_guide_2010},
-    this might not be possible for ID generation.\\
-    
+    As we have shown in \ref{subsec:related:pii} and \ref{subsec:related:law} it is wise to avoid the collection of PII. While it may be avoidable for the statistical data and numeric values, this might not be possible for the generated ID.\\
+    The ID should be unique to identify a device persistent over reboots and system updates, but don't allow to draw conclusions on a device.
+    While the gathered data needs to be useful to the purpose of the collection, the collection practices need to be compliant to the according privacy laws as well. 
     
  %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,6 +62,9 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         The GDPR requires that consent must be given specifically and may be withdrawn at any time\cite{noauthor_gdpr_2020}.\\ 
         Therefore a Linux distribution might require to click or set a value to enable data collection. An IoT firmware, like Tasmota might need to enable data collection via a web interface for a device. This needs to be done, before any user information is collected\\ 
         
+        Furthermore an organization should provide a privacy policy for the data collection, even if no PII is collected. It should state which information is collected and transmitted on a given device.\\
+        This could be seen as good faith and increase the users trust in in the data collection program. If private information is collected a privacy policy is required be GDPR. Another important point to be compliant is the right to be forgotten. This make an identifier an important factor to recognize the users data, that should be removed.
+        
           
     \subsection{ID generation}
         \label{subsec:software_design:id}
@@ -88,6 +91,7 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         This function should come from the Secure Hash Algorithm 2 (SHA-2) family. While SHA512 is the stronger function and is recommended, it is not available on all devices.\\
         A single MAC consists of 48 bit, from which 24 bit are a vendor specific and equal over all devices from this vendor. The other 24 bit are a unique identifier for a given network interface. As most internet connected devices come with pre-installed/soldered network interfaces, this could lead to brute force attempts to regenerate the MAC-address from a hash. Especially on hardware with only one physical network interface. With the power jump in recent graphic card generations a hash that is only based on 24 unique bits can be brute forced in very short time. Therefore the generated hash needs to be enhanced.\\
         
+        There are some will known ways to enhance security on stored passwords and similar tasks. Three of them ar PBKDF2, Bcrypt and Scrypt.
         This reinforcement can be achieved with a key derivation function (KDF). These functions have two use cases. On the one hand they are used for password hashes in modern operating systems, protecting the users password against easy access\cite{percival_stronger_nodate}. 
         The other use case is the derivation of a key based on a token and another key\cite{camenisch_privacy_2011}. Attacking a KDF in itself is not feasible. An attacker would need to iterate over a range of passwords or regular expressions and apply the KDF to them\cite{percival_stronger_nodate}.\\
         One example of such a derivation function is Password-Based Key Derivation Function 2 (PBKDF2), in which a pseudo-random function is applied to a given password and salt for a number of times. 
