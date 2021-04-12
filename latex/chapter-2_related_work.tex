@@ -199,10 +199,9 @@ All these different applications use different techniques to strip personal iden
         
         This translation is needed, before an application can request a TCP connection or send UDP datagrams. A domain name is a list of labels, separated by dots. 
         Each label can have a length of up to 63 byte, with a maximum length of the requested domain of 255 bytes\cite{stevens_tcpip_1993}.\\
-        The dot not only separates each layer in a domain, but is also the internet root, which terminates all Fully QUalified Domain Names (FQDN), but is often omitted\cite{jeftovic_managing_2018}.
+        The dot is used to separates each layer in a domain, but is also the internet root, which terminates all Fully Qualified Domain Names (FQDN), but is often omitted\cite{jeftovic_managing_2018}.
         In figure \ref{fig:dns_tree} it is shown, how a hostname can be separated and traversed.
         The first field, following the, here omitted, root entry is the so called Top-Level Domain (TLD). In figure \ref{fig:dns_tree} this would be "com". The root and top-level domain are required to find the responsible authoritative nameserver for any related query\cite{jeftovic_managing_2018}.\\
-        
 
         The name system is structured in non overlapping zones as can be seen in the right segment in figure \ref{fig:dns_query} with the root domain on top\cite{herrmann_beobachtungsmoglichkeiten_2016}.
         A server containing all information about a subset of the name space is called authoritative server. To extract the information from the authoritative server, a so called resolver is used\cite{friedewald_privacy_2018}.
