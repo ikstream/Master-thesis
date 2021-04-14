@@ -217,23 +217,31 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Reference Implementation}
 \label{sec:software_design:ref_impl}
-    To showcase how this data collection can be utilized we developed dalec\cite{}.
+    To showcase how this data collection can be utilized we developed dalec\cite{venz_ikstreamdalec_2021}.
     In the following we are going to discuss our selection and how we implemented the transport of the collected data.
 %
 \subsection{Data Collection}
-    For the purpo
-Software version
-Available and total RAM (in 2^n categories)
-Uptime
-CPU data:
-Model
-Model name
-System type
-Machine Info
-Vendor ID
-Core and Thread count
-Kernel version
-Architecture
+    The purpose for the collection of data on the OpenWrt platform is the improvement of the distribution, as well as a general survey of the systems in use. According to this purpose we decided to collect the data in the following list. 
+    \begin{itemize}
+        \item Software version
+        \item Available and total RAM (in $2^n$ categories)
+        \item System uptime
+        \item CPU data:
+        \begin{itemize}
+            \item Model
+            \item Model name
+            \item System type
+            \item Machine Info
+            \item Vendor ID
+            \item Core and Thread count
+        \end{itemize}
+        \item Kernel version
+        \item Architecture
+    \end{itemize}
+    
+    The software version is added for automated evaluation. The software version allows to define which data points are collected, as this may change over the different versions. RAM size allows for classification of devices. This enables the project to see, if the usual system utilizes only small amount of memory or runs at its capacity.\\
+    The uptime date shows if a system needs regular reboots or can run for a longer period of time. The CPU data can be used to get a hint on system types and if certain systems are more represented than others. The architecture allows to further specify the collected CPU information.\\
+    With the kernel information collected, it is possible to see, if user adopt new OpenWrt updates or keep their system on a version for extended time.\\
 %
 \subsection{ID generation}
     To generate a unique ID for a given device we are collecting all available MAC addresses and combine them in one colon-free string. This string is passed to the \textit{openssl sha512} hash function. These hashes are concatenated into one long string, which is than hashed again and called our ID. As we go for \textit{openssl} as a dependency for PBKDF2 we are using it's \textit{SHA512} digest function to generate stronger hashes. The resulting hash is than passed to the encrypt function of \textit{openssl} utilizing \textit{aes256-cbc} and PBKDF2 with 10.000 iterations.
