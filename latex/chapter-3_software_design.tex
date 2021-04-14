@@ -242,6 +242,8 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
     The software version is added for automated evaluation. The software version allows to define which data points are collected, as this may change over the different versions. RAM size allows for classification of devices. This enables the project to see, if the usual system utilizes only small amount of memory or runs at its capacity.\\
     The uptime date shows if a system needs regular reboots or can run for a longer period of time. The CPU data can be used to get a hint on system types and if certain systems are more represented than others. The architecture allows to further specify the collected CPU information.\\
     With the kernel information collected, it is possible to see, if user adopt new OpenWrt updates or keep their system on a version for extended time.\\
+    
+    We decided to implement dalec in a fashion to keep it's storage footprint low and extract the information from files if available. This was possible for all data points, except for the architecture, which could only be gathered through the \textit{uname} command. 
 %
 \subsection{ID generation}
     To generate a unique ID for a given device we are collecting all available MAC addresses and combine them in one colon-free string. This string is passed to the \textit{openssl sha512} hash function. These hashes are concatenated into one long string, which is than hashed again and called our ID. As we go for \textit{openssl} as a dependency for PBKDF2 we are using it's \textit{SHA512} digest function to generate stronger hashes. The resulting hash is than passed to the encrypt function of \textit{openssl} utilizing \textit{aes256-cbc} and PBKDF2 with 10.000 iterations.
