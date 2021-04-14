@@ -217,10 +217,23 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Reference Implementation}
 \label{sec:software_design:ref_impl}
-
+    To showcase how this data collection can be utilized we developed dalec\cite{}.
+    In the following we are going to discuss our selection and how we implemented the transport of the collected data.
 %
 \subsection{Data Collection}
-
+    For the purpo
+Software version
+Available and total RAM (in 2^n categories)
+Uptime
+CPU data:
+Model
+Model name
+System type
+Machine Info
+Vendor ID
+Core and Thread count
+Kernel version
+Architecture
 %
 \subsection{ID generation}
     To generate a unique ID for a given device we are collecting all available MAC addresses and combine them in one colon-free string. This string is passed to the \textit{openssl sha512} hash function. These hashes are concatenated into one long string, which is than hashed again and called our ID. As we go for \textit{openssl} as a dependency for PBKDF2 we are using it's \textit{SHA512} digest function to generate stronger hashes. The resulting hash is than passed to the encrypt function of \textit{openssl} utilizing \textit{aes256-cbc} and PBKDF2 with 10.000 iterations.
