@@ -90,7 +90,7 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
             \item If \textbf{\textit{h}} and \textbf{\textit{h}}(x) are known, it is computationally infeasible to find x and x' so that $\textbf{\textit{h}}(x) = \textbf{\textit{h}}(x')$
         \end{itemize}
         
-        This function should come from the Secure Hash Algorithm 2 (SHA-2) family. While SHA512 is the stronger function and is recommended, it is not available on all devices.\\
+        This function should come from the Secure Hash Algorithm 2 or 3 (SHA-2/SHA-3) family. While SHA512 is the stronger function and is recommended, it is not available on all devices.\\
         A single MAC consists of 48 bit, from which 24 bit are a vendor specific and equal over all devices from this vendor. The other 24 bit are a unique identifier for a given network interface. As most internet connected devices come with pre-installed/soldered network interfaces, this could lead to brute force attempts to regenerate the MAC-address from a hash. Especially on hardware with only one physical network interface. With the power jump in recent graphic card generations a hash that is only based on 24 unique bits can be brute forced in very short time. Therefore the generated hash needs to be enhanced.\\
         
         There are some will known ways to enhance security on stored passwords and similar tasks. Three of them are PBKDF2\cite{kaliski_pkcs_2000}, Bcrypt\cite{provos_future-adaptable_1999} and Scrypt\cite{josefsson_scrypt_2016}.
@@ -243,71 +243,44 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
     The uptime date shows if a system needs regular reboots or can run for a longer period of time. The CPU data can be used to get a hint on system types and if certain systems are more represented than others. The architecture allows to further specify the collected CPU information.\\
     With the kernel information collected, it is possible to see, if user adopt new OpenWrt updates or keep their system on a version for extended time.\\
     
-    We decided to implement dalec in a fashion to keep it's storage footprint low and extract the information from files if available. This was possible for all data points, except for the architecture, which could only be gathered through the \textit{uname} command. 
+    We decided to implement dalec in a fashion to keep it's storage footprint low and extract the information from files if available. This was possible for all data points, except for the architecture, which could only be gathered through the \textit{uname} command. The data is stored in aa log file placed under \textit{/tmp/dalec}, so a user can review the information collected about the system. The collection process is started every four hours and transmitted to a configured server. The collection tool is extensible to allow additional data collection to assist debugging in the OpenWrt forum, the client however will only transmit the data listed above. The tool is written in POSIX conforming shell script, to allow the usage on a wide range of devices, and be usable as well, where packaging isn't possible.
 %
 \subsection{ID generation}
-    To generate a unique ID for a given device we are collecting all available MAC addresses and combine them in one colon-free string. This string is passed to the \textit{openssl sha512} hash function. These hashes are concatenated into one long string, which is than hashed again and called our ID. As we go for \textit{openssl} as a dependency for PBKDF2 we are using it's \textit{SHA512} digest function to generate stronger hashes. The resulting hash is than passed to the encrypt function of \textit{openssl} utilizing \textit{aes256-cbc} and PBKDF2 with 10.000 iterations.
-    The Salt and key depend on the devices hardware. If MTD partitions are available, we hash these partitions and use the first 16 byte of the resulting hash as salt. The remaining Bytes are used as the key. If no such partitions are available, the ID, generated in the  previous step, is used for salt and key
-     sha512
-     pbkdf2
-     aes256
-     mtd 
-     
-     We further enhance the brute forcing protection in reducing the generated hash to the first 32 Byte, which leaves around $1.158e^{77}$ possible combinations. While this makes it nearly impossible to recreate the original ID and MAC address, the probability of a hash collision (two hashes are equal to each other) is increased. In [TODO] the hash collision probability is calculated as seen in equation \ref{eq:base_prob_hash}.
-     
-     \begin{equation*}
-         N = 2^{Number\ of\ Bits\ in\ Hash}
-     \end{equation*}
-     
-
-     
-     To calculate the number of hashes $k$ before a collision occurs under a given probability $P$, equation \ref{eq:simp_prob_hash} must be solved for $k$.
+    To generate a unique ID for a given device we are collecting all available MAC addresses of physical devices and hand them to the \textit{openssl sha3-512} digest function. These hashes are concatenated into one string, which is than hashed again. We call this our ID. As we go for \textit{openssl} as a dependency for PBKDF2 we are using it's \textit{SHA512} digest function to generate stronger hashes, compared to the available \textit{sha256} function available in OpenWrt by default. The resulting hash is than passed to the encrypt function of \textit{openssl} utilizing \textit{aes256-cbc} and PBKDF2 with 10.000 iterations and SHA512 as derivation digest.\\
+    PBKDF2 was selected, as it can be run, even with high iteration count in reasonable time on low end hardware\cite{ertaul_implementation_2016}. For encryption aes256 was selected as it is fast even on older devices and has low RAM requirements. Furthermore it provides good security and stands unbroken at the time of writing. There are some known attacks against AES \cite{schneier_another_2009}\cite{lu_new_2008}\cite{bernstein_cache-timing_nodate}\cite{biryukov_key_2009}, but none of them are computational feasible with foreseeable hardware. In 2003 the NSA validated the use of AES with either 192 or 256 key length for encryption of all information up to TOP SECRET\cite{noauthor_national_2003}\\
+    
+    The Salt and key for the AES encryption depend on the devices hardware. If MTD partitions are available, we hash these partitions and use the first 16 byte of the resulting hash as salt. The remaining Bytes are used as the key. If no such partitions are available, the ID, generated in the  previous step, is used for salt and key. The first 16 byte are used as salt, while the remainder of the ID forms the key. While this isn't optimal, to keep save IDs consistent over multiple flash overwrites and reboots this is a necessary step. An attacker would still need to recreate the base hash and then apply the encryption function to it. This process is time and resource intense.\\
+    
+     We further enhance the brute forcing protection in reducing the generated hash to the last 32 byte and removed all special symbols from the resulting string, which leaves around $32^{36} = 1.53x10^{55}$ possible variations. While this makes it nearly impossible to recreate the original ID and MAC address, the probability of a hash collision is increased due to the reduced number of available hashes.\\
+    
+     As we have shown in section \ref{subsec:software_design:id} we can calculated the number of available hashes with a given collision probability. For this system, we want to keep the collision probability below $P = 10^{-18}$ for $N = 32^{36}$ possible hashes.
+     Based on equation \ref{eq:solvek} we can calculate the number of hashes \textit{k}, we can assign.
      
      \begin{equation*}
-         P = \frac{k(k - 1)}{2N}
+         k = \sqrt{2PN}
      \end{equation*}
-     \begin{equation*}
-         2NP = k (k - 1)
-     \end{equation*}
-     \begin{equation*}
-         2NP = k^2 - k
-     \end{equation*}
-
-     \begin{equation}
-        \label{eq:k_hash}
-         0 = k^2 - k - 2NP
-     \end{equation}
-     
-     Equation \ref{eq:k_hash} is a reduced quadratic equation and can be solved in a simplified variation as seen in \ref{eq:pq-simp}
      
      \begin{equation}
-         \label{eq:pq-simp}
-         k = \sqrt{2NP}
+        \label{eq:k1018}
+         k = \sqrt{2 * 1 * 10^{-18} * 32^{36}}
      \end{equation}
      
-     For a given collision probability of $P = \frac{1}{10^{18}}$ and $N = 2^{32 * 8} = 2^{256}$ bit equation \ref{eq:pq-simp} results in $x * 10^{29}$ hashes before two hashes may match each other.
+     Equation \ref{eq:k1018} resolves to around $1.75x10^{18}$ possible IDs, before we reach the probability of $10^{-18}$ for a collision. If we assumed, that every available IPv4 address ($2^{32} = 4,294,967,296)$ would use dalec, this would be more than enough.\\
      
-     \begin{equation}
-         \label{eq:32B_solve}
-         k = \sqrt{2 * 2^{256} * \frac{1}{10^{18}}} = x * 10^{29}
-     \end{equation}
-     
-     If we compare equation \ref{eq:32B_solve} with \ref{eq:129B_solve}, which uses the original 129 Byte SHA512 the possibility for a hash collision is increased, but even with \ref{eq:32B_solve} the collision probability is very low.
-     
-     \begin{equation}
-         \label{eq:129B_solve}
-         k = \sqrt{2 * 2^{(129 * 8)} * \frac{1}{10^{18}}} = ...
-     \end{equation}
-     
-     Out of 245 octillion hashes two will match with a $\frac{1}{10^18}$ chance. 
-     
-     1 percent chance that two devices generate same hash
-     berechnen und ins verhältnis stellen
+     We allow uppercase letters to be included in a generated ID, this information might or might not be preserved through the message traversal through the domain name system. We change any uppercase letter to lower case on the server side. 
+     As we have collected the data and generated an ID, we need to process and transmit the information next.
      
      
 % 
-\subsection{Data handling}
-    As base32 is a package in OpenWrt with multiple dependencies we decided to go for a base16 encoding instead. This is available with \textit{hexdump}, which is included in most basic OpenWrt setups. While this increases the numbers of messages, that are needed to be send, it reduces the memory footprint for the statistics tool.
+\subsection{Information processing}
+    As \textit{base32} is packaged in \textit{coreutils} in OpenWrt we decided to go for a base16 encoding instead. This is available with \textit{hexdump}, which is included in the default \textit{busybox} OpenWrt configuration. While this increases the numbers of messages, that are needed to be send, it reduces the footprint for dalec. The collected data is read from a temporary file, in which the data is stored as key-value pair. Only the value for each key is taken and separated by a semicolon to reduce the amount of data transmitted. This increases the overhead on the server side, but as we transmit the client version in our transmission, each field can be sorted to a key.\\
+    The generated, colon separated values, string is then passed to \textit{openssl} for encryption. For encryption we need to collect the public key of the server first.
+    This is acquired by querying the TXT record of a domain. As we decided to go for a RSA 4096 bit key, we split the key into three records. Each is prefixed with a position identifier, as multiple query might not return the TXT records in the same order. RSA is widely adopted, where Ed25519 might not be supported by all target systems.\\
+    After encryption the data is base 64 encoded for easier storage on the server side and put into hexdump for base 16 encoding.\\
+    The encoded string is then separated into 62 byte sized chunks. These chunks are combined with our base domain and the ID message number combination, allowing up to three chunks to be transmitted at one time.\\
+    To send out the DNS queries we used \textit{drill}, which has a reduced storage footprint (19 kB) compared to \textit{bind-dig} (41 kB), if dependencies are included into the calculation the difference is even bigger. While drill adds \textit{libldns} (100 kB), \textit{bind-dig}
+    adds \textit{bind-libs} (879 kB) which depends on \textit{zlib}(36 kB)
+    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
@@ -315,6 +288,5 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
 
-In this chapter, we gave an introduction to the data collection application (\ref{sec:software_design:data_collection} and described the concept of data transmission in (section \ref{sec:software_design:tx}).
-We also introduced the reference implementation for the proposed solution in section \ref{sec:software_design:ref_impl}. 
+In this chapter, we discussed the client-side data collection application and described our concept of the data transmission. We also introduced the reference implementation for our proposed solution. In the next chapter we are going to discuss the server-side of data collection.
 %
