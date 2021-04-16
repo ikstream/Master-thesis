@@ -208,7 +208,7 @@ All these different applications use different techniques to strip personal iden
         As the hierarchical structure of the domain name system provides sender anonymity, meaning the receiver doesn't know the source of the message, the system can be used to transmit data anonymously to a collecting server. This can be achieved without any further additions to the protocol or configuration on the client side.
         Advanced techniques like DNS over HTTPS (DoH)\cite{ermert_cloudflare_2020}\cite{mcmanus_dns_2018} or DNS Security Extensions (DNSSEC)\cite{larson_dns_2005} can be used.\\
         DoH uses transport layer security (TLS) to encrypt a connection to a proxy server, which than transmits the DNS request. That way the proxy server the only participant who knows the IP address of the sender. DNSSEC can add another layer of security in protecting against attacks like DNS cache poisoning through adding new components to the DNS system, that check the integrity and authentication of DNS data.\\
-        The newly presented Oblivious DNS over HTTPS (ODoH) developed by Apple,Fastly and Cloudflare may add additional privacy to every DNS query and removes one weakness from DoH\cite{verma_improving_2020}.\\
+        The newly presented Oblivious DNS over HTTPS (ODoH) developed by Apple, Fastly and Cloudflare may add additional privacy to every DNS query and removes one weakness from DoH\cite{verma_improving_2020}.\\
         In ODoH the client encrypts its DNS request for a target server and sends this encrypted message to the proxy server, which than relays the message to the target server. This procedure removes the original request from the clients IP, making the proxy unaware of it.
     At the same time the target server only knows the IP of the proxy as the source. The response is than encrypted for the client and relayed through the proxy.\cite{verma_improving_2020}.
         
@@ -321,7 +321,7 @@ All these different applications use different techniques to strip personal iden
         \end{itemize}
         Every answer is send to Braves content delivery network (CDN) and stripped of the IP address of the client at the edge of the CDN\cite{brave_privacy-preserving_2019}.
         . 
-        The Second Phase uses a protocol based on Prochlo(see \ref{sec:related:data_transmission}. 
+        The Second Phase uses a protocol based on Prochlo (see \ref{sec:related:data_transmission}). 
         
         The study Leith conducted in February 2020 \cite{leith_web_2020} supports Brave Software Inc. claims
         for a privacy caring browser.\\

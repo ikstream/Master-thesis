@@ -4,7 +4,7 @@
 \chapter{Software Design}
 \label{chap:software_design}
 
-As mentioned in the previous chapter, we are going to focus on the challenges faced when utilizing the domain name system. Before we discuss the transport of data through the hierarchical name system in section \ref{sec:software_design:tx}, we will have at look at the data collection and ID generation (\ref{sec:software_design:data_collection}.\\
+As mentioned in the previous chapter, we are going to focus on the challenges faced when utilizing the domain name system. Before we discuss the transport of data through the hierarchical name system in section \ref{sec:software_design:tx}, we will have at look at the data collection and ID generation (\ref{sec:software_design:data_collection}).\\
 Section \ref{sec:software_design:ref_impl} demonstrates how we realized the proposed solutions in the reference implementation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,7 +40,7 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         \label{subsec:software_design:selection}
         To get the most out of data collection it needs to be relevant to the task it has to fulfill.
         While a wide range of collected metrics might help to broaden the view over the landscape that is monitored, it may hinder in the evaluation and detection of relevant data points. Therefore data collection should always be kept to a minimum needed to help the cause for the collection.\\
-        In addition user are more willing to share non sensitive as Woldaregay et al. \cite{woldaregay_user_2020} have shown for medical data, Ziefle et al.\cite{ziefle_users_2016} for data sharing on social networks and Leon et al. \cite{leon_what_2013} for sharing information with online advertiser. Furthermore Schneegrass et al. \cite{10.1145/3290605.3300753} have shown, that the willingness of information sharing for sensory data is based on a positive or negative connotation of the data in question.\\
+        In addition user are more willing to share non sensitive information as Woldaregay et al. \cite{woldaregay_user_2020} have shown for medical data, Ziefle et al.\cite{ziefle_users_2016} for data sharing on social networks and Leon et al. \cite{leon_what_2013} for sharing information with online advertiser. Furthermore Schneegrass et al. \cite{10.1145/3290605.3300753} have shown, that the willingness of information sharing for sensory data is based on a positive or negative connotation of the data in question.\\
         
         As we discuss Internet connected data collections, there is always the possibility for a data breach, or an adversary actor, who may target the collected data. If PII is contained in the data set, the possible yield for an attacker is higher, compared to public non personal identifiable data.\\
         To protect the devices and thereby the users identity, numerical data should always be collected in bins or ranges.\\
@@ -58,12 +58,12 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         classify numeric values, like available memory into categories.\\
         
         Although the collected information don't need to be obfuscated, the user should be made aware of the data collection. In some cases the users acknowledgment might be required as well. Therefore banner, push notifications or notifications on installation or first execution should be shown to the user. \\
-        In case of a Linux distribution this could be done by a pop message on first login to graphical screen or using a banner on a remote or serial login to the device.
+        In case of a Linux distribution this could be done by a pop up message on first login to graphical screen or using a banner on a remote or serial login to the device.
         The GDPR requires that consent must be given specifically and may be withdrawn at any time\cite{noauthor_gdpr_2020}.\\ 
-        Therefore a Linux distribution might require to click or set a value to enable data collection. An IoT firmware, like Tasmota might need to enable data collection via a web interface for a device. This needs to be done, before any user information is collected\\ 
+        Therefore a Linux distribution might require to click or set a value to enable and disable the data collection. An IoT firmware, like Tasmota might need to enable data collection via a web interface for a device. This needs to be done, before any user information is collected\\ 
         
         Furthermore an organization should provide a privacy policy for the data collection, even if no PII is collected. It should state which information is collected and transmitted on a given device.\\
-        This could be seen as good faith and increase the users trust in in the data collection program. If private information is collected a privacy policy is required be GDPR. Another important point to be compliant is the right to be forgotten. This make an identifier an important factor to recognize the users data, that should be removed.
+        This could be seen as good faith and increase the users trust in in the data collection program. If private information is collected a privacy policy is required be GDPR. Another important point to be compliant is the right to be forgotten. This makes an identifier an important factor to recognize the users data. It needs to be available to the user, to exert her right to remove the data from a collection.
         
           
     \subsection{ID generation}
@@ -76,7 +76,7 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         
         \begin{equation}
             \label{eq:hash}
-            h : D \longrightarrow R
+            \textbf{h} : D \longrightarrow R
         \end{equation}
         
         where domain $D = \{0,1\}^*$ and $R=\{0,1\}^n$ for $n >= 1$.
@@ -85,7 +85,7 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         \begin{itemize}
             \item \textbf{\textit{h}} must be applicable to any length of data blocks
             \item A fixed length output is created by \textbf{\textit{h}}
-            \item A message digest \textbf{\textit{h}}(x) with \textbf{\textit{h}} and x given
+            \item A message digest \textbf{\textit{h}}(x) with \textbf{\textit{h}} and x given is easy to compute
             \item If \textbf{\textit{h}} and \textbf{\textit{h}}(x) are known, it is computationally infeasible to find x
             \item If \textbf{\textit{h}} and \textbf{\textit{h}}(x) are known, it is computationally infeasible to find x and x' so that $\textbf{\textit{h}}(x) = \textbf{\textit{h}}(x')$
         \end{itemize}
@@ -94,7 +94,7 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         A single MAC consists of 48 bit, from which 24 bit are a vendor specific and equal over all devices from this vendor. The other 24 bit are a unique identifier for a given network interface. As most internet connected devices come with pre-installed/soldered network interfaces, this could lead to brute force attempts to regenerate the MAC-address from a hash. Especially on hardware with only one physical network interface. With the power jump in recent graphic card generations a hash that is only based on 24 unique bits can be brute forced in very short time. Therefore the generated hash needs to be enhanced.\\
         
         There are some will known ways to enhance security on stored passwords and similar tasks. Three of them are PBKDF2\cite{kaliski_pkcs_2000}, Bcrypt\cite{provos_future-adaptable_1999} and Scrypt\cite{josefsson_scrypt_2016}.
-        Bcrypt is a key derivation functions (KDF) based on the Blowfish block cipher. It receives a number of inputs, like iteration count, input password and salt. The password is limited to 56 bytes and the iteration count \textit{n} which results in $2^n$ bcrypt iterations\cite{hatzivasilis_password_2015-1}\cite{provos_future-adaptable_1999}.\\
+        Bcrypt is a key derivation functions (KDF) based on the Blowfish block cipher. It receives a number of inputs, like iteration count, input password and salt. The password is limited to 56 bytes and the iteration count \textit{n} results in $2^n$ bcrypt iterations. It is designed to be secure through to be memory and storage complex\cite{hatzivasilis_password_2015-1}\cite{provos_future-adaptable_1999}.\\
         Scrypt is also a password based key derivation function which was designed to be computational complex to increase the costs of hardware based attacks. It creates a key from a list of inputs, that define the cost of the function.\\
         These key derivation functions have two use cases. On the one hand they are used for password hashes in modern operating systems, protecting the users password against easy access\cite{percival_stronger_nodate}. 
         The other use case is the derivation of a key based on a token and another key\cite{camenisch_privacy_2011}. Attacking a KDF in itself is not feasible. An attacker would need to iterate over a range of passwords or regular expressions and apply the KDF to them\cite{percival_stronger_nodate}.\\
@@ -111,7 +111,7 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
             V(n;k) = n^{k}
         \end{equation}
 
-        As DNS limits the available alphabet to [a-z][0-9] this would would fix \textit{k} to $26 + 10 = 36$.
+        As DNS limits the available alphabet to [a-z][0-9] this would fix \textit{k} to $26 + 10 = 36$.
         
         To calculate the probability of a hash collision, we can utilize equation \ref{eq:base_prob_hash}
         
@@ -178,14 +178,14 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         Next to RSA there are three other algorithm used for key generation. 
         These are the Digital Signature Algorithm (DSA), Edwards-curve Digital Signature Algorithm (EdDSA) and Elliptic Curve Digital Signature Algorithm (ECDSA)\cite{mody_comparing_2020}.
         Support for DSA has been dropped from OpenSSL 7.0 on wards by default, as it has some known weaknesses if the randomness used to generate the key (nonce) isn't random enough. The same issue is faced by ECDSA effectively taken these two algorithms out of consideration\cite{miller_ecdsa_2020}.
-        EdDSA uses elliptic curves to provide security like ECDSA instead of key length like RSA and DSA. But unlike ECDSA it doesn't rely on a random number it generates it's nonce deterministically as a hash. The elliptic curve 25519 has been adopted as the standard
+        EdDSA uses elliptic curves to provide security like ECDSA instead of key length like RSA and DSA. But unlike ECDSA it doesn't rely on a random number. It generates it's nonce deterministically as a hash. The elliptic curve 25519 has been adopted as the standard
         in the public-key signature algorithm Ed25519. It is one of the few elliptic curves to provide sufficient security\cite{mody_comparing_2020}.\\
         This leaves either RSA $\geq$ 2048 bit or Ed25519 as public-key signature algorithm.
         While RSA is widely supported, EdDSA has a better performance and provides the same level of security with smaller keys\cite{mody_comparing_2020}\\
         
         The generated public key can be shared over the TXT record of a domain. Each of these records is expected hold at least 255 byte, so a key might be split up over multiple TXT records if it's length exceeds this size.
         The client software should then be able to query the TXT records of a given domain an retrieve the public key that way.
-        The retrieved key can be utilized to encipher the collected data, in a fashion that the server can decrypt it with the private key. 
+        The retrieved key can be utilized to encipher the collected data, in a fashion that the server can decrypt it with the private key. Another advantage of this system is, that the key pair can be exchanged at any point in time, if the private key got compromised.
         
      %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,18 +194,18 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
     %
     \subsection{Fitting data to DNS request}
         \label{subsec:software_design:fitting}
-        As elements from the domain name system are required to support [a-z], [0-9] and hyphens only the data needs to be transformed to a format that can be transmitted reliable. Upper case letters are hereby treated the same as lower case ones.
+        As elements from the domain name system are required to support [a-z], [0-9] and hyphens only, the data needs to be transformed to a format that can be transmitted reliable. Upper case letters are hereby treated the same as lower case ones.
         For example EXAMPLE.COM. would lead to the same result as example.com. and ExAmPlE.com..
         Therefore a base 32 encoding would be feasible to keep the transmission size as low as possible. In addition it offers the widest set of supported symbols, while using only one symbol, that is not supported by DNS. The equal sign is used as a padding character, which needs to be exchanged with a hyphen to make it conforming. The hyphen can be used as padding symbol, as it is not present in the RFC 4648 base 32 alphabet\cite{josefsson_simonjosefssonorg_base16_2006}. base 16 encoding would reduce the amount of available symbols below the supported range of symbols, while base 64 encoding would add additional symbols, which are not supported in the domain name system. These are the plus '+' and and slash '/' symbol. Base 64 keeps the equal sign for padding, which makes a DNS conform substitution harder.\\
         A URL and filename safe base 64 alphabet variant is mentioned in RFC 4648 as well, which replaces the plus sign with the minus and the slash symbol with an underscore, while keeping '=' as the padding character. Again this makes a valid substitution hard and unnecessary as all relevant symbols are already covered in the Base 32 alphabet\cite{josefsson_simonjosefssonorg_base16_2006}.\\
         
         As the number of available byte is limited to 63 per DNS label and limited to a total of 255 byte the collected and encrypted data needs to be split up into multiple chunks and multiple messages.\\
-        The base (\textbf{B}) of every message should be composed as \textbf{B} $=$ <optionally sub-domain>.<domain>.<TLD>.
-        Followed by an identifying section \textbf{I} $=$ <device id>-<current message number>-<total messages in a block>. 
+        The base (\textbf{B}) of every message should be composed as \textbf{B} $=$ $<$optionally sub-domain$>$.$<$domain$>$.$<$TLD$>$.
+        Followed by an identifying section \textbf{I} $=$ $<$device id$>$-$<$current message number$>$-$<$total messages in a block$>$. 
         The remainder of available bytes is used for the encrypted data message split up in up to 63 byte large chunks \textbf{M}.
         The final message is composed as \textbf{M}.\textbf{I}.\textbf{B}. The shorter \textbf{B}, the more bytes are left for \textbf{I} and \textbf{M}. \textbf{I} should be selected reasonable long to address the number of expected user.\\
         
-        It needs to be ensured, that every part of the query conforms with the Base 32 encoding or lower, to be compliant with every DNS server\cite{mockapetris_domain_1987}.
+        It needs to be ensured, that every part of the query conforms with the Base 32 encoding or lower, to be compliant with every DNS server implementation\cite{mockapetris_domain_1987}.
 
 \newpage
 
@@ -239,17 +239,18 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         \item Architecture
     \end{itemize}
     
-    The software version is added for automated evaluation. The software version allows to define which data points are collected, as this may change over the different versions. RAM size allows for classification of devices. This enables the project to see, if the usual system utilizes only small amount of memory or runs at its capacity.\\
+    The software version is added for automated evaluation. The software version allows to define which data points are collected, as this may change over different software versions. RAM size allows for classification of devices. This enables the project to see, if the usual system utilizes only small amount of memory or runs at its capacity.\\
     The uptime date shows if a system needs regular reboots or can run for a longer period of time. The CPU data can be used to get a hint on system types and if certain systems are more represented than others. The architecture allows to further specify the collected CPU information.\\
     With the kernel information collected, it is possible to see, if user adopt new OpenWrt updates or keep their system on a version for extended time.\\
     
-    We decided to implement dalec in a fashion to keep it's storage footprint low and extract the information from files if available. This was possible for all data points, except for the architecture, which could only be gathered through the \textit{uname} command. The data is stored in aa log file placed under \textit{/tmp/dalec}, so a user can review the information collected about the system. The collection process is started every four hours and transmitted to a configured server. The collection tool is extensible to allow additional data collection to assist debugging in the OpenWrt forum, the client however will only transmit the data listed above. The tool is written in POSIX conforming shell script, to allow the usage on a wide range of devices, and be usable as well, where packaging isn't possible.
+    We decided to implement dalec in a fashion to keep it's storage footprint low and extract the information from files if available. This was possible for all data points, except for the architecture, which could only be gathered through the \textit{uname} command. The data is stored in a log file placed under \textit{/tmp/dalec}, so a user can review the information collected about the system. The collection process is started every four hours and transmitted to a configured server. It is only enabled if the user runs the command prompted during installation. A random backoff time was added to every start. While we only aim for one measurement point per day, there is no way for the server to tell the client if a transmission was successfully or complete at all. Therefore we transmit the data several times a day. The random backoff helps to prevent hitting a coincidentally network congestion every time, hindering the data transmission.\\
+    The collection tool is extensible to allow additional data collection to assist debugging in the OpenWrt forum, the client however will only transmit the data listed above. The tool is written in POSIX conforming shell script, to allow the usage on a wide range of devices and be usable as well, where packaging isn't possible.
 %
 \subsection{ID generation}
     To generate a unique ID for a given device we are collecting all available MAC addresses of physical devices and hand them to the \textit{openssl sha3-512} digest function. These hashes are concatenated into one string, which is than hashed again. We call this our ID. As we go for \textit{openssl} as a dependency for PBKDF2 we are using it's \textit{SHA512} digest function to generate stronger hashes, compared to the available \textit{sha256} function available in OpenWrt by default. The resulting hash is than passed to the encrypt function of \textit{openssl} utilizing \textit{aes256-cbc} and PBKDF2 with 10.000 iterations and SHA512 as derivation digest.\\
-    PBKDF2 was selected, as it can be run, even with high iteration count in reasonable time on low end hardware\cite{ertaul_implementation_2016}. For encryption aes256 was selected as it is fast even on older devices and has low RAM requirements. Furthermore it provides good security and stands unbroken at the time of writing. There are some known attacks against AES \cite{schneier_another_2009}\cite{lu_new_2008}\cite{bernstein_cache-timing_nodate}\cite{biryukov_key_2009}, but none of them are computational feasible with foreseeable hardware. In 2003 the NSA validated the use of AES with either 192 or 256 key length for encryption of all information up to TOP SECRET\cite{noauthor_national_2003}\\
+    PBKDF2 was selected, as it can be run, even with high iteration count, in reasonable time on low end hardware\cite{ertaul_implementation_2016}. For encryption aes256 was selected as it is fast, even on older devices and has low RAM requirements. Furthermore it provides good security and stands unbroken at the time of writing. There are some known attacks against AES \cite{schneier_another_2009}\cite{lu_new_2008}\cite{bernstein_cache-timing_nodate}\cite{biryukov_key_2009}, but none of them are computational feasible with foreseeable hardware. In 2003 the NSA validated the use of AES with either 192 or 256 key length for encryption of all information up to TOP SECRET confidentiality\cite{noauthor_national_2003}\\
     
-    The Salt and key for the AES encryption depend on the devices hardware. If MTD partitions are available, we hash these partitions and use the first 16 byte of the resulting hash as salt. The remaining Bytes are used as the key. If no such partitions are available, the ID, generated in the  previous step, is used for salt and key. The first 16 byte are used as salt, while the remainder of the ID forms the key. While this isn't optimal, to keep save IDs consistent over multiple flash overwrites and reboots this is a necessary step. An attacker would still need to recreate the base hash and then apply the encryption function to it. This process is time and resource intense.\\
+        The Salt and key for the AES encryption depend on the devices hardware. If MTD partitions are available, we hash the \textit{art, factory, u-boot} and/or \textit{u-boot-env} partitions and use the first 16 byte of the resulting hash as salt. The remaining Bytes are used as the key. If no such partitions are available, the ID, generated in the  previous step, is used for salt and key. The first 16 byte are used as salt, while the remainder of the ID forms the key. While this isn't optimal, to keep save IDs consistent over multiple flash overwrites and reboots this is a necessary step. An attacker would still need to recreate the base hash and then apply the encryption function to it. This process is time and resource intense.\\
     
      We further enhance the brute forcing protection in reducing the generated hash to the last 32 byte and removed all special symbols from the resulting string, which leaves around $32^{36} = 1.53x10^{55}$ possible variations. While this makes it nearly impossible to recreate the original ID and MAC address, the probability of a hash collision is increased due to the reduced number of available hashes.\\
     
@@ -274,12 +275,14 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
 % 
 \subsection{Information processing}
     As \textit{base32} is packaged in \textit{coreutils} in OpenWrt we decided to go for a base16 encoding instead. This is available with \textit{hexdump}, which is included in the default \textit{busybox} OpenWrt configuration. While this increases the numbers of messages, that are needed to be send, it reduces the footprint for dalec. The collected data is read from a temporary file, in which the data is stored as key-value pair. Only the value for each key is taken and separated by a semicolon to reduce the amount of data transmitted. This increases the overhead on the server side, but as we transmit the client version in our transmission, each field can be sorted to a key.\\
-    The generated, colon separated values, string is then passed to \textit{openssl} for encryption. For encryption we need to collect the public key of the server first.
-    This is acquired by querying the TXT record of a domain. As we decided to go for a RSA 4096 bit key, we split the key into three records. Each is prefixed with a position identifier, as multiple query might not return the TXT records in the same order. RSA is widely adopted, where Ed25519 might not be supported by all target systems.\\
+    The generated, colon separated values, string is then passed to \textit{openssl} for encryption. To encrypt the message we need to collect the public key of the server first.
+    This is acquired by querying the TXT record of a domain. We decided to go for a RSA 4096 bit key as it is widely adopted, where Ed25519 might not be supported by all target systems.\\
+    Therefore we split the key into three records. Each is prefixed with a position identifier, as multiple queries might not return the TXT records in the same order.\\
     After encryption the data is base 64 encoded for easier storage on the server side and put into hexdump for base 16 encoding.\\
     The encoded string is then separated into 62 byte sized chunks. These chunks are combined with our base domain and the ID message number combination, allowing up to three chunks to be transmitted at one time.\\
-    To send out the DNS queries we used \textit{drill}, which has a reduced storage footprint (19 kB) compared to \textit{bind-dig} (41 kB), if dependencies are included into the calculation the difference is even bigger. While drill adds \textit{libldns} (100 kB), \textit{bind-dig}
-    adds \textit{bind-libs} (879 kB) which depends on \textit{zlib}(36 kB)
+    To send out the DNS queries we used \textit{drill}, which has a reduced storage footprint (\SIlist{19}{\kilo\byte}) compared to \textit{bind-dig} (\SIlist{41}{\kilo\byte}), if dependencies are included into the calculation the difference is even bigger. While drill adds \textit{libldns} (\SIlist{100}{\kilo\byte}), \textit{bind-dig}
+    adds \textit{bind-libs} (\SIlist{879}{\kilo\byte}), which makes bind-dig consume \SIlist{811}{\kilo\byte} more storage space than drill.\\
+    Removing all debug information from the dalec scripts during the build process of the OpenWrt package we where able to reduce their size to \SIlist{10.1}{\kilo\byte} overall in version 0.1.5.
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

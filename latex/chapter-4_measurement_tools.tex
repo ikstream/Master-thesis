@@ -1,8 +1,12 @@
-\chapter{Measurements}
+\chapter{Collection Server}
 \label{chap:mmeasurement}
+To collect only dates, that are relevant for the purpose of the survey and it's safe transmission, the client has a mayor role. The server however is also important for keeping the data safe and consistent. Without a correctly handled data processing the best collection software is meaningless if it can be gathered by the developer.\\
+The timely decryption and decoding of the incoming data is of same importance as the correct storage solution for the amount of expected information. It is also important to know, what can't be done with the server.
 
-To evaluate and debug the conTest framework, we conducted multiple measurements with the Minstrel algorithm. In this chapter we list the parameter we monitored during our measurements and show which limitations our test environment setup faces. In the last part of this chapter we describe the scenarios we would like to use for our measurements.\\
-
+While we discussed the client side in the last chapter, this chapter is going to focus on
+the server side implementation of the data collection process.\\
+We are giving some general recommendations again in the first section and talk more in depth about our implementation in section \ref{sec:measurement:eval_setup}.
+In section \ref{sec:measurement:robust} we are discussing issues, that couldn't be solved with our implementation or with our concept in general.
 %
 
 
