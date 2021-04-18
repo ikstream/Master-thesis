@@ -15,11 +15,19 @@ In section \ref{sec:measurement:robust} we are discussing issues, that couldn't 
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Measurement Limitations}
+\section{General recommendations}
 \label{sec:measurement:limits}
 %
-If no additional PII was collected, the only information, which could be used for re-identification is the ID. 
-Nevertheless the data should be stored in secure way. It should not be accessible from outside your network setup to avoid data leakage. 
+If no additional PII was collected, the only information, which could be used for re-identification is the ID, which should be anonymized sufficiently during the collection process. If you plan on releasing the at least parts of the gathered data with the ID included, an additional step could be the encryption with a key and salt, that is only known to the server before storing the ID locally. That way, the privacy of the user is further enhanced. Some one who gains access to the data can no longer connect any data in transit with the stored data that way.
+To avoid that an attacker may obtain the key or salt, proper access restrictions should be in place and server kept up to date. As of Smithsonian recommendation it should be documented, who may have access to the data\cite{noauthor_best_2018}. Following their recommendations, it should also be documented, who is responsible for the data in which phase of the life-cycle.\\
+Data backups should follow the 3-2-1 rule. Keep at least 3 stored copies on two different media with at least one off-site location. Furthermore a project should specify the life time of data before it gets deleted. If it is planned to archive the data for an extended period, it should be documented, where the archive is stored\cite{noauthor_best_2018}.
+Further information on how to secure access can be reviewed in NISTs Security Guidelines for Storage Infrastructure\cite{chandramouli_security_2020}. 
+ 
+For relational databases we would recommend PostgreSQL\cite{group_postgresql_2021}. It proved to be faster than MongoDB\cite{makris_mongodb_2020} in almost all cases, and performed better against OrientDB and Neo4j in almost all operations\cite{noauthor_benchmark_2018}. It was second to none in \cite{noauthor_benchmark_2018} when the memory footprint was compared.
+When it comes to write operations and maximal database size, PostreSQL wins over MySQL as well\cite{noauthor_mysql_2021}.\\
+As system data like uptime and memory usage change over time, using timeseries data base systems (TSDB) might improve the storage performance and allow for easier parsing over time. Timeseries databases add a timestamp to the stored data and add a new entry into the database for each new data point. While this is possible with relational databases as well, the size of the data increases significantly over time. TSDB allow the compression of the collected data over time and help to reduce the storage footprint that way. While InfluxDB shows the best performance on inserts  compared to KDB+\cite{}, Graphite\cite{}, TimescaleDB\cite{}, KairosDB\cite{}, and CrateDB\cite{} with a low number of connections\cite{}, TimescaleDB outperformance it on high load and with many inserts and high number of clients\cite{}
+One possibility is to store the data encrypted to decouple the private key from the collection server, which increases the overhead for evaluation of the data. On the other hand an adversary has fewer gains from a successful attack. Especially if the ID is encrypted as well before storing it.\\
+While this procedure might increase the users trust in the collection process if it is known publicly, the gains and overhead should be weighted against each other. If no additional PII is collected, the encryption of statistical data might just add overhead, without adding any significant gain.
 %
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,7 +38,7 @@ Nevertheless the data should be stored in secure way. It should not be accessibl
 \section{Evaluation Setup}
 \label{sec:measurement:eval_setup}
 %
-
+As we provide a reference implementation for the collection tool, we also provide a basic implementation for the collection server\cite{}. It is written in Python,
 
 %
 \newpage
@@ -42,7 +50,7 @@ Nevertheless the data should be stored in secure way. It should not be accessibl
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Data Robustness}
+\section{Limitations of the collection}
 \label{sec:measurement:robust}
 %
 
