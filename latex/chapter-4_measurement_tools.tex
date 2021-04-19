@@ -1,12 +1,12 @@
 \chapter{Collection Server}
 \label{chap:mmeasurement}
-To collect only dates, that are relevant for the purpose of the survey and it's safe transmission, the client has a mayor role. The server however is also important for keeping the data safe and consistent. Without a correctly handled data processing the best collection software is meaningless if it can be gathered by the developer.\\
-The timely decryption and decoding of the incoming data is of same importance as the correct storage solution for the amount of expected information. It is also important to know, what can't be done with the server.
+To collect only dates, that are relevant for the purpose of the survey and its safe transmission, the client has a major role. The server however is also important for keeping the data safe and consistent. Without correctly handled data processing the best collection software is meaningless if it can be gathered by the developer.\\
+The timely decryption and decoding of the incoming data are of the same importance as the correct storage solution for the amount of expected information. It is also important to know, what can't be done with the server.
 
-While we discussed the client side in the last chapter, this chapter is going to focus on
-the server side implementation of the data collection process.\\
-We are giving some general recommendations again in the first section and talk more in depth about our implementation in section \ref{sec:measurement:eval_setup}.
-In section \ref{sec:measurement:robust} we are discussing issues, that couldn't be solved with our implementation or with our concept in general.
+While we discussed the client-side in the last chapter, this chapter is going to focus on
+the server-side implementation of the data collection process.\\
+We are giving some general recommendations again in the first section and talk more in-depth about our implementation in the section\ref{sec:measurement:eval_setup}.
+In section, \ref{sec:measurement:robust}we are discussing issues, that couldn't be solved with our implementation or with our concept in general.
 %
 
 
@@ -16,19 +16,24 @@ In section \ref{sec:measurement:robust} we are discussing issues, that couldn't 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{General recommendations}
-\label{sec:measurement:limits}
+    \label{sec:measurement:limits}
 %
-If no additional PII was collected, the only information, which could be used for re-identification is the ID, which should be anonymized sufficiently during the collection process. If you plan on releasing the at least parts of the gathered data with the ID included, an additional step could be the encryption with a key and salt, that is only known to the server before storing the ID locally. That way, the privacy of the user is further enhanced. Some one who gains access to the data can no longer connect any data in transit with the stored data that way.
-To avoid that an attacker may obtain the key or salt, proper access restrictions should be in place and server kept up to date. As of Smithsonian recommendation it should be documented, who may have access to the data\cite{noauthor_best_2018}. Following their recommendations, it should also be documented, who is responsible for the data in which phase of the life-cycle.\\
-Data backups should follow the 3-2-1 rule. Keep at least 3 stored copies on two different media with at least one off-site location. Furthermore a project should specify the life time of data before it gets deleted. If it is planned to archive the data for an extended period, it should be documented, where the archive is stored\cite{noauthor_best_2018}.
-Further information on how to secure access can be reviewed in NISTs Security Guidelines for Storage Infrastructure\cite{chandramouli_security_2020}. 
- 
-For relational databases we would recommend PostgreSQL\cite{group_postgresql_2021}. It proved to be faster than MongoDB\cite{makris_mongodb_2020} in almost all cases, and performed better against OrientDB and Neo4j in almost all operations\cite{noauthor_benchmark_2018}. It was second to none in \cite{noauthor_benchmark_2018} when the memory footprint was compared.
-When it comes to write operations and maximal database size, PostreSQL wins over MySQL as well\cite{noauthor_mysql_2021}.\\
-As system data like uptime and memory usage change over time, using timeseries data base systems (TSDB) might improve the storage performance and allow for easier parsing over time. Timeseries databases add a timestamp to the stored data and add a new entry into the database for each new data point. While this is possible with relational databases as well, the size of the data increases significantly over time. TSDB allow the compression of the collected data over time and help to reduce the storage footprint that way. While InfluxDB shows the best performance on inserts  compared to KDB+\cite{}, Graphite\cite{}, TimescaleDB\cite{}, KairosDB\cite{}, and CrateDB\cite{} with a low number of connections\cite{}, TimescaleDB outperformance it on high load and with many inserts and high number of clients\cite{}
-One possibility is to store the data encrypted to decouple the private key from the collection server, which increases the overhead for evaluation of the data. On the other hand an adversary has fewer gains from a successful attack. Especially if the ID is encrypted as well before storing it.\\
-While this procedure might increase the users trust in the collection process if it is known publicly, the gains and overhead should be weighted against each other. If no additional PII is collected, the encryption of statistical data might just add overhead, without adding any significant gain.
+    \subsection{Data security}
+        \label{subsec:data_storage}    
+        If no additional PII was collected, the only information, which could be used for re-identification is the ID, which should be anonymized sufficiently during the collection process. If you plan on releasing at least parts of the gathered data with the ID included, an additional step could be the encryption with a key and salt, that is only known to the server before storing the ID locally. That way, the privacy of the user is further enhanced. Someone who gains access to the data can no longer connect any data in transit with the stored data that way.
+        To avoid that an attacker may obtain the key or salt, proper access restrictions should be in place and the server kept up to date. As of Smithsonian recommendation it should be documented, who may have access to the data \cite{noauthor_best_2018}. Following their recommendations, it should also be documented, who is responsible for the data in which phase of the life-cycle.\\
+        Data backups should follow the 3-2-1 rule. Keep at least 3 stored copies on two different media with at least one off-site location. Furthermore, a project should specify the lifetime of data before it gets deleted. If it is planned to archive the data for an extended period, it should be documented, where the archive is stored \cite{noauthor_best_2018}.
+        Further information on how to secure access can be reviewed in NIST's Security Guidelines for Storage Infrastructure \cite{chandramouli_security_2020}. \\
+        Another possibility is to store the data encrypted to decouple the private key from the collection server, which increases the overhead for evaluation of the data. On the other hand, an adversary has fewer gains from a successful attack. Especially if the ID is encrypted as well before storing it.\\
+        While this procedure might increase the users' trust in the collection process if it is known publicly, the gains and overhead should be weighed against each other. If no additional PII is collected, the encryption of statistical data might just add overhead, without adding any significant gain.
+
+    \subsection{Databases} 
+        \label{subsec:database}
+        For relational databases we would recommend PostgreSQL \cite{group_postgresql_2021}. It proved to be faster than MongoDB \cite{makris_mongodb_2020} in almost all cases, and performed better against OrientDB and Neo4j in almost all operations \cite{noauthor_benchmark_2018}. It was second to none in  \cite{noauthor_benchmark_2018} when the memory footprint was compared.
+        When it comes to write operations and maximal database size, PostgreSQL wins over MySQL as well \cite{noauthor_mysql_2021}.\\
+        As system data like uptime and memory usage change over time, using time-series database systems (TSDB) might improve the storage performance and allow for easier parsing over time. Timeseries databases add a timestamp to the stored data and add a new entry into the database for each new data point. While this is possible with relational databases as well, the size of the data increases significantly over time. TSDB allows the compression of the collected data over time and helps to reduce the storage footprint that way. While InfluxDB shows the best performance on inserts compared to KDB+ \cite{noauthor_kdb_nodate}, Graphite \cite{noauthor_graphite_nodate}, TimescaleDB \cite{noauthor_time-series_nodate}, KairosDB \cite{noauthor_kairosdb_nodate}, and CrateDB \cite{noauthor_cratedb_nodate} with a low number of connections \cite{sychev_closed_2020}, TimescaleDB outperforms it on high load and many inserts with a high number of clients \cite{freedman_timescaledb_2020}
 %
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -38,21 +43,20 @@ While this procedure might increase the users trust in the collection process if
 \section{Evaluation Setup}
 \label{sec:measurement:eval_setup}
 %
-As we provide a reference implementation for the collection tool, we also provide a basic implementation for the collection server\cite{}. It is written in Python,
+    As we gave some general recommendations, we are talking about our collection setup.
+    We provide a short guide on the server hardening steps taken on the collection server. This is followed by a presentation of our implementation.
+    
+    \subsection{Server}
+        \label{subsec:measure:server}
+        For the server we use an Ubuntu 20.4 operating system, with SELinux enabled.
+        To harden the server against user enumeration, we assign an individual username and disable root login. Next we allow login only with public key login enabled.
+        Further we strengthen the server with \textit{fail2ban} and configure it to ban user based on failed login attempts and user name tries over time. It uses \textit{iptables} rules to block user. Furthermore we configure the firewall to drop all packages accept for port 22 (SSH) and port 53 (DNS). To keep the server up-to-date, automatic updates with email notifications have been enabled.
+        
+    \subsection{Implementation}
+        \label{subsec:measure:implementation}
+        As we provide a reference implementation for the collection tool, we also provide a basic implementation for the collection server \cite{venz_ikstreamdns-handler_2021}. It is written in Python, as it is easy to read and to reproduce in different languages. Furthermore it can be used for fast prototyping with a wide range of libraries.\\
+        We implemented the server as a multithreaded data handler. the thread-save queue implementation is used to pass data between the different threads.
 
-%
-\newpage
-%
- 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Limitations of the collection}
-\label{sec:measurement:robust}
-%
 
 
 %
