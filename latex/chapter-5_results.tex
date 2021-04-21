@@ -17,7 +17,12 @@ In this chapter we provide information of our evaluation steps and discuss the r
 
     We looked into ways to validate the collected data. If development is based on on the data, adversaries might try to generate emulated devices. To counter the emulation, we only use physical devices with PCI addresses for the ID generation. This excludes Linux containers like docker without network card passthrough. The message buffer of the kernel is checked if the kernel is loaded in a virtual environment like KVM or Virtualbox. The client checks this, using the \textit{dmesg} application. 
     If a virtual environment is detected, the client stops, before transmitting any data.\\
-    The client can 
+    
+    Another option to check for validity is to check the integrity of the source code. Therefore a hash or similar can be generated over the existing source code and transmitted to the server.
+    If a cryptographic hash function is used, source code modification would show in the hash value transmitted.\\
+    This, and other options can be leveraged with patching the source code. Especially in open source software it is easy to manipulate the software. The function that generates the hash of the source code could be pointed to intact source code, while the running code has been modified. While it is more complicated, the same is true for closed source software.
+    Using a closed source implementation for data collection in an open source project might reduce users' trust in a project and make them stop using it.
+    
 
 
 
