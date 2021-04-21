@@ -35,13 +35,38 @@ We are giving some general recommendations again in the first section and talk m
     \subsection{Databases} 
         \label{subsec:database}
         For relational databases, we would recommend PostgreSQL \cite{group_postgresql_2021}.
-        It proved to be faster than MongoDB \cite{makris_mongodb_2020} in almost all cases and performed better against OrientDB and Neo4j in almost all operations \cite{noauthor_benchmark_2018}. It was second to none in  \cite{noauthor_benchmark_2018} when the memory footprint was compared.
+        It proved to be faster than MongoDB \cite{makris_mongodb_2020} in almost all cases and performed better against OrientDB and Neo4j in almost all operations \cite{noauthor_benchmark_2018}. It was second to none in  \cite{noauthor_benchmark_2018} when the memory footprint was compared as can be seen in figure \ref{fig:mem_db}.
         When it comes to write operations and maximal database size, PostgreSQL wins over MySQL as well \cite{noauthor_mysql_2021}.\\
-        As system data like uptime and memory usage change over time, using time-series database systems (TSDB) might improve the storage performance and allow for easier parsing over time. Timeseries databases add a timestamp to the stored data and add a new entry into the database for each new data point. While this is possible with relational databases, the size of the data increases significantly over time. TSDB allows the compression of the collected data over time and helps to reduce the storage footprint that way. While InfluxDB shows the best performance on inserts compared to KDB+ \cite{noauthor_kdb_nodate}, Graphite \cite{noauthor_graphite_nodate}, TimescaleDB \cite{noauthor_time-series_nodate}, KairosDB \cite{noauthor_kairosdb_nodate}, and CrateDB \cite{noauthor_cratedb_nodate} with a low number of connections \cite{sychev_closed_2020}, TimescaleDB outperforms it on high load and many inserts with a high number of clients \cite{freedman_timescaledb_2020}\\
+        As system data like uptime and memory usage change over time, using time-series database systems (TSDB) might improve the storage performance and allow for easier parsing over time. Timeseries databases add a timestamp to the stored data and add a new entry into the database for each new data point. While this is possible with relational databases, the size of the data increases significantly over time. TSDB allows the compression of the collected data over time and helps to reduce the storage footprint that way. While InfluxDB shows the best performance on inserts compared to KDB+ \cite{noauthor_kdb_nodate}, Graphite \cite{noauthor_graphite_nodate}, TimescaleDB \cite{noauthor_time-series_nodate}, KairosDB \cite{noauthor_kairosdb_nodate}, and CrateDB \cite{noauthor_cratedb_nodate} with a low number of connections \cite{sychev_closed_2020}, TimescaleDB outperforms it on high load and many inserts with a high number of clients. InfluxDB takes   the lead over TimescaleDB in memory consumption as seen in figure \ref{fig:disk_db}. For CPU utilization the opposite is true, as seen in figure \ref{fig:cpu_db} \cite{freedman_timescaledb_2020}\\
+        \begin{figure}
+            \centering
+            \begin{subfigure}[b]{0.49\textwidth}
+                \includegraphics[width=\textwidth]{latex/figures/cpu_load_influx_ts.png}
+                \caption[CPU utilization]{CPU utilization}
+                \label{fig:cpu_db}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.49\textwidth}
+                \includegraphics[width=\textwidth]{latex/figures/diskusage_influx_ts.png}
+                \caption[Disk Usage]{Disk Usage}
+                \label{fig:disk_db}
+            \end{subfigure}
+            \caption[Resource consumption of InfluxDB and TimescaleDB]{Resource consumption of InfluxDB and TimescaleDB modified after \cite{freedman_timescaledb_2020}}
+        \end{figure}
+        
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=\textwidth]{latex/figures/mem_db.jpg}
+            \caption[Memory consumption of relational databases]{Memory consumption of relational databases \cite{noauthor_benchmark_2018}}
+            \label{fig:mem_db}
+        \end{figure}
+        
         
         The number one web application security risk is command injection.
         An injection occurs, when user data is processed by an application and interpreted as part of the command. This may lead to unauthorized data access or damage of the stored data. 
         The user input could contain an escape sequence and an SQL command to access data stored in an SQL-database.\\
+        
+        \newpage
+        
         To protect an application against SQL injections, the Open Web Application Security Project (OWASP) provides four possible defenses in \cite{owasp_foundation_sql_2021}.
         \begin{itemize}
             \item Prepared Statements
