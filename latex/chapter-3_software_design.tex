@@ -107,10 +107,10 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         The available numbers of variation may be calculated for given string length \textit{n} and length of alphabet \textit{k} as seen in equation \ref{eq:variations}.
         \begin{equation}
             \label{eq:variations}
-            V(n;k) = n^{k}
+            V(n;r) = n^{r}
         \end{equation}
 
-        As DNS limits the available alphabet to [a-z][0-9] this would fix \textit{k} to $26 + 10 = 36$.
+        As DNS limits the available alphabet to [a-z][0-9] this would fix \textit{n} to $26 + 10 = 36$.
         
         To calculate the probability of a hash collision, we can utilize equation \ref{eq:base_prob_hash}
         
@@ -251,9 +251,9 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
     
         The Salt and key for the AES encryption depend on the device's hardware. If MTD partitions are available, we hash the \textit{art, factory, u-boot}, and/or \textit{u-boot-env} partitions and use the first 16 bytes of the resulting hash as salt. The remaining bytes are used as the key. If no such partitions are available, the ID, generated in the previous step, is used for salt and key. The first 16 bytes are used as a salt, while the remainder of the ID forms the key. While this isn't optimal, keeping save IDs consistent over multiple flashes, overwrites, and reboots it's a necessary step. An attacker would still need to recreate the base hash and then apply the encryption function to it. This process is time and resource intense.\\
     
-     We further enhanced the brute-forcing protection in reducing the generated hash to the last 32 bytes and removed all special symbols from the resulting string, which leaves around $32^{36} = 1.53x10^{55}$ possible variations. While this makes it nearly impossible to recreate the original ID and MAC address, the probability of a hash collision increases due to the reduced number of available hashes.\\
+     We further enhanced the brute-forcing protection in reducing the generated hash to the last 32 bytes and removed all special symbols from the resulting string, which leaves around $36^{32} = 6.33x10^{49}$ possible variations. While this makes it nearly impossible to recreate the original ID and MAC address, the probability of a hash collision increases due to the reduced number of available hashes.\\
     
-     As we have shown in section \ref{subsec:software_design:id} we can calculate the number of available hashes with a given collision probability. For this system, we want to keep the collision probability below $P = 10^{-18}$ for $N = 32^{36}$ possible hashes.
+     As we have shown in section \ref{subsec:software_design:id} we can calculate the number of available hashes with a given collision probability. For this system, we want to keep the collision probability below $P = 10^{-18}$ for $N = 36^{32}$ possible hashes.
      Based on equation \ref{eq:solvek}, we can calculate the number of hashes \textit{k}, that can be assigned.
      
      \begin{equation*}
@@ -262,10 +262,10 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
      
      \begin{equation}
         \label{eq:k1018}
-         k = \sqrt{2 \cdot 1 \cdot 10^{-18} \cdot 32^{36}}
+         k = \sqrt{2 \cdot  10^{-18} \cdot 36^{32}}
      \end{equation}
      
-     Equation ref{eq:k1018} resolves to around $1.75x10^{18}$ possible IDs before we reach the probability of $10^{-18}$ for a collision. If we assumed that every available IPv4 address ($2^{32} = 4,294,967,296)$ would use dalec, this would be more than enough.\\
+     Equation \ref{eq:k1018} resolves to around $1.13x10^{16}$ possible IDs before we reach the probability of $10^{-18}$ for a collision. If we assumed that every available IPv4 address ($2^{32} = 4,294,967,296)$ would use dalec, this would be more than enough.\\
      
      We allow uppercase letters to be included in a generated ID. This information might or might not be preserved through the message traversal through the domain name system. We change any uppercase letter to lower case on the server-side. 
      As we have collected the data and generated an ID, we need to process and transmit the information next.

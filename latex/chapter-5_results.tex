@@ -1,7 +1,8 @@
 \chapter{Results}
 \label{chap:results}
 
-While the 
+While the presented solution addresses the need for a privacy preserving, secure data collection tool, there are some points, that could not be addressed. 
+Using the structure of DNS we were able to detach the clients IP from the data, which, in turn, is transported encrypted utilizing asynchronous encryption. 
 
 In this chapter we provide information of our evaluation steps and discuss the results of our measurement setup described in the last chapter.\\
 
@@ -14,6 +15,10 @@ In this chapter we provide information of our evaluation steps and discuss the r
 \label{sec:measurement:robust}
 %
 
+    We looked into ways to validate the collected data. If development is based on on the data, adversaries might try to generate emulated devices. To counter the emulation, we only use physical devices with PCI addresses for the ID generation. This excludes Linux containers like docker without network card passthrough. The message buffer of the kernel is checked if the kernel is loaded in a virtual environment like KVM or Virtualbox. The client checks this, using the \textit{dmesg} application. 
+    If a virtual environment is detected, the client stops, before transmitting any data.\\
+    The client can 
+
 
 
 - Ausschluss von docker, da nur virtuelle interfaces, oder interfaces reingereicht
@@ -23,7 +28,7 @@ In this chapter we provide information of our evaluation steps and discuss the r
 - data exfiltration alert-> komische strings im Netzwerk
 - docker ausgeschlossen durch check ob pci interface
 - virtuelle maschinen schwieriger, aber geprüft.
-
+- number of available mac addresses -> 1 interface geräte ansprechen
 
 Wenn Nutzer Konto notwendig um zu nutzen -> token vergabe
 

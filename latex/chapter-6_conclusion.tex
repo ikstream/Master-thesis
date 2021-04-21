@@ -1,16 +1,14 @@
 \chapter{Conclusion and Outlook}
 \label{chap:conclusion}
 
-
-
-\newpage
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
+In this thesis we provided a design for data collection and transmission, as well as a reference implementation for the client- and server-side. We have demonstrated a system to transmit data, detached from the system's network interface information to provide anonymity of sender. 
+To realize this, we utilize the domain name system with its hierarchical structure. Only a interposed DNS server communicates with the collection server, therefore, no client IP can be stored.\\
 
 
 %
@@ -23,4 +21,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Future Directions}
 
-While we have shown significant gains, ...
+While we have shown significant gains, over some existing systems, we couldn't solve the problem of data validation. While systems with user authentication can use these to increase the workload needed to create counterfeit data it may reduce participation distinctly.
+A good solution is needed here and requires additional research.
+
