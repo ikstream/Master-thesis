@@ -39,10 +39,10 @@ These different applications use different techniques to strip personally identi
             \caption[OECD guideline]{OECD guideline \cite{oecd_oecd_2013}}
             \label{fig:oecd_guide}
         \end{figure}
-        The first principle is the Collection Limitation Principle. It states that "There should be limits to the collection of personal data [..]" \cite{oecd_oecd_2013}. This principle is reflected in NIST's Guide to protecting the confidentiality of Personally identifiable information \cite{mccallister_guide_2010}. In there, it is recommended to minimize the use, collection, and storage of personal data to the minimum necessary to serve its purpose.
-        That way, the damage done on a possible data breach is minimized. It is also recommended to review the collected PII previously. If it is no longer relevant, it should be removed \cite{mccallister_guide_2010}.\\
+        The first principle is the Collection Limitation Principle. It states that "There should be limits to the collection of personal data [..]" \cite{oecd_oecd_2013}. This principle is reflected in NIST's \textit{Guide to protecting the confidentiality of Personally identifiable information} \cite{mccallister_guide_2010}. In there, it is recommended to minimize the use, collection, and storage of personal data to the minimum necessary to serve its purpose.
+        That way, the damage done on a possible data breach is minimized. It is also recommended to review the previously collected PII. If it is no longer relevant, it should be removed \cite{mccallister_guide_2010}.\\
         To protect data sets, the NIST guide also recommends the de-identification of information. Data with enough PII removed or obscured is treated as de-identified. One-way cryptographic functions (hash functions) may be used for this purpose \cite{mccallister_guide_2010}.\\
-        Suppose there is no code or other association to re-identify, the information is defined as anonymized \cite{mccallister_guide_2010}. This matches with the definition of Anonymity and anonymization.
+        Suppose there is no code or other association to re-identify the information is defined as anonymized \cite{mccallister_guide_2010}. This matches with the definition of anonymity and anonymization.
 
 
     \newpage
@@ -53,13 +53,13 @@ These different applications use different techniques to strip personally identi
     %
     \subsection{Regulations}
         \label{subsec:related:law}
-        Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic that does not allow the identification of a person directly or indirectly \cite{german_institute_for_standardization_din_2020}. It furthermore declares anonymization as a process in which personally identifiable information is irrevocably transformed. This transformation denies the ability for an entity to identify a person indirectly or directly by itself or in cooperation with another entity \cite{german_institute_for_standardization_din_2020}.\\
+        Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic that does not allow the identification of a person directly or indirectly \cite{german_institute_for_standardization_din_2020}. It furthermore declares anonymization as a process in which personally identifiable information is irrevocably transformed. This transformation denies the ability of an entity to identify a person indirectly or directly by itself or in cooperation with another entity \cite{german_institute_for_standardization_din_2020}.\\
         
         A major advantage of anonymized data is the exclusion of the GDPR legislation. Recital 26 of the regulation excludes anonymized data explicitly.\\ 
         "The principles of data protection should therefore not apply to anonymous information, namely information which does not relate to an identified or identifiable natural person or to personal data rendered anonymous in such a manner that the data subject is not or no longer identifiable. This Regulation does not therefore concern the processing of such anonymous information, including for statistical or research purposes." \cite{european_union_regulation_2016}\\
         Compared to the EU, the US have a wide range of privacy state laws. While the EU aims to provide one general regulation, the US privacy laws are split over four major regulations.
         These four are the \textit{Health Insurance Portability and Accountability Act} (HIPAA), \cite{rights_ocr_summary_2009}, which regulates healthcare provider, \textit{NIST 800-171} \cite{ross_protecting_2015}, which defines how to handle controlled unclassified information in non-federal information systems, the \textit{Gramm-Leach-Bliley Act (GLBA)} \cite{noauthor_gramm-leach-bliley_2013}, protecting personal information stored by financial institutes and the \textit{Federal Information Security Management Act (FISMA)} \cite{carper_s2521_2014} in which the requirements are stated for federal agencies information security programs. On top of these, states have additional privacy laws, which may be up to the GDPRs protection, depending on the state \cite{andrada_coos_eu_nodate}.\\
-        The European data protection regulation provides a strong set of rules. These may be extended by member state laws but not weakened. This allows for even stronger data protections in some European countries.
+        The European data protection regulation provides a strong set of rules. These may be aggravated by member state laws but not weakened. This allows for even stronger data protections in some European countries.
         
     %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,7 +81,7 @@ These different applications use different techniques to strip personally identi
 
         \subsubsection{\textit{l}-diversity}
             \label{subsec:related:l-div}
-            In  \cite{machanavajjhala_l-diversity_2007} Machanavajjhala et al. show that k-anonymity is susceptible to the two attack vectors homogeneity and background knowledge.
+            In  \cite{machanavajjhala_l-diversity_2007} Machanavajjhala et al. show that k-anonymity is susceptible to the two attack vectors: homogeneity and background knowledge.
             The homogeneity attack works on datasets with groups that lack diversity in sensitive attributes. The background knowledge attack on the other hand uses available knowledge in addition to the provided dataset that is not directly matched to attributes.\\
             
 
@@ -113,18 +113,18 @@ These different applications use different techniques to strip personally identi
     \subsection{Overlay Networks}
         \label{subsec:related:overlay}
         %
-        Several overlay networks provide different functionalities, like caching overlays, that enhance the serving static content, routing overlays, that provide different features for dynamic content than the underlying networks and security overlays,  that improve the security of networks and can help mitigate distributed denial of service (DDoS) attacks \cite{pathan_overlay_2014}.\\
-        Two overlay networks will be discussed. On the one hand, there is Tor \cite{dingledine_tor_2004}, on the other, I2P \cite{}. Both systems aim to enhance the anonymity of the internet by adding additional layers.\\
-        Furthermore, additional Protocols like P5 \cite{sherwood_p_2005} and Herbivore \cite{goel_herbivore_2003} have been reviewed. As they are similar to the presented solutions but are less known or require additional implementation steps or infrastructure, they are not described in this section.
+        Several overlay networks provide different functionalities. Caching overlays enhance the serving of static content. Routing overlays provide different features for dynamic content than the underlying networks and security overlays, that improve the security of networks and can help mitigating distributed denial of service (DDoS) attacks \cite{pathan_overlay_2014}.\\
+        Two overlay networks will be discussed. On the one hand, there is Tor \cite{dingledine_tor_2004}, on the other, I2P \cite{zantout_i2p_2011}. Both systems aim to enhance the anonymity of the internet by adding additional layers.\\
+        Furthermore, additional protocols like P5 \cite{sherwood_p_2005} and Herbivore \cite{goel_herbivore_2003} have been reviewed. As they are similar to the presented solutions, but are less known or require additional implementation steps or infrastructure, they are not described in this section.
      
      
     %%% Tor %%%
     \subsubsection{Tor}
-        The so-called Onion Routing used  by Tor is a distributed overlay network to anonymize TCP-based applications. On its path from sender to receiver, each step in the network only knows its predecessor and successor. Therefore information is layered and secured with symmetric keys, which are unwrapped at each step, like the layer of an onion.
+        The so-called Onion Routing used  by Tor is a distributed overlay network to anonymize TCP-based applications. On its path from sender to receiver, each step in the network only knows its predecessor and successor. Therefore information is layered and secured with symmetric keys, which are unwrapped at each step, like the layers of an onion.
         Tor provides perfect forward secrecy by negotiating session keys with each successive hop. If one hop gets compromised, after the keys are deleted, old traffic can't be decrypted \cite{dingledine_tor_2004}, \cite{borisov_shining_2008}.\\
         Tor requires additional work on the client site to configure and set up. 
         The network is operated by a wide variety of people and organizations.
-        Thousands of relay nodes are used to route traffic from the origin to its receiver. It was in 2009 and is of today the biggest network designed for anonymity in operation \cite{edman_anonymity_2009}.
+        Thousands of relay nodes are used to route traffic from the origin to the receiver. It was in 2009 and is of today the biggest network designed for anonymity in operation \cite{edman_anonymity_2009}.
         Therefore it is independent of the collecting entity. Tors systems provide anonymity for the sender against the server and an attacker in most cases \cite{arma_one_2009},  \cite{poulsen_feds_2013}, \cite{samson_tor_2013}, \cite{herrmann_website_2009}.\\
         The use of the Tor network is free of charge. It is open source software, but connecting to it requires additional setup steps from the user.\\
     
@@ -143,7 +143,7 @@ These different applications use different techniques to strip personally identi
     %%% VPN %%%
     \subsubsection{Virtual Private Network - VPN}
         A VPN provides an encrypted connection from the user's system to an exit point, the VPN server. For further communication, the IP address of the VPN server is used. This may change the country of origin and prevent things like geoblocking or other restrictions imposed by the internet service provider \cite{microsoft_virtual_2009}.\\
-        A VPN provides privacy against prying eyes in the path from the client to the VPN server. It also provides anonymity to the web service requested. Virtual private networks can be self-hosted, used from a for-free provider, or paid. Additional steps, like configuration, are required on the user's end to use it.\\
+        A VPN provides privacy against prying eyes in the path from the client to the VPN server. It also provides anonymity to the web service requested. Virtual private networks can be self-hosted, hosted by a for-free or paid provider. Additional steps, like configuration, are required on the user's end to use it.\\
 
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -178,18 +178,18 @@ These different applications use different techniques to strip personally identi
     \subsubsection{Prio}
 
         Prio was developed by Corrigan-Gibbs et al. \cite{corrigan-gibbs_prio_2017} in 2017 as a privacy-preserving system for collecting aggregated statistics.
-        
-        Prio \cite{corrigan-gibbs_prio_2017}, was developed at Stanford University's Computer Science department for nonsensitive data already covered by their Telemetry tool. 
-        It splits the collected client data into shares. 
+        It was developed at Stanford University's Computer Science department for nonsensitive data already covered by their Telemetry tool. 
+        Prio splits the collected client data into shares. 
         The parts are sent to different servers and aggregated with shares of other users before being published (see figure \ref{fig:prio_overview}) \cite{corrigan-gibbs_prio_2017}.\\
-        Prio promises privacy as long as one of the servers is honest, therefore providing strong cryptographic privacy. A limited form of robustness is provided as long as all servers are honest. It can detect and discard syntactically incorrect client data while preserving the privacy of the data. However, Prio can not prevent a client from sending in-range data, that is untrue \cite{corrigan-gibbs_prio_2017}.\\
+        The system promises privacy as long as one of the servers is honest, therefore providing strong cryptographic privacy. A limited form of robustness is provided as long as all servers are honest. It can detect and discard syntactically incorrect client data while preserving the privacy of the data. However, Prio can not prevent a client from sending in-range data, that is untrue \cite{corrigan-gibbs_prio_2017}.\\
         It is in experimental use by Firefox Origin Telemetry \cite{englehardt_next_2019}.
         
         
     %%% DNS 
     \subsection{Domain Name System - DNS}
         \label{subsec:related:dns}
-        The Domain Name System is hierarchical and decentralized designed to allow systems connected to a network to translate memorable domain names into IP addresses \cite{stevens_tcpip_1993}.\\
+        The Domain Name System is hierarchically and decentralized designed to allow systems connected to a network to translate memorable domain names into IP addresses \cite{stevens_tcpip_1993}.\\
+        
         \begin{wrapfigure}{Lh}{0.3\textwidth}
             \includegraphics[width=0.3\textwidth]{latex/figures/domain_name_tree.jpg}
             \caption[Domain Name Tree for www.example.com.]{Domain Name Tree for www.example.com.  \cite{jeftovic_managing_2018}}
@@ -198,7 +198,7 @@ These different applications use different techniques to strip personally identi
         
         This translation is needed before an application can request a TCP connection or send UDP datagrams. A domain name is a list of labels separated by dots. 
         Each label can have a length of up to 63 bytes, with a maximum length of the requested domain of 255 bytes \cite{stevens_tcpip_1993}.\\
-        The dot is used to separates each layer in a domain but is also the internet root, which terminates all Fully Qualified Domain Names (FQDN), but is often omitted \cite{jeftovic_managing_2018}.
+        The dot is used to separate each layer in a domain but is also the internet root, which terminates all Fully Qualified Domain Names (FQDN), but is often omitted \cite{jeftovic_managing_2018}.
         In figure \ref{fig:dns_tree} it is shown how a hostname can be separated and traversed.
         The first field, following the, here omitted, root entry is the so-called Top-Level Domain (TLD). In figure \ref{fig:dns_tree} this would be "com". The root and top-level domain are required to find the responsible authoritative nameserver for any related query \cite{jeftovic_managing_2018}.\\
 
@@ -223,8 +223,8 @@ These different applications use different techniques to strip personally identi
         \end{figure}
         
         
-        The DNS is also used in Malware for DNS tunneling or data exfiltration.
-        In DNS tunneling  \cite{das_detection_2017}.\\
+        The DNS is also used in malware for DNS tunneling or data exfiltration.
+        In DNS tunneling domain TXT records are used to initiate a session with a command and control server. The TXT field can also contain instructions for the malware \cite{das_detection_2017}.\\
         To exfiltrate data in a DNS request, the information in question is Base32 encoded and split into 63 byte sized chunks. Afterwards, some requests are started to a monitored or controlled domain with the encoded data as fields \cite{mertens_infosec_2017}.\\
         
 \newpage
@@ -240,9 +240,9 @@ These different applications use different techniques to strip personally identi
     
     %%% Ubuntu %%%
     \subsection{Ubuntu}
-        Ubuntu is one of the, if not the major, distributions of the GNU/Linux Operating system. It provides several packages for Server, Desktop, or embedded usage. It is used by many major companies on their server \cite{canonical_enterprise_nodate}\\
+        Ubuntu is one of the best-known distributions of the GNU/Linux Operating system. It provides several packages for Server, Desktop, or embedded usage. It is used by many major companies on their server \cite{canonical_enterprise_nodate}\\
         Ubuntu collects data with its "ubuntu-report" tool. By default, a system reports its data only once per distribution version. The tools provide a graphical user interface and command-line version and prompt the user's information before sending \cite{roche_ubuntuubuntu-report_2020}.\\
-        A JSON report, as shown in listing \ref{lst:ubuntu-report} in the Appendix, is sent to the Ubuntu server if the user opts in. If the user opts out, a report is created as in listing \ref{lst:opt-out} and send to the Ubuntu server \cite{roche_ubuntuubuntu-report_2020}.\\ 
+        A JSON report, as shown in listing \ref{lst:ubuntu-report} in the Appendix, is sent to the Ubuntu server if the user opts in. If the user opts out, a report is created as in listing \ref{lst:opt-out} and sent to the Ubuntu server \cite{roche_ubuntuubuntu-report_2020}.\\ 
         \begin{lstlisting}[language=json, caption=JSON report on opt out, label=lst:opt-out]
             {
                 "OptOut": true
@@ -273,7 +273,7 @@ These different applications use different techniques to strip personally identi
 \newpage
     %%% Firefox %%%
     \subsection{Firefox}
-        Firefox is a Browser that promises speed and privacy. It provides advertisement and tracker blocking. Besides, it is available on all major platforms\\ 
+        Firefox is a Browser that promises speed and privacy. It provides advertisement and tracker blocking. Besides, it is available on all major platforms.\\ 
         By default, Firefox collects a wide range of data. These data collections are called Pings. Each Ping contains a certain type of information. There are at least 27 different Ping types in use at the time of writing \cite{mozilla_telemetry_nodate}.
         
         \begin{wrapfigure}{R}{0.4\textwidth}
@@ -285,7 +285,7 @@ These different applications use different techniques to strip personally identi
         
         The "main" Ping is used for most telemetric data. It contains extensive health and performance information on Firefox, but also most system information. The JSON structure of a "main" Ping can be seen in Mozillas pipeline schema GitHub repository \cite{mozilla_mozilla-servicesmozilla-pipeline-schemas_2020}. 
         Besides information on CPU, GPU, and operating system, it contains information on installed add-ons and the reason for sending the Ping.
-        It is sent at least every 24 hours, but also on startup and other occasions. While basic telemetry, like the main ping, can be disabled on the Settings page, Firefox will still send selected Pings to its server unless disabled in \textit{about:config}.
+        It is sent at least every 24 hours, but also on startup and other occasions. While basic telemetry, like the main ping, can be disabled on the settings page, Firefox will still send selected Pings to its server unless disabled in \textit{about:config}.
         %TODO: verify with wireshark - firefox sends stupid amount of data
         To send the collected Telemetry, Firefox uses a program called Ping Sender.
         This will send an HTTP POST to the Edge Server, where it is forwarded to the data pipeline if it is formatted correctly.
@@ -301,13 +301,13 @@ These different applications use different techniques to strip personally identi
     
     %%% Brave %%%
     \subsection{Brave}
-        Brave is a free open source browser with a focus on privacy. It provides advertisement and tracker blocking, as well as a Tor integration. It is based on Chromium and promises to be faster than it and claims to have better default privacy than Firefox. It is a relatively new Browser but already supports all major platforms \cite{brave_secure_nodate}.\\
+        Brave is a free open source browser with a focus on privacy. It provides advertisement and tracker blocking, as well as a Tor integration. It is based on Chromium and promises to be faster. It also claims to have better default privacy than Firefox. It is a relatively new Browser but already supports all major platforms \cite{brave_secure_nodate}.\\
         Brave uses a technique called Privacy Preserving Product Analytics (P3A) for telemetry data, which can be turned off at any time.
         They claim that their P3A does cover way more than expected by GDPR. No personally identifiable data (PII) is collected or transmitted.\\
         Therefore Braves telemetry process is split into two phases.\\
         The first phase consists of several multiple-choice questions, for which the answer is sent individually.
         Each question poses a number of answers. Quantifiable questions, like the number of open tabs, provide ranges for each answer for enhanced privacy \cite{brave_privacy-preserving_2019}. These Questions and possible answers can be reviewed in Braves GitHub repository \cite{brave_software_inc_brave-browser_2019}.
-        The questions of phase one can be seen in Listing \ref{list:brave_question} in the appendix as well.\\
+        The questions of phase one can be seen in listing \ref{list:brave_question} in the appendix as well.\\
         At a randomized time after opening the browser, the number of open tabs is counted and send out once an hour with further information \cite{brave_privacy-preserving_2019}.
         An answer contains:
         \begin{itemize}
@@ -328,6 +328,7 @@ These different applications use different techniques to strip personally identi
         This is problematic, as an IP address can be used to pin down the user's geolocation \cite{koch_geolocation_2013}. Workplaces or homes can be derived based on the time people spend in places during the day or night. 
         While Brave Software Inc. claims that they remove the IP address at the edge of their CDN, the user has to trust the CDN operator to strip the send data of the address for phase one answers. In phase two, the user has to trust the shuffler to remove the metadata from the collected data. 
 \newpage
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
@@ -341,10 +342,9 @@ These different applications use different techniques to strip personally identi
     
     On the other hand, client-side enabled anonymization, like using the tor network or VPNs, may require additional maintenance or knowledge from the user. This could reduce the amount of participating users significantly.\\
     
-    The Domain Name System provides a hierarchical structure that strips the sender's information from the transmitted data in a reliable way. A user can trust in that and doesn't depend on an organization to handle that properly, while the anonymization process doesn't require any additional knowledge the user must have.\\
+    The Domain Name System provides a hierarchical structure that strips the sender's information from the transmitted data in a reliable way. A user can trust the DNS to remove its IP and doesn't depend on an organization to handle that properly. Furthermore the anonymization process doesn't require any additional knowledge.\\
     Utilizing DNS for data transmission opens up a range of new issues that need to be handled and will be discussed in the next chapter.\\ 
-    
-    
+
 %
 
 
