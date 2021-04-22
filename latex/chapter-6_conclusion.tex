@@ -8,8 +8,14 @@ We also provide an outlook of possible future work.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
-In this thesis we provided a design for data collection and transmission, as well as a reference implementation for the client- and server-side. We have demonstrated a system to transmit data, detached from the system's network interface information to provide anonymity of sender. 
+In this thesis we discussed the need for data collection and provided an overview over existing tools and systems. An introduction to data protection laws, that might be relevant for a project starting its telemetry program. 
+We presented a design for data collection and transmission, as well as a reference implementation for the client- and server-side. We have demonstrated a system to transmit data, detached from the system's network interface information to provide anonymity of sender. 
 To realize this, we utilize the domain name system with its hierarchical structure. Only a interposed DNS server communicates with the collection server, therefore, no client IP can be stored.\\
+To identify clients, we assigned IDs based on the hardware specific information like MAC addresses. These identifiers are hashed and encrypted. The reference implementation uses \textit{aes256} with \textit{PBKDF2} to accomplish this. The openly collected data is transmitted asynchronously encrypted to keep the user's information private during transport.
+On the server side we recommend to store the ID further encrypted to decouple transport and data storage. An adversary would not be able to connect a data transmission to a previously obtained data set that way. Furthermore we provided some insights on the security of the generated ID.
+Information on how a server should be secured and sensible data should be processed have been presented as well.
+We also discussed that we can not prove the validity of the data with our current model, while excluding certain paths to manipulate within the source code.
+
 
 
 %
@@ -22,8 +28,7 @@ To realize this, we utilize the domain name system with its hierarchical structu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Future Directions}
 
-    While we have shown significant gains, over some existing systems, we couldn't solve the problem of data validation. While systems with user authentication can use these to increase the workload needed to create counterfeit data it may reduce participation distinctly.
-    A good solution is needed here and requires additional research.\\
-    As we provide a reference implementation, this leaves room for enhancements, like a server solution for general purpose usage. This would help organizations migrating or introducing dalec as their data collection tool. It eases the burden of developing additional software in extend 
-    to their regular projects.
+    While we have shown significant gains, over some existing systems, we couldn't solve the problem of data validation. While systems with user authentication can use these to increase the workload needed to create counterfeit data it may reduce participation distinctly. A good solution is needed here and requires additional research.\\
+    As we provide a reference implementation, this leaves room for enhancements like a server solution for general purpose usage. This would help organizations migrating or introducing dalec as their data collection tool. It eases the burden of developing additional software in extend to their regular projects.\\
+    Furthermore additional ID hardening for devices with a single physical network interface and no bootloader or configuration partition is needed. While the number of devices in use might be limited, the users deserve the best privacy and security possible.
     

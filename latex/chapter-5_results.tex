@@ -16,38 +16,30 @@ In this chapter we provide information of our evaluation steps and discuss the r
 %
 
     We looked into ways to validate the collected data. If development is based on on the data, adversaries might try to generate emulated devices. To counter the emulation, we only use physical devices with PCI addresses for the ID generation. This excludes Linux containers like docker without network card passthrough. The message buffer of the kernel is checked if the kernel is loaded in a virtual environment like KVM or Virtualbox. The client checks this, using the \textit{dmesg} application. 
-    If a virtual environment is detected, the client stops, before transmitting any data.\\
+    If a virtual environment is detected, the client stops before transmitting any data.\\
     
     Another option to check for validity is to check the integrity of the source code. Therefore a hash or similar can be generated over the existing source code and transmitted to the server.
     If a cryptographic hash function is used, source code modification would show in the hash value transmitted.\\
-    This, and other options can be leveraged with patching the source code. Especially in open source software it is easy to manipulate the software. The function that generates the hash of the source code could be pointed to intact source code, while the running code has been modified. While it is more complicated, the same is true for closed source software.
+    This, and other options can be leveraged with patching the source code. Especially in open source software it is easy to manipulate the software. The function that generates the hash of the source code can be pointed to intact source code, while the running code is modified. While it is more complicated, the same is true for closed source software.
     Using a closed source implementation for data collection in an open source project might reduce users' trust in a project and make them stop using it.
+    Changing the MAC address of a physical device can be used to manipulate the collection as well. This can be countered on MTD devices by basing the ID generation on the persistent MTD partitions only. For devices without persistent special data partitions, there is currently no work around in dalec.\\
     
+    To increase the complexity of manipulation, a user authentication process would be needed. If a malicious actor would need to create one account or token per counterfeit device, the manipulation possibilities could be limited. On the other hand, users with a multitude of legitimate devices would be burdened additionally.\\ 
+    As we pointed out in previous chapters, this would reduce the number of participating users, even with privacy preserving schemes available.\\
 
+    
+    While our system provides privacy, the generated traffic might look malicious.
+    In strongly regulated or monitored environments the DNS requests might trigger data exfiltration alerts. As this might lead to the collecting domain ending up on a distributed block list or a drop of all traffic from a client. That may cause issues for other clients in less regulated environments, which solely block DNS requests based on these lists.
+    Therefore, clients should be made aware of the data collection layout. The collection domain should ideally state its purpose and be openly documented. Blocking might be prevented that way, as network operator might check on domain names before blocking, if the core domain does not look suspicious.\\
 
+- User account. Creation/token Bezug erhöht den Aufwand
+- Wenn Nutzer Konto notwendig um zu nutzen -> token vergabe
 
-- Ausschluss von docker, da nur virtuelle interfaces, oder interfaces reingereicht
-- Multithreading
-- Fake devices mit geänderter MAC adresse.
 - server seitiges handling beim publishing
-- data exfiltration alert-> komische strings im Netzwerk
-- docker ausgeschlossen durch check ob pci interface
-- virtuelle maschinen schwieriger, aber geprüft.
-- number of available mac addresses -> 1 interface geräte ansprechen
 
-Wenn Nutzer Konto notwendig um zu nutzen -> token vergabe
 
-Sonst immer checks umgehbar, da Open Source. Used könnten software mit Änderungen selbst kompilieren/ändern.
 
-Hashen des Codes zur Validierung das source code intakt serverseitig
-
-Auch rekonstruierbar
-
-Auch Übermittlung vendor ID von Mac nicht sicher, da Mac manipulierbar
-
-Serial Generation, wenn Algorithmen bekannt, auch manipulierbar
-
-i%A Provably Secure and Lightweight Anonymous User Authenticated Session Key Exchange Scheme for Internet of Things Deployment | IEEE Journals & Magazine | IEEE Xplore
+%A Provably Secure and Lightweight Anonymous User Authenticated Session Key Exchange Scheme for Internet of Things Deployment | IEEE Journals & Magazine | IEEE Xplore
 %https://ieeexplore.ieee.org/abstract/document/8737718/
 
 secure anonymous user authentication scheme - Google Scholar
@@ -59,12 +51,15 @@ secure anonymous user authentication scheme - Google Scholar
 %tamper proof data collection - Google Scholar
 %https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=temper+proof+data+collection&btnG=
 
-User account. Creation/token Bezug erhöht den Aufwand
+
 
 G: Data gathering instrument
 
-Netzwerk Footprint. Viele clients gleichzeitig -> Datenverbrauch
 
+
+- tools zur k anonymity/l-diversity and differential privacy
+
+If a project intents to publish data, that contents PII, all data sets should be checked against the privacy publishing models we presented in section \ref{subsec:related:private_data_analysis}
 %
 \newpage
 %
@@ -79,6 +74,12 @@ Netzwerk Footprint. Viele clients gleichzeitig -> Datenverbrauch
 \section{Anonymization Results}
 \label{sec:results:anon}
 
+- number of available mac addresses -> 1 interface geräte ansprechen
+- Sicherheit der ID auch bei nur einer MAC
+- daten während der übertragung verschlüsselt, angreifer nicht einsehen, größerer suchraum.
+- wenn zusätzlich verschlüsselt gespeichert noch aufwendiger aus möglicher range ID zu generieren
+- Thread model
+
 
 %
 
@@ -91,7 +92,9 @@ Netzwerk Footprint. Viele clients gleichzeitig -> Datenverbrauch
 \section{Telemetry statistics}
 \label{sec:results:telemetry}
 %
-
+- Netzwerk Footprint. Viele clients gleichzeitig -> Datenverbrauch
+- number of device handlebar
+- Multithreading
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,4 +102,6 @@ Netzwerk Footprint. Viele clients gleichzeitig -> Datenverbrauch
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
-As expected, the user systems are fully anonymized ... and several different devices reported to our servers
+In this chapter, we demonstrated the limitations of the system. We also discussed the security of the generated IDs during transport and storage phase. Especially for devices with only one physical interface this is critical. We also discussed about the performance 
+
+
