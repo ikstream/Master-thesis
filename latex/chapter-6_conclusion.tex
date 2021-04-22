@@ -1,19 +1,18 @@
 \chapter{Conclusion and Outlook}
 \label{chap:conclusion}
-This chapter concludes the thesis. We provide an overview of our solution, as well as its weaknesses.
-We also provide an outlook of possible future work. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
-In this thesis we discussed the need for data collection and provided an overview over existing tools and systems. An introduction to data protection laws, that might be relevant for a project starting its telemetry program. 
-We presented a design for data collection and transmission, as well as a reference implementation for the client- and server-side. We have demonstrated a system to transmit data, detached from the system's network interface information to provide anonymity of sender. 
-To realize this, we utilize the domain name system with its hierarchical structure. Only a interposed DNS server communicates with the collection server, therefore, no client IP can be stored.\\
+In this thesis we discussed the need for data collection and provided an overview over existing tools and systems. We introduced data protection laws, that might be relevant for a project starting its telemetry program. Further on we showcased privacy preserving data analysis that a project should be aware of if they collect or publish PII. 
+Later we presented a design for data collection and transmission, as well as a reference implementation for the client- and server-side. We have demonstrated a system to transmit data
+detached from the system's network interface information. This way we provide anonymity of sender. 
+To realize this, we utilize the domain name system with its hierarchical structure. Only interposed DNS servers communicate with the collection server, therefore, no client IP can be stored.\\
 To identify clients, we assigned IDs based on the hardware specific information like MAC addresses. These identifiers are hashed and encrypted. The reference implementation uses \textit{aes256} with \textit{PBKDF2} to accomplish this. The openly collected data is transmitted asynchronously encrypted to keep the user's information private during transport.
 On the server side we recommend to store the ID further encrypted to decouple transport and data storage. An adversary would not be able to connect a data transmission to a previously obtained data set that way. Furthermore we provided some insights on the security of the generated ID.
-Information on how a server should be secured and sensible data should be processed have been presented as well.
+We presented information on how to secure a server, as well as how to store and process sensible data.
 We also discussed that we can not prove the validity of the data with our current model, while excluding certain paths to manipulate within the source code.
 
 

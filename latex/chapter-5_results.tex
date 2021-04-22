@@ -56,10 +56,13 @@ secure anonymous user authentication scheme - Google Scholar
 G: Data gathering instrument
 
 
+    If a project intents to publish data, that is based on PII, all data sets should be checked against the privacy publishing models we presented in section \ref{subsec:related:private_data_analysis}. While we recommend to avoid the collection of personally identifiable data, there might be reason to do so.\\
+    There are some open source tools available to ease the privacy preserving analysis.
+    For differential privacy, there are tools developed by IBM \cite{noauthor_ibmdifferential-privacy-library_2021}, Google \cite{noauthor_googledifferential-privacy_2021} or the Harvard University Privacy Tools Project \cite{salil_vadhan_opendp_nodate}. These tool provide support for developers, who want to use differential privacy in there applications and analyses.
+    Tools for \textit{k-}anonymity and \textit{l-}diversity are available as well. 
+    Google provides a solution to calculate values for both algorithms \cite{noauthor_computing_nodate}, \cite{noauthor_computing_nodate-1}. 
+    Crowds \cite{mazzone_leo-mazzcrowds_2021} is a Python module that transforms Pandas dataframes with the Optimal Lattice Anonymization algorithm, that they satisfy \textit{k-}anonymity. An implementation for \textit{l-}diversity \cite{gong_qiyuangongmondrian_l_diversity_2021} and \textit{k-}anonymity \cite{gong_qiyuangongmondrian_2021} using the Mondrian algorithm for anonymization is available is well.
 
-- tools zur k anonymity/l-diversity and differential privacy
-
-If a project intents to publish data, that contents PII, all data sets should be checked against the privacy publishing models we presented in section \ref{subsec:related:private_data_analysis}
 %
 \newpage
 %
@@ -79,6 +82,7 @@ If a project intents to publish data, that contents PII, all data sets should be
 - daten während der übertragung verschlüsselt, angreifer nicht einsehen, größerer suchraum.
 - wenn zusätzlich verschlüsselt gespeichert noch aufwendiger aus möglicher range ID zu generieren
 - Thread model
+- eine Anfrage kommt über mehrere DNS server
 
 
 %
