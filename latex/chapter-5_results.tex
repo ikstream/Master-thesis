@@ -32,30 +32,6 @@ In this chapter we provide information of our evaluation steps and discuss the r
     In strongly regulated or monitored environments the DNS requests might trigger data exfiltration alerts. As this might lead to the collecting domain ending up on a distributed block list or a drop of all traffic from a client. That may cause issues for other clients in less regulated environments, which solely block DNS requests based on these lists.
     Therefore, clients should be made aware of the data collection layout. The collection domain should ideally state its purpose and be openly documented. Blocking might be prevented that way, as network operator might check on domain names before blocking, if the core domain does not look suspicious.\\
 
-- User account. Creation/token Bezug erhöht den Aufwand
-- Wenn Nutzer Konto notwendig um zu nutzen -> token vergabe
-
-- server seitiges handling beim publishing
-
-
-
-%A Provably Secure and Lightweight Anonymous User Authenticated Session Key Exchange Scheme for Internet of Things Deployment | IEEE Journals & Magazine | IEEE Xplore
-%https://ieeexplore.ieee.org/abstract/document/8737718/
-
-secure anonymous user authentication scheme - Google Scholar
-%https://scholar.google.com/scholar?hl=en&as_sdt=0,5&qsp=1&q=secure+anonymous+user+authentication+scheme&qst=br
-
-%A Secure and Privacy-Preserving Protocol for Smart Metering Operational Data Collection | IEEE Journals & Magazine | IEEE Xplore
-%https://ieeexplore.ieee.org/abstract/document/8669800/
-
-%tamper proof data collection - Google Scholar
-%https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=temper+proof+data+collection&btnG=
-
-
-
-G: Data gathering instrument
-
-
     If a project intents to publish data, that is based on PII, all data sets should be checked against the privacy publishing models we presented in section \ref{subsec:related:private_data_analysis}. While we recommend to avoid the collection of personally identifiable data, there might be reason to do so.\\
     There are some open source tools available to ease the privacy preserving analysis.
     For differential privacy, there are tools developed by IBM \cite{noauthor_ibmdifferential-privacy-library_2021}, Google \cite{noauthor_googledifferential-privacy_2021} or the Harvard University Privacy Tools Project \cite{salil_vadhan_opendp_nodate}. These tool provide support for developers, who want to use differential privacy in there applications and analyses.
@@ -76,6 +52,8 @@ G: Data gathering instrument
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Anonymization Results}
 \label{sec:results:anon}
+
+
 
 - number of available mac addresses -> 1 interface geräte ansprechen
 - Sicherheit der ID auch bei nur einer MAC
