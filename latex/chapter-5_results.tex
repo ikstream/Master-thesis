@@ -52,20 +52,20 @@ In this chapter we provide information of our evaluation steps and discuss the r
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Anonymization Results}
 \label{sec:results:anon}
-    devices with a single network interface card and no bootloader or configuration partitions. During the transport the user data is encrypted. An adversary that monitors the traffic of a client could collect the collection query, but without the private key the collected data is of no use. If an attacker knows the vendor of the network interface card, there are still $2^{24} = 16777216$ hashes to generate and encrypt, which is an relatively easy task for modern hardware. If the attacker already obtained the vendor ID, there is only little insight gained from it, especially, if the collected data is stored with a second layer encryption using compute intense algorithms like \textit{b}- or \textit{scrypt}. 
-    Then again, if the offender is unaware of the network device manufacturer, the search spaces for MAC generation increases significantly.
-    For multi-MAC devices the number of MAC addresses is large enough to be unfeasible to generate and apply encryption.
+    While the generated IDs uses encryption and hashing that has no known feasible attacks at time of writing, the possibility of reidentification can't be excluded. While the randomness of the data that is used to generate the ID is sufficient on allmost all devices, there are devices, with an increased risk.\\
+    These are devices with a single network interface card and no bootloader or configuration partitions (WOBL) . During the transport the user data is encrypted. An adversary that monitors the traffic of a client could collect the collection query, but without the private key the collected data is of no use. If an attacker knows the vendor of the network interface card, there are $2^{24} = 16777216$ hashes to generate, which is a computational feasible task on current hardware. The generated hashes take up around \SIlist{2.2}{\giga\byte} of disk storage.
+    If the attacker already obtained the vendor ID, there is only little insight gained from it, especially, if the collected data is stored with a second layer encryption using compute intense algorithms like \textit{b}- or \textit{scrypt}. 
+    Then again, if the offender is unaware of the network device manufacturer, the search spaces for MAC generation increases significantly. Even if someone gains access to a full dataset without additionally encrypted IDs, the collected data should be usually to generic,  to draw a conclusion on a single device.\\
+    For multi-MAC devices the number of MAC addresses is large enough to be unfeasible to generate all hashes and apply the encryption function. Even if the vendor bits are known, there are $2^48 \sim 2.81^{14}$ possible addresses.\\
+    If the thread model of a user with a single MAC device, without bootloader or configuration partitions, includes a threat actor that is able to monitor the users network traffic and be able to get in possession of the private key from the collection server, we would recommend not to participate. While we classify the risk of reidentification for these devices as low, individual users might a higher risk level.\\
+    Nevertheless it is a known weakness in our system and will be further investigated.\\
+    
+    Another feature in modern system that supports our anonymization efforts is load balancing. Internet Service Provider (ISP) and DNS service provider usually try to split the load evenly over their server. Therefore, messages belonging to client batch may arrive over different resolver, further reducing the amount of IPs the server receives messages from. While the dalec server is still able to link each message to the correct client, an attacker would need to monitor more then one DNS server to collect all messages sent between dalec client and server. If the dalec server would collect the IPs from incoming messages, it could include a wide range of IPs for each client. As the DNS service provider balances the requests between different servers, the physical location of these servers might be wide spread, even over multiple countries, as has been encountered during the testing stage.\\
+    
+    A user, which is especially privacy focus, could still change its preferred DNS server in its router or device settings to a service that is not bound to an ISP. This reduces the risk, that the country of a user might be determined by an attacker or a collection server.\\
+    To enhance the privacy further, technologies like DoH, oDoH and DNSSec can be used. These can reduce the risk of an ISP or an intruder of the ISP's network listening in on the connection. 
 
 
-- number of available mac addresses -> 1 interface geräte ansprechen
-- Sicherheit der ID auch bei nur einer MAC
-- daten während der übertragung verschlüsselt, angreifer nicht einsehen, größerer suchraum.
-- wenn zusätzlich verschlüsselt gespeichert noch aufwendiger aus möglicher range ID zu generieren
-- Thread model
-- eine Anfrage kommt über mehrere DNS server
-
-
-%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,11 +73,36 @@ In this chapter we provide information of our evaluation steps and discuss the r
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Telemetry statistics}
+\section{Performance evaluation}
 \label{sec:results:telemetry}
 %
+    
+    To measure the load on a network we generated 25 x86$\_$64 virtual machines (VM) with KVM (see listing \ref{lst:vm-spec}). We disabled dalec's virtualization checks to run the software on these machines. We configured dalec to transmit the data at the same time. The server was able to sort all messages to the correct client IDs and decrypt the data afterwards. The structure of a transmitted message can be seen in listing \ref{lst:message}. The total transmission data was split over eight messages.
+    Which was send out as eight DNS queries, with one additional query in the beginning for the public key of the dalec server.
+    Data transmission one to seven had a size of 296 bytes on the wire with a name length of 236 bytes and data transmission eight had a size of 221 bytes with a name length of 161 bytes
+    
+    \begin{lstlisting}[language=json, caption=virtual machine specifications, label=lst:vm-spec]
+    RAM: 128 MB
+    CPU: 1
+    Network interface count: 2
+    Operating System: OpenWrt
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=json, caption=Layout of dalec message, label=lst:message]
+634c716a66664e61575a5936664a704d51687a4a73454f53354f69314e524.162506a310a636136794752496d36794c5352626a6a464d765532636f4835.7258694279492b6b714c65507138426667596a31382b597a756d544267643.EPfGiM9IJpDHQQMaItynBRlJpusUP0KA-7-8.owrt.sviks.de
+    \end{lstlisting}    
+    
+    To test the reidentification resistance on WOBL devices we generated another virtual machine, like shown in listing \ref{lst:vm-spec}, but with only one network interface. 
+    We generated all possible MAC addresses of the virtualized network interface with the vendor prefix \textit{52:54:00} which took around 30 seconds. We used the tool \textit{exrex} \cite{tauber_asciimooexrex_2021} for the generation as seen in listing \ref{lst:exrex}. We hashed the generated MAC addresses as done in dalec with \textit{openssl dgst -sha3-512}. The generated hashes were saved to a file. Hashing all MAC addresses took X:TODO: seconds with a single instance of \textit{openssl}. Multiple instances and splitting up the list of MAC addresses would have sped up the process.
+    
+    \begin{lstlisting}[language=bash, caption=MAC generation with exrex, label=lst:message]
+    exrex '525400[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]' \
+    >> mac.out
+    \end{lstlisting}    
+    
+
 - Netzwerk Footprint. Viele clients gleichzeitig -> Datenverbrauch
-- number of device handlebar
+
 - Multithreading
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,5 +112,4 @@ In this chapter we provide information of our evaluation steps and discuss the r
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
 In this chapter, we demonstrated the limitations of the system. We also discussed the security of the generated IDs during transport and storage phase. Especially for devices with only one physical interface this is critical. We also discussed about the performance 
-
 
