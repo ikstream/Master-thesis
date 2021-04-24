@@ -52,7 +52,9 @@ In this chapter we provide information of our evaluation steps and discuss the r
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Anonymization Results}
 \label{sec:results:anon}
-
+    devices with a single network interface card and no bootloader or configuration partitions. During the transport the user data is encrypted. An adversary that monitors the traffic of a client could collect the collection query, but without the private key the collected data is of no use. If an attacker knows the vendor of the network interface card, there are still $2^{24} = 16777216$ hashes to generate and encrypt, which is an relatively easy task for modern hardware. If the attacker already obtained the vendor ID, there is only little insight gained from it, especially, if the collected data is stored with a second layer encryption using compute intense algorithms like \textit{b}- or \textit{scrypt}. 
+    Then again, if the offender is unaware of the network device manufacturer, the search spaces for MAC generation increases significantly.
+    For multi-MAC devices the number of MAC addresses is large enough to be unfeasible to generate and apply encryption.
 
 
 - number of available mac addresses -> 1 interface geräte ansprechen
