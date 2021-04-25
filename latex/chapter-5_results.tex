@@ -77,9 +77,13 @@ In this chapter we provide information of our evaluation steps and discuss the r
 \label{sec:results:telemetry}
 %
     
-    To measure the load on a network we generated 25 x86$\_$64 virtual machines (VM) with KVM (see listing \ref{lst:vm-spec}). We disabled dalec's virtualization checks to run the software on these machines. We configured dalec to transmit the data at the same time. The server was able to sort all messages to the correct client IDs and decrypt the data afterwards. The structure of a transmitted message can be seen in listing \ref{lst:message}. The total transmission data was split over eight messages.
+    To measure the load on a network we generated 25 x86$\_$64 virtual machines (VM) with KVM (see listing \ref{lst:vm-spec}). We disabled dalec's virtualization checks to run the software on these machines. We configured dalec to transmit the data at the same time. The server was able to sort all messages to the correct client IDs and decrypt the data afterwards. The server performance can be increased further, by adding more processing threads in each step. The implementation of the interprocess communication allows scaleabilty. The bottleneck could be the handling of incoming data, which could be solved with multiple load balanced server instances. Sending all request of one client to the same server would depend on the load balancer's configuration.\\
+    The structure of a transmitted message can be seen in listing \ref{lst:message}. The total transmission data was split over eight messages.
     Which was send out as eight DNS queries, with one additional query in the beginning for the public key of the dalec server.
-    Data transmission one to seven had a size of 296 bytes on the wire with a name length of 236 bytes and data transmission eight had a size of 221 bytes with a name length of 161 bytes
+    Data transmission one to seven had a size of 296 bytes on the wire with a name length of 236 bytes and data transmission eight had a size of 221 bytes with a name length of 161 bytes. Eight message of  25 devices sum up to \SIlist{55.825}{\kilo\byte} of network load. Dalec is configured to run every 4 hours, to make up for transmission errors. 
+    This sums up to a total of \SIlist{334.95}{\kilo\byte} per day for 25 clients. 
+    A single client produces around \SIlist{14}{\kilo\byte} of outgoing traffic per day.
+    This a feasible amount of traffic, even on a metered connection.
     
     \begin{lstlisting}[language=json, caption=virtual machine specifications, label=lst:vm-spec]
     RAM: 128 MB
@@ -93,17 +97,35 @@ In this chapter we provide information of our evaluation steps and discuss the r
     \end{lstlisting}    
     
     To test the reidentification resistance on WOBL devices we generated another virtual machine, like shown in listing \ref{lst:vm-spec}, but with only one network interface. 
-    We generated all possible MAC addresses of the virtualized network interface with the vendor prefix \textit{52:54:00} which took around 30 seconds. We used the tool \textit{exrex} \cite{tauber_asciimooexrex_2021} for the generation as seen in listing \ref{lst:exrex}. We hashed the generated MAC addresses as done in dalec with \textit{openssl dgst -sha3-512}. The generated hashes were saved to a file. Hashing all MAC addresses took X:TODO: seconds with a single instance of \textit{openssl}. Multiple instances and splitting up the list of MAC addresses would have sped up the process.
+    We generated all possible MAC addresses of the virtualized network interface with the vendor prefix \textit{52:54:00} which took around 30 seconds. We used the tool \textit{exrex} \cite{tauber_asciimooexrex_2021} for the generation as seen in listing \ref{lst:exrex}. 
     
-    \begin{lstlisting}[language=bash, caption=MAC generation with exrex, label=lst:message]
-    exrex '525400[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]' \
-    >> mac.out
+    \begin{lstlisting}[language=bash, caption=MAC generation with exrex, label=lst:exrex]
+    exrex '525400[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]'
     \end{lstlisting}    
     
-
-- Netzwerk Footprint. Viele clients gleichzeitig -> Datenverbrauch
-
-- Multithreading
+    We hashed the generated MAC addresses as done in dalec. The command is shown in listing \ref{lst:hash}.
+    
+    \begin{lstlisting}[language=bash, caption=MAC hashing with OpenSSL, label=lst:hash]
+        openssl dgst -sha3-512
+    \end{lstlisting}
+    
+    The generated hashes were saved to a file. Hashing all MAC addresses took X:TODO: seconds with a single instance of \textit{OpenSSL}. 
+    For testing we utilized a AMD Ryzen 5 3600X with six cores and twelve threads. The core speed was fixed to \SIlist{3.8}{\giga\hertz}. The PC is equipped with \SIlist{64}{\giga\byte} of RAM.
+    Multiple instances and splitting up the list of MAC addresses speed up the process.
+    To encrypt the encrypt the generated hashes, we split up the output file into ten equally sized chunks. Each chunk was as shown in \ref{lst:encrypt}.
+    
+    \begin{lstlisting}[language=bash, caption=ID encryption and truncation, label=lst:encryption]
+    openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 \                              -k "$key" -S "$salt" -base64 | \                                      
+    tr -d '\n' | \                                                        
+    sed 's;[^a-zA-z0-9];;g' | \
+    tail -c 32
+    \end{lstlisting}
+    
+    This took around X:TODO. 
+    An adversary, without the vendor prefix would have to do this for range of prefixes, increasing the processing time significantly.
+    
+    
+    
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -111,5 +133,6 @@ In this chapter we provide information of our evaluation steps and discuss the r
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
-In this chapter, we demonstrated the limitations of the system. We also discussed the security of the generated IDs during transport and storage phase. Especially for devices with only one physical interface this is critical. We also discussed about the performance 
+In this chapter, we demonstrated the limitations of the system. We also discussed the security of the generated IDs during transport and storage phase. Especially for devices with only one physical interface this is critical. We also discussed the performance of dalec and the process of reidentification for WOBL devices.
+The next chaptert will conclude and summarize this thesis.
 
