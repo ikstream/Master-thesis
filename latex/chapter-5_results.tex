@@ -1,10 +1,10 @@
 \chapter{Results}
 \label{chap:results}
 
-While the presented solution addresses the need for a privacy preserving, secure data collection tool, there are some points, that could not be addressed. 
-Using the structure of DNS we were able to detach the clients IP from the data, which, in turn, is transported encrypted utilizing asynchronous encryption. 
+While the presented solution addresses the need for a privacy-preserving, secure data collection tool, some points could not be addressed. 
+Using the structure of DNS, we were able to detach the client's IP from the data, which, in turn, is transported encrypted utilizing asynchronous encryption. 
 
-In this chapter we provide information of our evaluation steps and discuss the results of our measurement setup described in the last chapter.\\
+This chapter provides information on our evaluation steps and discusses the results of our measurement setup described in the last chapter.\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -15,29 +15,29 @@ In this chapter we provide information of our evaluation steps and discuss the r
 \label{sec:measurement:robust}
 %
 
-    We looked into ways to validate the collected data. If development is based on on the data, adversaries might try to generate emulated devices. To counter the emulation, we only use physical devices with PCI addresses for the ID generation. This excludes Linux containers like docker without network card passthrough. The message buffer of the kernel is checked if the kernel is loaded in a virtual environment like KVM or Virtualbox. The client checks this, using the \textit{dmesg} application. 
+    We looked into ways to validate the collected data. If development is based on the data, adversaries might try to generate emulated devices. We only use physical devices with PCI addresses for the ID generation to counter the emulation. This excludes Linux containers like docker without network card passthrough. The kernel's message buffer is checked if the kernel is loaded in a virtual environment like KVM or Virtualbox. The client checks this using the \textit{dmesg} application. 
     If a virtual environment is detected, the client stops before transmitting any data.\\
     
     Another option to check for validity is to check the integrity of the source code. Therefore a hash or similar can be generated over the existing source code and transmitted to the server.
-    If a cryptographic hash function is used, source code modification would show in the hash value transmitted.\\
-    This, and other options can be leveraged with patching the source code. Especially in open source software it is easy to manipulate the software. The function that generates the hash of the source code can be pointed to intact source code, while the running code is modified. While it is more complicated, the same is true for closed source software.
+    If a cryptographic hash function is used, source code modification will show in the hash value transmitted.\\
+    This and other options can be leveraged with patching the source code. Especially in open source software, it is easy to manipulate the software. The function that generates the hash of the source code can be pointed to intact source code, while the running code is modified. While it is more complicated, the same is true for closed source software.
     Using a closed source implementation for data collection in an open source project might reduce users' trust in a project and make them stop using it.
-    Changing the MAC address of a physical device can be used to manipulate the collection as well. This can be countered on MTD devices by basing the ID generation on the persistent MTD partitions only. For devices without persistent special data partitions, there is currently no work around in dalec.\\
+    Changing the MAC address of a physical device can be used to manipulate the collection as well. This can be countered on MTD devices by basing the ID generation on the persistent MTD partitions only. For devices without persistent special data partitions, there is currently no workaround in dalec.\\
     
-    To increase the complexity of manipulation, a user authentication process would be needed. If a malicious actor would need to create one account or token per counterfeit device, the manipulation possibilities could be limited. On the other hand, users with a multitude of legitimate devices would be burdened additionally.\\ 
-    As we pointed out in previous chapters, this would reduce the number of participating users, even with privacy preserving schemes available.\\
+    A user authentication process would be needed to increase the complexity of manipulation. If a malicious actor would need to create one account or token per counterfeit device, the manipulation possibilities could be limited. On the other hand, users with a multitude of legitimate devices would be burdened additionally.\\ 
+    As we pointed out in previous chapters, this would reduce the number of participating users, even with privacy-preserving schemes available.\\
 
     
     While our system provides privacy, the generated traffic might look malicious.
-    In strongly regulated or monitored environments the DNS requests might trigger data exfiltration alerts. As this might lead to the collecting domain ending up on a distributed block list or a drop of all traffic from a client. That may cause issues for other clients in less regulated environments, which solely block DNS requests based on these lists.
-    Therefore, clients should be made aware of the data collection layout. The collection domain should ideally state its purpose and be openly documented. Blocking might be prevented that way, as network operator might check on domain names before blocking, if the core domain does not look suspicious.\\
+    In strongly regulated or monitored environments, the DNS requests might trigger data exfiltration alerts. This might lead to the collecting domain ending up on a distributed block list or a drop of all traffic from a client. That may cause issues for other clients in less regulated environments, which solely block DNS requests based on these lists.
+    Therefore, clients should be made aware of the data collection layout. The collection domain should ideally state its purpose and be openly documented. Blocking might be prevented that way. A network operator might check on domain names before blocking if the core domain looks unsuspicious.\\
 
-    If a project intents to publish data, that is based on PII, all data sets should be checked against the privacy publishing models we presented in section \ref{subsec:related:private_data_analysis}. While we recommend to avoid the collection of personally identifiable data, there might be reason to do so.\\
-    There are some open source tools available to ease the privacy preserving analysis.
-    For differential privacy, there are tools developed by IBM \cite{noauthor_ibmdifferential-privacy-library_2021}, Google \cite{noauthor_googledifferential-privacy_2021} or the Harvard University Privacy Tools Project \cite{salil_vadhan_opendp_nodate}. These tool provide support for developers, who want to use differential privacy in there applications and analyses.
+    If a project intends to publish data based on PII, all data sets should be checked against the privacy publishing models we presented in section \ref{subsec:related:private_data_analysis}. While we recommend avoiding collecting personally identifiable data, there might be a reason to do so.\\
+    There are some open source tools available to ease the privacy-preserving analysis.
+    For differential privacy, there are tools developed by IBM \cite{noauthor_ibmdifferential-privacy-library_2021}, Google \cite{noauthor_googledifferential-privacy_2021} or the Harvard University Privacy Tools Project \cite{salil_vadhan_opendp_nodate}. These tools support developers who want to use differential privacy in their applications and analyses.
     Tools for \textit{k-}anonymity and \textit{l-}diversity are available as well. 
     Google provides a solution to calculate values for both algorithms \cite{noauthor_computing_nodate}, \cite{noauthor_computing_nodate-1}. 
-    Crowds \cite{mazzone_leo-mazzcrowds_2021} is a Python module that transforms Pandas dataframes with the Optimal Lattice Anonymization algorithm, that they satisfy \textit{k-}anonymity. An implementation for \textit{l-}diversity \cite{gong_qiyuangongmondrian_l_diversity_2021} and \textit{k-}anonymity \cite{gong_qiyuangongmondrian_2021} using the Mondrian algorithm for anonymization is available is well.
+    Crowds \cite{mazzone_leo-mazzcrowds_2021} is a Python module that transforms Pandas dataframes with the Optimal Lattice Anonymization algorithm that they satisfy \textit{k-}anonymity. An implementation for \textit{l-}diversity \cite{gong_qiyuangongmondrian_l_diversity_2021} and \textit{k-}anonymity \cite{gong_qiyuangongmondrian_2021} using the Mondrian algorithm for anonymization is available as well.
 
 %
 \newpage
@@ -52,18 +52,18 @@ In this chapter we provide information of our evaluation steps and discuss the r
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Anonymization Results}
 \label{sec:results:anon}
-    While the generated IDs uses encryption and hashing that has no known feasible attacks at time of writing, the possibility of reidentification can't be excluded. While the randomness of the data that is used to generate the ID is sufficient on allmost all devices, there are devices, with an increased risk.\\
-    These are devices with a single network interface card and no bootloader or configuration partitions (WOBL) . During the transport the user data is encrypted. An adversary that monitors the traffic of a client could collect the collection query, but without the private key the collected data is of no use. If an attacker knows the vendor of the network interface card, there are $2^{24} = 16777216$ hashes to generate, which is a computational feasible task on current hardware. The generated hashes take up around \SIlist{2.2}{\giga\byte} of disk storage.
-    If the attacker already obtained the vendor ID, there is only little insight gained from it, especially, if the collected data is stored with a second layer encryption using compute intense algorithms like \textit{b}- or \textit{scrypt}. 
-    Then again, if the offender is unaware of the network device manufacturer, the search spaces for MAC generation increases significantly. Even if someone gains access to a full dataset without additionally encrypted IDs, the collected data should be usually to generic,  to draw a conclusion on a single device.\\
-    For multi-MAC devices the number of MAC addresses is large enough to be unfeasible to generate all hashes and apply the encryption function. Even if the vendor bits are known, there are $2^48 \sim 2.81^{14}$ possible addresses.\\
-    If the thread model of a user with a single MAC device, without bootloader or configuration partitions, includes a threat actor that is able to monitor the users network traffic and be able to get in possession of the private key from the collection server, we would recommend not to participate. While we classify the risk of reidentification for these devices as low, individual users might a higher risk level.\\
-    Nevertheless it is a known weakness in our system and will be further investigated.\\
+    While the generated IDs use encryption and hashing that has no known feasible attacks at the time of writing, the possibility of reidentification can't be excluded. While the randomness of the data used to generate the ID is sufficient on almost all devices, there are devices with an increased risk.\\
+    These are devices with a single network interface card and no bootloader or configuration partitions (WOBL) . During the transport, the user data is encrypted. An adversary that monitors a client's traffic could collect the collection query, but without the private key, the collected data is of no use. If an attacker knows the network interface card vendor, there are $2^{24} = 16777216$ hashes to generate, which is a computational feasible task on current hardware. The generated hashes take up around \SIlist{2.2}{\giga\byte} of disk storage.
+    If the attacker already obtained the vendor ID, there is only little insight gained, especially if the collected data is stored with a second layer encryption using compute intense algorithms like \textit{b}- or \textit{scrypt}. 
+    Then again, if the offender is unaware of the network device manufacturer, the search spaces for MAC generation increase significantly. Even if someone gains access to a full dataset without additional encrypted IDs, the collected data should be too generic to conclude a single device.\\
+    For multi-MAC devices, the number of MAC addresses is large enough to be unfeasible to generate all hashes and apply the encryption function. Even if the vendor bits are known, there are $2^{48} \sim 2.81^{14}$ possible addresses.\\
+    If the thread model of a user with a single MAC device, without bootloader or configuration partitions, includes a threat actor that can monitor the user's network traffic and get in possession of the private key from the collection server, we would recommend not to participate. While we classify the risk of reidentifying these devices as low, individual users might have a higher risk level.\\
+    Nevertheless, it is a known weakness in our system and will be further investigated.\\
     
-    Another feature in modern system that supports our anonymization efforts is load balancing. Internet Service Provider (ISP) and DNS service provider usually try to split the load evenly over their server. Therefore, messages belonging to client batch may arrive over different resolver, further reducing the amount of IPs the server receives messages from. While the dalec server is still able to link each message to the correct client, an attacker would need to monitor more then one DNS server to collect all messages sent between dalec client and server. If the dalec server would collect the IPs from incoming messages, it could include a wide range of IPs for each client. As the DNS service provider balances the requests between different servers, the physical location of these servers might be wide spread, even over multiple countries, as has been encountered during the testing stage.\\
+    Another feature in modern system that supports our anonymization efforts is load balancing. Internet Service Provider (ISP) and DNS service provider usually try to split the load evenly over their server. Therefore, messages belonging to the client batch may arrive over different resolvers, further reducing the amount of IPs the server receives messages from. While the dalec server can still link each message to the correct client, an attacker would need to monitor more than one DNS server to collect all messages sent between the dalec client and server. If the dalec server would collect the IPs from incoming messages, it could include a wide range of IPs for each client. As the DNS service provider balances the requests between different servers, the physical location of these servers might be widespread, even over multiple countries, as has been encountered during the testing stage.\\
     
-    A user, which is especially privacy focus, could still change its preferred DNS server in its router or device settings to a service that is not bound to an ISP. This reduces the risk, that the country of a user might be determined by an attacker or a collection server.\\
-    To enhance the privacy further, technologies like DoH, oDoH and DNSSec can be used. These can reduce the risk of an ISP or an intruder of the ISP's network listening in on the connection. 
+    A user, which is especially privacy focus, could still change its preferred DNS server in its router or device settings to a service that is not bound to an ISP. This reduces the risk that an attacker or a collection server might determine a user's country.\\
+    To enhance privacy further, technologies like DoH, ODoH, and DNSSec can be used. These can reduce the risk of an ISP or an intruder of the ISP's network listening in on the connection. 
 
 
 
@@ -77,10 +77,10 @@ In this chapter we provide information of our evaluation steps and discuss the r
 \label{sec:results:telemetry}
 %
     
-    To measure the load on a network we generated 25 x86$\_$64 virtual machines (VM) with KVM (see listing \ref{lst:vm-spec}). We disabled dalec's virtualization checks to run the software on these machines. We configured dalec to transmit the data at the same time. The server was able to sort all messages to the correct client IDs and decrypt the data afterwards. The server performance can be increased further, by adding more processing threads in each step. The implementation of the interprocess communication allows scaleabilty. The bottleneck could be the handling of incoming data, which could be solved with multiple load balanced server instances. Sending all request of one client to the same server would depend on the load balancer's configuration.\\
+    To measure the load on a network, we generated 25 x86$\_$64 virtual machines (VM) with KVM (see listing \ref{lst:vm-spec}). We disabled dalec's virtualization checks to run the software on these machines. We configured dalec to transmit the data at the same time. The server was able to sort all messages to the correct client IDs and decrypt the data afterwards. The server performance can be increased further by adding more processing threads in each step. The implementation of interprocess communication allows scalability. The bottleneck could be handling incoming data, which could be solved with multiple load-balanced server instances. Sending all client requests to the same server would depend on the load balancer's configuration.\\
     The structure of a transmitted message can be seen in listing \ref{lst:message}. The total transmission data was split over eight messages.
-    Which was send out as eight DNS queries, with one additional query in the beginning for the public key of the dalec server.
-    Data transmission one to seven had a size of 296 bytes on the wire with a name length of 236 bytes and data transmission eight had a size of 221 bytes with a name length of 161 bytes. Eight message of  25 devices sum up to \SIlist{55.825}{\kilo\byte} of network load. Dalec is configured to run every 4 hours, to make up for transmission errors. 
+    Which was sent out as eight DNS queries, with one additional query in the beginning for the public key of the dalec server.
+    Data transmission one to seven had a size of 296 bytes on the wire with a name length of 236 bytes and data transmission eight had a size of 221 bytes with a name length of 161 bytes. Eight messages of  25 devices sum up to \SIlist{55.825}{\kilo\byte} of network load. Dalec is configured to run every 4 hours to make up for transmission errors. 
     This sums up to a total of \SIlist{334.95}{\kilo\byte} per day for 25 clients. 
     A single client produces around \SIlist{14}{\kilo\byte} of outgoing traffic per day.
     This a feasible amount of traffic, even on a metered connection.
@@ -96,8 +96,8 @@ In this chapter we provide information of our evaluation steps and discuss the r
 634c716a66664e61575a5936664a704d51687a4a73454f53354f69314e524.162506a310a636136794752496d36794c5352626a6a464d765532636f4835.7258694279492b6b714c65507138426667596a31382b597a756d544267643.EPfGiM9IJpDHQQMaItynBRlJpusUP0KA-7-8.owrt.sviks.de
     \end{lstlisting}    
     
-    To test the reidentification resistance on WOBL devices we generated another virtual machine, like shown in listing \ref{lst:vm-spec}, but with only one network interface. 
-    We generated all possible MAC addresses of the virtualized network interface with the vendor prefix \textit{52:54:00} which took around 30 seconds. We used the tool \textit{exrex} \cite{tauber_asciimooexrex_2021} for the generation as seen in listing \ref{lst:exrex}. 
+    To test the reidentification resistance on WOBL devices, we generated another virtual machine, as shown in listing \ref{lst:vm-spec}, but with only one network interface. 
+    We generated all possible MAC addresses of the virtualized network interface with the vendor prefix \textit{52:54:00}, which took around 30 seconds. We used the tool \textit{exrex} \cite{tauber_asciimooexrex_2021} for the generation as seen in listing \ref{lst:exrex}. 
     
     \begin{lstlisting}[language=bash, caption=MAC generation with exrex, label=lst:exrex]
     exrex '525400[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]'
@@ -110,19 +110,19 @@ In this chapter we provide information of our evaluation steps and discuss the r
     \end{lstlisting}
     
     The generated hashes were saved to a file. Hashing all MAC addresses took X:TODO: seconds with a single instance of \textit{OpenSSL}. 
-    For testing we utilized a AMD Ryzen 5 3600X with six cores and twelve threads. The core speed was fixed to \SIlist{3.8}{\giga\hertz}. The PC is equipped with \SIlist{64}{\giga\byte} of RAM.
-    Multiple instances and splitting up the list of MAC addresses speed up the process.
-    To encrypt the encrypt the generated hashes, we split up the output file into ten equally sized chunks. Each chunk was as shown in \ref{lst:encrypt}.
+    We utilized an AMD Ryzen 5 3600X with six cores and twelve threads for testing. The core speed was fixed to \SIlist{3.8}{\giga\hertz}. The PC is equipped with \SIlist{64}{\giga\byte} of RAM.
+    Multiple instances and splitting up the list of MAC addresses can speed up the hashing process.
+    We split up the output file into ten equally sized chunks to encrypt the generated hashes. Each chunk was processed as shown in \ref{lst:encryption}.
     
     \begin{lstlisting}[language=bash, caption=ID encryption and truncation, label=lst:encryption]
-    openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 \                              -k "$key" -S "$salt" -base64 | \                                      
+    openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 \                                  -k "$key" -S "$salt" -base64 | \                                      
     tr -d '\n' | \                                                        
     sed 's;[^a-zA-z0-9];;g' | \
     tail -c 32
     \end{lstlisting}
     
     This took around X:TODO. 
-    An adversary, without the vendor prefix would have to do this for range of prefixes, increasing the processing time significantly.
+    An adversary without the vendor prefix would have to do this for a range of prefixes, increasing the processing time significantly to a computationally infeasible extend.
     
     
     
@@ -133,6 +133,6 @@ In this chapter we provide information of our evaluation steps and discuss the r
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
-In this chapter, we demonstrated the limitations of the system. We also discussed the security of the generated IDs during transport and storage phase. Especially for devices with only one physical interface this is critical. We also discussed the performance of dalec and the process of reidentification for WOBL devices.
-The next chaptert will conclude and summarize this thesis.
+In this chapter, we demonstrated the limitations of the system. We also discussed the security of the generated IDs during the transport and storage phase. Especially for devices with only one physical interface, this is critical. We also discussed the performance of dalec and the process of reidentification for WOBL devices.
+The next chapter will conclude and summarize this thesis.
 
