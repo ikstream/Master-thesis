@@ -57,7 +57,7 @@ This chapter provides information on our evaluation steps and discusses the resu
     If the attacker already obtained the vendor ID, there is only little insight gained, especially if the collected data is stored with a second layer encryption using compute intense algorithms like \textit{b}- or \textit{scrypt}. 
     Then again, if the offender is unaware of the network device manufacturer, the search spaces for MAC generation increase significantly. Even if someone gains access to a full dataset without additional encrypted IDs, the collected data should be too generic to conclude a single device.\\
     For multi-MAC devices, the number of MAC addresses is large enough to be unfeasible to generate all hashes and apply the encryption function. Even if the vendor bits are known, there are $2^{48} \sim 2.81^{14}$ possible addresses.\\
-    If the thread model of a user with a single MAC device, without bootloader or configuration partitions, includes a threat actor that can monitor the user's network traffic and get in possession of the private key from the collection server, we would recommend not to participate. While we classify the risk of reidentifying these devices as low, individual users might have a higher risk level.\\
+    If the thread model of a user with a single MAC device, without bootloader or calibration data partitions, includes a threat actor that can monitor the user's network traffic and get in possession of the private key from the collection server, we would recommend not to participate. For the regular user, this threat model is unlikely, but for people who participate in high risk political work this may be applicable. These people are probably unlikely to participate. While we classify the risk of reidentifying these devices as low, individual users might have a higher risk level.\\
     Nevertheless, it is a known weakness in our system and will be further investigated.\\
     
     Another feature in modern system that supports our anonymization efforts is load balancing. Internet Service Provider (ISP) and DNS service provider usually try to split the load evenly over their server. Therefore, messages belonging to the client batch may arrive over different resolvers, further reducing the amount of IPs the server receives messages from. While the dalec server can still link each message to the correct client, an attacker would need to monitor more than one DNS server to collect all messages sent between the dalec client and server. If the dalec server would collect the IPs from incoming messages, it could include a wide range of IPs for each client. As the DNS service provider balances the requests between different servers, the physical location of these servers might be widespread, even over multiple countries, as has been encountered during the testing stage.\\
@@ -109,10 +109,10 @@ This chapter provides information on our evaluation steps and discusses the resu
         openssl dgst -sha3-512
     \end{lstlisting}
     
-    The generated hashes were saved to a file. Hashing all MAC addresses took X:TODO: seconds with a single instance of \textit{OpenSSL}. 
-    We utilized an AMD Ryzen 5 3600X with six cores and twelve threads for testing. The core speed was fixed to \SIlist{3.8}{\giga\hertz}. The PC is equipped with \SIlist{64}{\giga\byte} of RAM.
+    The generated hashes were saved to a file. Hashing all MAC addresses took around 13.5 hours with a single instance of \textit{OpenSSL}.
+    We utilized an AMD Ryzen 5 3600X for testing. The core speed was fixed to \SIlist{3.8}{\giga\hertz}. The PC is equipped with \SIlist{64}{\giga\byte} of RAM.
     Multiple instances and splitting up the list of MAC addresses can speed up the hashing process.
-    We split up the output file into ten equally sized chunks to encrypt the generated hashes. Each chunk was processed as shown in \ref{lst:encryption}.
+    We split up the output file into ten similar sized chunks to encrypt the generated hashes. Each chunk was processed as shown in \ref{lst:encryption}.
     
     \begin{lstlisting}[language=bash, caption=ID encryption and truncation, label=lst:encryption]
     openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 \                                  -k "$key" -S "$salt" -base64 | \                                      
@@ -121,7 +121,7 @@ This chapter provides information on our evaluation steps and discusses the resu
     tail -c 32
     \end{lstlisting}
     
-    This took around X:TODO. 
+    Encrypting and writing a single hash to file takes around \SIlist{0.25}{\second} on the test system. Processing all hashes with a single instance of \textit{OpenSSL} takes over 1165 hours. Splitting it over ten simultaneous operations reduces the time to 116.5 hours.
     An adversary without the vendor prefix would have to do this for a range of prefixes, increasing the processing time significantly to a computationally infeasible extend.
     
     
@@ -133,6 +133,7 @@ This chapter provides information on our evaluation steps and discusses the resu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
-In this chapter, we demonstrated the limitations of the system. We also discussed the security of the generated IDs during the transport and storage phase. Especially for devices with only one physical interface, this is critical. We also discussed the performance of dalec and the process of reidentification for WOBL devices.
-The next chapter will conclude and summarize this thesis.
+In this chapter, we demonstrated the limitations of the system. We debated especially on the validity of the collected data, as these is probably the hardest limitation to overcome.
+We also discussed the security of the generated IDs during the transport and storage phase. We gave an overview of the complexity to reidentify a WOBL device. Especially for devices with only one physical interface, this is critical. We also discussed under which circumstances we would recommend not to participate in the data collection.
+In the next chapter will conclude and summarize this thesis.
 
