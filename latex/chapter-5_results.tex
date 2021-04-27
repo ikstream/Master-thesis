@@ -27,10 +27,11 @@ This chapter provides information on our evaluation steps and discusses the resu
     A user authentication process would be needed to increase the complexity of manipulation. If a malicious actor would need to create one account or token per counterfeit device, the manipulation possibilities could be limited. On the other hand, users with a multitude of legitimate devices would be burdened additionally.\\ 
     As we pointed out in previous chapters, this would reduce the number of participating users, even with privacy-preserving schemes available.\\
 
-    
     While our system provides privacy, the generated traffic might look malicious.
     In strongly regulated or monitored environments, the DNS requests might trigger data exfiltration alerts. This might lead to the collecting domain ending up on a distributed block list or a drop of all traffic from a client. That may cause issues for other clients in less regulated environments, which solely block DNS requests based on these lists.
     Therefore, clients should be made aware of the data collection layout. The collection domain should ideally state its purpose and be openly documented. Blocking might be prevented that way. A network operator might check on domain names before blocking if the core domain looks unsuspicious.\\
+    
+    If the DNS resolver is hosted inside the local network of a dalec user instead on a remote location by an ISP or DNS provider, the IP of the user is leaked to the collection server. While this is a possible situation, the collection server would not know the difference. If the incoming IPs are logged, the transmission could be traced back to that user. To prevent IP leakage, users should be made aware of the DNS usage and the ramifications of hosting a DNS resolver in there local network in combination with dalec.\\
 
     If a project intends to publish data based on PII, all data sets should be checked against the privacy publishing models we presented in section \ref{subsec:related:private_data_analysis}. While we recommend avoiding collecting personally identifiable data, there might be a reason to do so.\\
     There are some open source tools available to ease the privacy-preserving analysis.
@@ -40,11 +41,6 @@ This chapter provides information on our evaluation steps and discusses the resu
     Crowds \cite{mazzone_leo-mazzcrowds_2021} is a Python module that transforms Pandas dataframes with the Optimal Lattice Anonymization algorithm that they satisfy \textit{k-}anonymity. An implementation for \textit{l-}diversity \cite{gong_qiyuangongmondrian_l_diversity_2021} and \textit{k-}anonymity \cite{gong_qiyuangongmondrian_2021} using the Mondrian algorithm for anonymization is available as well.
 
 %
-\newpage
-%
- 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
@@ -53,7 +49,7 @@ This chapter provides information on our evaluation steps and discusses the resu
 \section{Anonymization Results}
 \label{sec:results:anon}
     While the generated IDs use encryption and hashing that has no known feasible attacks at the time of writing, the possibility of reidentification can't be excluded. While the randomness of the data used to generate the ID is sufficient on almost all devices, there are devices with an increased risk.\\
-    These are devices with a single network interface card and no bootloader or configuration partitions (WOBL) . During the transport, the user data is encrypted. An adversary that monitors a client's traffic could collect the collection query, but without the private key, the collected data is of no use. If an attacker knows the network interface card vendor, there are $2^{24} = 16777216$ hashes to generate, which is a computational feasible task on current hardware. The generated hashes take up around \SIlist{2.2}{\giga\byte} of disk storage.
+    These are devices with a single network interface card (NIC) and no bootloader or calibration partitions (WOBL) . During the transport, the user data is encrypted. An adversary that monitors a client's traffic could collect the collection query, but without the private key, the collected data is of no use. If an attacker knows the network interface card vendor, there are $2^{24} = 16777216$ hashes to generate, which is a computational feasible task on current hardware. The generated hashes take up around \SIlist{2.2}{\giga\byte} of disk storage.
     If the attacker already obtained the vendor ID, there is only little insight gained, especially if the collected data is stored with a second layer encryption using compute intense algorithms like \textit{b}- or \textit{scrypt}. 
     Then again, if the offender is unaware of the network device manufacturer, the search spaces for MAC generation increase significantly. Even if someone gains access to a full dataset without additional encrypted IDs, the collected data should be too generic to conclude a single device.\\
     For multi-MAC devices, the number of MAC addresses is large enough to be unfeasible to generate all hashes and apply the encryption function. Even if the vendor bits are known, there are $2^{48} \sim 2.81^{14}$ possible addresses.\\

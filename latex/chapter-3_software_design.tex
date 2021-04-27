@@ -80,7 +80,9 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
         \end{equation}
         
         where domain $D = \{0,1\}^*$ and $R=\{0,1\}^n$ for $n >= 1$.
-        
+
+\newpage
+
         In addition, an OWHF must meet five requirements defined by Merkle in  \cite{merkle_secrecy_1979}.
         \begin{itemize}
             \item \textbf{\textit{h}} must be applicable to any length of data blocks
@@ -126,7 +128,9 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
             \label{eq:simp_prob_hash}
             P(k,V) = \frac{k^2}{2V} 
         \end{equation}
-        
+
+\newpage
+
         The generated IDs should have a low collision probability rate to keep them unique but should be selected small enough to keep the bytes used in a DNS request low. \\
         To calculate a possible number of hashes with a given probability \textit{P}, we can transform equation \ref{eq:simp_prob_hash} to a reduced quadratic equation.
         \begin{equation*}
@@ -273,6 +277,8 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
          k = \sqrt{2 \cdot  10^{-18} \cdot 36^{32}}
      \end{equation}
      
+\newpage     
+
      Equation \ref{eq:k1018} resolves to around $1.13x10^{16}$ possible IDs before we reach the probability of $10^{-18}$ for a collision. If we assumed that every available IPv4 address ($2^{32} = 4,294,967,296)$ would use dalec, this would be more than enough.\\
      
      We allow uppercase letters to be included in a generated ID. This information might or might not be preserved through the message traversal through the domain name system. We change any uppercase letter to lower case on the server-side. 

@@ -9,17 +9,15 @@
 In this thesis we discussed the need for data collection and provided an overview over existing tools and systems. We introduced data protection laws, that might be relevant for a project starting its telemetry program. Further on we showcased privacy preserving data analysis that a project should be aware of if they collect or publish PII. 
 Later we presented a design for data collection and transmission, as well as a reference implementation for the client- and server-side. We have demonstrated a system to transmit data
 detached from the system's network interface information. This way we provide anonymity of sender. 
-To realize this, we utilize the domain name system with its hierarchical structure. Only interposed DNS servers communicate with the collection server, therefore, no client IP can be stored.\\
+To realize this, we utilize the domain name system with its hierarchical structure. Only interposed DNS servers communicate with the collection server, therefore, no client IP can be stored. The query is passed from the clients local resolver to a remote resolver, hosted by an ISP or DNS provider. The query is then transmitted by the remote resolver.\\
 To identify clients, we assigned IDs based on the hardware specific information like MAC addresses. These identifiers are hashed and encrypted. The reference implementation uses \textit{aes256} with \textit{PBKDF2} to accomplish this. The openly collected data is transmitted asynchronously encrypted to keep the user's information private during transport.
-On the server side we recommend to store the ID further encrypted to decouple transport and data storage. An adversary would not be able to connect a data transmission to a previously obtained data set that way. Furthermore we provided some insights on the security of the generated ID.
+On the server side we recommend to store the ID further encrypted to decouple transport and data storage. An adversary would not be able to connect a data transmission to a previously obtained dataset that way. Furthermore we provided some insights on the security of the generated ID. Devices with a a reduced feature set received the focus in the security discussion, as these WOBL devices are more 
+susceptible to reidentification attacks than others.
 We presented information on how to secure a server, as well as how to store and process sensible data.
-We also discussed that we can not prove the validity of the data with our current model, while excluding certain paths to manipulate within the source code.
-
+We also discussed that we can not prove the validity of the data with our current model. While certain paths were excluded by the software, they are easily evaded by manipulating the source code.
 
 
 %
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
@@ -29,5 +27,5 @@ We also discussed that we can not prove the validity of the data with our curren
 
     While we have shown significant gains, over some existing systems, we couldn't solve the problem of data validation. While systems with user authentication can use these to increase the workload needed to create counterfeit data it may reduce participation distinctly. A good solution is needed here and requires additional research.\\
     As we provide a reference implementation, this leaves room for enhancements like a server solution for general purpose usage. This would help organizations migrating or introducing dalec as their data collection tool. It eases the burden of developing additional software in extend to their regular projects.\\
-    Furthermore additional ID hardening for devices with a single physical network interface and no bootloader or configuration partition is needed. While the number of devices in use might be limited, the users deserve the best privacy and security possible.
+    Furthermore additional ID hardening for devices with a single physical network interface and no bootloader or calibration partition is needed. While the number of such devices in use might be limited, the users deserve the best privacy and security possible.
     
