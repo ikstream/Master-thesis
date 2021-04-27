@@ -24,6 +24,7 @@ openright]{book}
 \usepackage[utf8]{inputenc}
 \usepackage{wrapfig}
 
+\usepackage[titletoc]{appendix}
 
 % Fonts
 %\usepackage{lmodern}
@@ -197,10 +198,10 @@ openright]{book}
 \frontmatter \pagestyle{plain}
 \setcounter{page}{1}
 \include{abstract}
-
+\blankpage
 %ABSTRACT_DE
 
- %\setcounter{page}{2}
+ \setcounter{page}{3}
 %\begin{otherlanguage*}{german}
 %\setcounter{page}{}
 \include{abstract_de}
@@ -221,21 +222,24 @@ openright]{book}
 \blankpage
 
 %TOC PAGE
- \setcounter{page}{5}
+ %\setcounter{page}{5}
 \tableofcontents
 
 %ABBILDUNGSVERZEICHNIS
+%\setcounter{page}{6}
+
+%\renewcommand\thepage{\romannumeral\numexpr\value{page}+1\relax}
+%\setcounter{page}{6}
+\cleardoublepage
 \addcontentsline{toc}{chapter}{List of Figures}
 \listoffigures
- \setcounter{page}{6}
-
-\newpage
 
 %TABELLENVERZEICHNIS
 %\addcontentsline{toc}{chapter}{List of Tables}
 %\listoftables
-% \setcounter{page}{7}
+%\setcounter{page}{7}
 
+\blankpage
 %MAIN CONTENT
 \mainmatter \pagestyle{fancy}
 %\pagestyle{headings}

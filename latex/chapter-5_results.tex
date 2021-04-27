@@ -78,19 +78,19 @@ This chapter provides information on our evaluation steps and discusses the resu
 %
     
     To measure the load on a network, we generated 25 x86$\_$64 virtual machines (VM) with KVM (see listing \ref{lst:vm-spec}). We disabled dalec's virtualization checks to run the software on these machines. We configured dalec to transmit the data at the same time. The server was able to sort all messages to the correct client IDs and decrypt the data afterwards. The server performance can be increased further by adding more processing threads in each step. The implementation of interprocess communication allows scalability. The bottleneck could be handling incoming data, which could be solved with multiple load-balanced server instances. Sending all client requests to the same server would depend on the load balancer's configuration.\\
-    The structure of a transmitted message can be seen in listing \ref{lst:message}. The total transmission data was split over eight messages.
-    Which was sent out as eight DNS queries, with one additional query in the beginning for the public key of the dalec server.
-    Data transmission one to seven had a size of 296 bytes on the wire with a name length of 236 bytes and data transmission eight had a size of 221 bytes with a name length of 161 bytes. Eight messages of  25 devices sum up to \SIlist{55.825}{\kilo\byte} of network load. Dalec is configured to run every 4 hours to make up for transmission errors. 
-    This sums up to a total of \SIlist{334.95}{\kilo\byte} per day for 25 clients. 
-    A single client produces around \SIlist{14}{\kilo\byte} of outgoing traffic per day.
-    This a feasible amount of traffic, even on a metered connection.
-    
     \begin{lstlisting}[language=json, caption=virtual machine specifications, label=lst:vm-spec]
     RAM: 128 MB
     CPU: 1
     Network interface count: 2
     Operating System: OpenWrt
     \end{lstlisting}
+    The structure of a transmitted message can be seen in listing \ref{lst:message}. The query consists of three labels that contain data fragments, followed by the combination of ID (\textit{EPfGiM9IJpDHQQMaItynBRlJpusUP0KA}), current message number (7) and total number of messages (8).     The next field contains the \textit{owrt} subdomain. The domain \textit{sviks} is followed by the top level domain (TLD) \textit{de}. The root "." was omitted.
+    As can be seen. the total transmission data was split over eight messages.
+    They are sent out as eight DNS queries, with one additional query in the beginning for the public key of the dalec server.
+    Data transmission one to seven had a size of 296 bytes on the wire with a name length of 236 bytes and data transmission eight had a size of 221 bytes with a name length of 161 bytes. Eight messages of  25 devices sum up to \SIlist{55.825}{\kilo\byte} of network load. Dalec is configured to run every 4 hours to make up for transmission errors. 
+    This sums up to a total of \SIlist{334.95}{\kilo\byte} per day for 25 clients. 
+    A single client produces around \SIlist{14}{\kilo\byte} of outgoing traffic per day.
+    This a feasible amount of traffic, even on a metered connection.
 
     \begin{lstlisting}[language=json, caption=Layout of dalec message, label=lst:message]
 634c716a66664e61575a5936664a704d51687a4a73454f53354f69314e524.162506a310a636136794752496d36794c5352626a6a464d765532636f4835.7258694279492b6b714c65507138426667596a31382b597a756d544267643.EPfGiM9IJpDHQQMaItynBRlJpusUP0KA-7-8.owrt.sviks.de
@@ -99,14 +99,14 @@ This chapter provides information on our evaluation steps and discusses the resu
     To test the reidentification resistance on WOBL devices, we generated another virtual machine, as shown in listing \ref{lst:vm-spec}, but with only one network interface. 
     We generated all possible MAC addresses of the virtualized network interface with the vendor prefix \textit{52:54:00}, which took around 30 seconds. We used the tool \textit{exrex} \cite{tauber_asciimooexrex_2021} for the generation as seen in listing \ref{lst:exrex}. 
     
-    \begin{lstlisting}[language=bash, caption=MAC generation with exrex, label=lst:exrex]
-    exrex '525400[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]'
+    \begin{lstlisting}[language=json, caption=MAC generation with exrex, label=lst:exrex]
+    exrex '525400[a-f0-9]{6}'
     \end{lstlisting}    
     
     We hashed the generated MAC addresses as done in dalec. The command is shown in listing \ref{lst:hash}.
     
-    \begin{lstlisting}[language=bash, caption=MAC hashing with OpenSSL, label=lst:hash]
-        openssl dgst -sha3-512
+    \begin{lstlisting}[language=json, caption=MAC hashing with OpenSSL, label=lst:hash]
+openssl dgst -sha3-512
     \end{lstlisting}
     
     The generated hashes were saved to a file. Hashing all MAC addresses took around 13.5 hours with a single instance of \textit{OpenSSL}.
@@ -114,11 +114,12 @@ This chapter provides information on our evaluation steps and discusses the resu
     Multiple instances and splitting up the list of MAC addresses can speed up the hashing process.
     We split up the output file into ten similar sized chunks to encrypt the generated hashes. Each chunk was processed as shown in \ref{lst:encryption}.
     
-    \begin{lstlisting}[language=bash, caption=ID encryption and truncation, label=lst:encryption]
-    openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 \                                  -k "$key" -S "$salt" -base64 | \                                      
-    tr -d '\n' | \                                                        
-    sed 's;[^a-zA-z0-9];;g' | \
-    tail -c 32
+    \begin{lstlisting}[language=json, caption=ID encryption and truncation, label=lst:encryption]
+    openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 \                          
+        -k "$key" -S "$salt" -base64 | \                                      
+        tr -d '\n' | \                                                        
+        sed 's;[^a-zA-z0-9];;g' | \
+        tail -c 32
     \end{lstlisting}
     
     Encrypting and writing a single hash to file takes around \SIlist{0.25}{\second} on the test system. Processing all hashes with a single instance of \textit{OpenSSL} takes over 1165 hours. Splitting it over ten simultaneous operations reduces the time to 116.5 hours.

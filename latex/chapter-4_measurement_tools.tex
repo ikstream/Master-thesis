@@ -101,23 +101,40 @@ We are giving some general recommendations again in the first section and talk m
         \label{subsec:measure:implementation}
         As we provide a reference implementation for the collection tool, we also provide a basic implementation for the collection server \cite{venz_ikstreamdns-handler_2021}. It is written in Python, as it is easy to read and reproduce in different languages. Furthermore, it can be used for fast prototyping with a wide range of libraries.\\
         We implemented the server as a multithreaded data handler. The thread-safe queue library is used to pass data between the different threads. The main thread listens to incoming UDP data on port 53. First a check is executed if the received data is a valid DNS query. If the domain and subdomain match our collection subject, the data is put in a queue for the processing thread, otherwise the data is dropped.\\
-        This helps to reduce processing overhead, and filling up the queue with data, that does not matter to the collection.
+        This helps to reduce processing overhead, and filling up the queue with data, that does not matter to the collection. An overview of the main thread can be seen in figure \ref{fig:main_thread}
+        
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=\textwidth]{latex/figures/main_threat.jpg}
+            \caption{Overview of the receiving thread of the dalec server}
+            \label{fig:main_thread}
+        \end{figure}
+        
         The processing pulls data from the data-queue as soon as it is accessible. The ID, message number, and total message count are extracted from the query string. 
         If the ID matches with already present messages, it is checked if the message is older than two minutes and the old data discarded in that case. We decided to allow some time to pass before the whole message is expected. This makes up for network congestion or a resolver under high load.\\
         If a message number already exists for the ID, the older message is kept and the new one discarded. This may occur if the DNS response didn't reach the client in time and the same query has been send again. The data-queue element is marked as done after the processing to free up space in the data-queue. If all messages of an ID arrived, the user-data object is put into the user-processing-queue and removed from the list of user-data processed by the thread.
-        An user-data object consists of the ID, a dictionary of message with their message number and the time stamp of the last received message.\\
+        An user-data object consists of the ID, a dictionary of message with their message number and the time stamp of the last received message. This procedure is visualized in \ref{fig:data_thread}\\
+        
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=\textwidth]{latex/figures/data_threat.jpg}
+            \caption{Overview of the data processing thread}
+            \label{fig:data_thread}
+        \end{figure}
+        
         The user thread checks the user queue for new data constantly. When a new user-data object is detected on the queue, all stored messages are combined into one string.
-        As the original messages has been encoded base 16 before transmission, the first step is to decode the string. The resulting base 64 encoded string is also decoded and stored as raw bytes in a file. These raw bytes are decrypted with \textit{Openssl} using the matching private key. The servers simplified overview process overview is shown in figure \ref{fig:server_proc}.\\
+        As the original messages has been encoded base 16 before transmission, the first step is to decode the string. The resulting base 64 encoded string is also decoded and stored as raw bytes in a file. These raw bytes are decrypted with \textit{OpenSSL} using the matching private key (see figure \ref{fig:user_thread} for an outline). A simplified overview of all the processes is shown in figure \ref{fig:server_proc} in the appendix.\\
+        
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width=\textwidth]{latex/figures/user_threat.jpg}
+            \caption{User data processing thread overview}
+            \label{fig:user_thread}
+        \end{figure}
+
         The server version 0.1.1 stores the user data in files, named after the user id with a timestamp as first column. Version 0.2.1 is intended to use a database as storage backend and allow additional ID encryption. This was chosen for the ease of prototyping and testing the performance of the data processing.
         As data is stored locally only, code injections, like SQL injections are no concern for the current version. 
         
-        \begin{figure}
-            \centering
-            \includegraphics[width=\textwidth]{latex/figures/server_proc.jpg}
-            \caption{Simplified overview of the server's concurrent threads}
-            \label{fig:server_proc}
-        \end{figure}
-
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -91,7 +91,9 @@ These different applications use different techniques to strip personally identi
             Differential privacy (DP) is a property of the data access mechanism and unrelated to auxiliary information available \cite{dwork_algorithmic_2013}. 
             It promises that the addition or removal of a single dataset to an existing database does not affect the outcome of an analysis with a strong mathematical definition of privacy. A protection against privacy attacks like re-identification, record linkage, and differencing is mathematically provable provided  \cite{agrawal_differential_2008},  \cite{wood_differential_2018}. \\
             This guarantees that anyone will make the same inference about an individual's PII or private information whether the individual's dataset was included in the analysis or not \cite{wood_differential_2018}. Therefore making post-processing impossible as an analyst can not make the output less differential private without additional knowledge of the private database \cite{nguyen_understanding_2019}.
-            
+
+%            
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%
@@ -167,12 +169,6 @@ These different applications use different techniques to strip personally identi
         Added noise and fragmentation on the encoder side, as well as shuffling, may be sufficient to provide differential anonymity in this system.
         
         Prochlo is developed by Google and used by Chromium and, in modified form, by Brave.
-        \begin{figure}[hb]
-            \centering
-            \includegraphics[width=\textwidth]{latex/figures/prio_overview.jpg}
-            \caption[Overview of Prios processing pipeline]{Overview of Prios processing pipeline \cite{corrigan-gibbs_prio_2017}}
-            \label{fig:prio_overview}
-        \end{figure}
     
     %%% Prio
     \subsubsection{Prio}
@@ -183,37 +179,44 @@ These different applications use different techniques to strip personally identi
         The parts are sent to different servers and aggregated with shares of other users before being published (see figure \ref{fig:prio_overview}) \cite{corrigan-gibbs_prio_2017}.\\
         The system promises privacy as long as one of the servers is honest, therefore providing strong cryptographic privacy. A limited form of robustness is provided as long as all servers are honest. It can detect and discard syntactically incorrect client data while preserving the privacy of the data. However, Prio can not prevent a client from sending in-range data, that is untrue \cite{corrigan-gibbs_prio_2017}.\\
         It is in experimental use by Firefox Origin Telemetry \cite{englehardt_next_2019}.
+        \begin{figure}[hb]
+            \centering
+            \includegraphics[width=\textwidth]{latex/figures/prio_overview.jpg}
+            \caption[Overview of Prios processing pipeline]{Overview of Prios processing pipeline \cite{corrigan-gibbs_prio_2017}}
+            \label{fig:prio_overview}
+        \end{figure}
         
-        
+%
+\newpage
     %%% DNS 
     \subsection{Domain Name System - DNS}
         \label{subsec:related:dns}
         The Domain Name System is hierarchically and decentralized designed to allow systems connected to a network to translate memorable domain names into IP addresses \cite{stevens_tcpip_1993}.\\
 
+        \begin{wrapfigure}{l}{0.5\textwidth}
+    	%\begin{figure}[h!]
+    	    \includegraphics[width=0.48\textwidth]{latex/figures/domain_name_tree.jpg}
+    	    \caption[Domain Name Tree for www.example.com.]{Domain Name Tree for www.example.com. \cite{jeftovic_managing_2018}}
+    	    \label{fig:dns_tree}
+        %\end{figure}
+        \end{wrapfigure}
         This translation is needed before an application can request a TCP connection or send UDP datagrams. A domain name is a list of labels separated by dots. 
         Each label can have a length of up to 63 bytes, with a maximum length of the requested domain of 255 bytes \cite{stevens_tcpip_1993}.\\
         The dot is used to separate each layer in a domain but is also the internet root, which terminates all Fully Qualified Domain Names (FQDN), but is often omitted \cite{jeftovic_managing_2018}.
         In figure \ref{fig:dns_tree} it is shown how a hostname can be separated and traversed.
         The first field, following the, here omitted, root entry is the so-called Top-Level Domain (TLD). In figure \ref{fig:dns_tree} this would be "com". The root and top-level domain are required to find the responsible authoritative nameserver for any related query \cite{jeftovic_managing_2018}.
-
-    	\begin{figure}[h!]
-    	    \includegraphics[width=\textwidth]{latex/figures/domain_name_tree.jpg}
-    	    \caption[Domain Name Tree for www.example.com.]{Domain Name Tree for www.example.com. \cite{jeftovic_managing_2018}}
-    	    \label{fig:dns_tree}
-        \end{figure}
-
+ 
         The name system is structured in non-overlapping zones, as shown in the right segment in figure \ref{fig:dns_query} with the root domain on top \cite{herrmann_beobachtungsmoglichkeiten_2016}.
         A server containing all information about a subset of the namespace is called an authoritative server. To extract the information from the authoritative server, a so-called resolver is used \cite{friedewald_privacy_2018}.
+        
+
+        
         As the hierarchical structure of the domain name system provides sender anonymity, meaning the receiver does not know the source of the message, the system can be used to transmit data anonymously to a collecting server. This can be achieved without any further additions to the protocol or configuration on the client-side.
         Advanced techniques like DNS over HTTPS (DoH) \cite{ermert_cloudflare_2020} \cite{mcmanus_dns_2018} or DNS Security Extensions (DNSSEC) \cite{larson_dns_2005} can be used.\\
         DoH uses transport layer security (TLS) to encrypt a connection to a proxy server, which then transmits the DNS request. That way, the proxy server is the only participant who knows the sender's IP address. DNSSEC can add another layer of security in protecting against attacks like DNS cache poisoning by adding new components to the DNS system that check the integrity and authentication of DNS data.\\
         The newly presented Oblivious DNS over HTTPS (ODoH) developed by Apple, Fastly, and Cloudflare may add additional privacy to every DNS query and removes one weakness from DoH \cite{verma_improving_2020}.\\
         In ODoH, the client encrypts its DNS request for a target server and sends this encrypted message to the proxy server, which then relays the message to the target server. This procedure removes the original request from the client's IP, making the proxy unaware of it.
         At the same time, the target server only knows the IP of the proxy as the source. The response is then encrypted for the client and relayed back through the proxy \cite{verma_improving_2020}.
-        
-        
-        
-        %%% TODO: citation for DOH and DNSSec
         
         \begin{figure}
             \centering
