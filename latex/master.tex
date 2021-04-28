@@ -26,7 +26,7 @@ openright]{book}
 
 \usepackage[titletoc]{appendix}
 \usepackage{parskip}
-\usepackage{diagbox}
+\usepackage{longtable}
 
 % Fonts
 %\usepackage{lmodern}
@@ -172,8 +172,7 @@ openright]{book}
 	title,
 	abstract,
 	abstract_de,
-	acknowledgments,
-	paper-collaborators,
+	abrv,
 	eid,
 	chapter-1_introduction,
 	chapter-2_related_work,
@@ -242,6 +241,10 @@ openright]{book}
 %\setcounter{page}{7}
 
 \blankpage
+
+\include{abrv}
+
+
 %MAIN CONTENT
 \mainmatter \pagestyle{fancy}
 %\pagestyle{headings}
