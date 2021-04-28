@@ -95,6 +95,8 @@ We are giving some general recommendations again in the first section and talk m
         To harden the server against user enumeration and login brute-forcing, we assign an individual username and disable root login. Next, we allow login only with ssh keys, which are secured with passwords.
         Further we strengthen the server with \textit{fail2ban} and configure it to ban IPs based on failed login attempts and user name retries over time. It uses \textit{iptables} rules to block IPs. Furthermore, we configure the firewall to drop all packages except for SSH and port 53 (DNS).\\
         
+\newpage        
+    
         The server application is run in a Linux container for additional separation. We reduced the number of packages to only those needed to run our application and the security measurements, reducing the number of exploitable applications on the system. The containerization adds another layer of security, as an adversary would need to escape the container first, before he can compromise the host system. In case of a successful attack, only the container needs to be disposed and the data sanitized, instead of the whole server.
         
     \subsection{Implementation}

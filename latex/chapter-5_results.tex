@@ -118,12 +118,43 @@ openssl dgst -sha3-512
         tail -c 32
     \end{lstlisting}
     
+\newpage
+    
     Encrypting and writing a single hash to file takes around \SIlist{0.25}{\second} on the test system. Processing all hashes with a single instance of \textit{OpenSSL} takes over 1165 hours. Splitting it over ten simultaneous operations reduces the time to 116.5 hours.
-    An adversary without the vendor prefix would have to do this for a range of prefixes, increasing the processing time significantly to a computationally infeasible extend.
+    An adversary without the vendor prefix would have to do this for a range of prefixes, increasing the processing time significantly to a computationally infeasible extend.\\
     
+    \textit{Dalec} has been tested on different OpenWrt releases and devices. While Snapshots and 19.07.7 worked without additional changes, the 17.01.7 and 18.06.9 release would not run it out of the box. For 18.06.9 manual updates of \textit{openssl-util, libopenssl} and \textit{libopenssl-conf} were needed. 
+    In addition to the aforementioned packages the 17.01.7 release required \textit{drill} and \textit{libldns} to be updated manually.\\
+    Table \ref{tbl:dev_test} lists the devices with which \textit{dalec} was tested with the respective OpenWrt version. The Edimax RA21S and Raspberry 4 are supported in Snapshots only at the time of writing. Support for the TP-Link CPE210 was added 18.06.0 but could not be downgraded, as it is in productive use and relies on software added in 19.07.0.
     
-    
-
+   \begin{table}
+    \centering
+    \caption{List of tested devices with release version}
+    \label{tbl:dev_test}
+    \begin{tabular}{|l|c|c|c|c|} 
+        \hline
+        Device & \multicolumn{4}{c|}{Release} \\ 
+        \hline
+               & \multicolumn{1}{l|}{Snapshot} & \multicolumn{1}{l|}{19.07.7} & \multicolumn{1}{l|}{18.06.9} & \multicolumn{1}{l|}{17.01.7}  \\ 
+        \hline
+        Raspberry Pi 2 B 1.2 & x & x & x & x \\ 
+        \hline
+        Raspberry Pi 3 B & x & x & x & x \\ 
+        \hline
+        Raspberry Pi 4 400 & x & & & \\ 
+        \hline
+        Alix board AMD Geode LX800 based & x & x & x & x \\ 
+        \hline
+        PC Engines APU 1D4 & x & x & x & x \\ 
+        \hline
+        TP-Link CPE210 v2 & x & x & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} \\ 
+        \hline
+        Archer C7 AC1750 v2.1 & x & x & x & x \\ 
+        \hline
+        Edimax RA21S & x & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} \\
+        \hline
+    \end{tabular}
+\end{table}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   SECTION   %%%%%%%%%%%%

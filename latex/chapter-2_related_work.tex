@@ -25,6 +25,7 @@ These different applications use different techniques to strip personally identi
     
     \subsection{Personal Identifiable Information}
         \label{subsec:related:pii}
+        
         The US National Institute of Standards and Technology (NIST) defines personal identifiable information as "any information about an individual maintained by an agency, including (1) any information that can be used to distinguish or trace an individual‘s identity, such as name, social security number, date and place of birth, mother‘s maiden name, or biometric records; and (2) any other information that is linked or linkable to an individual, such as medical, educational, financial, and employment information"  \cite{mccallister_guide_2010} based on the Government Accountability Office Report GAO-08-536  \cite{government_accountability_office_privacy_2008}.\\
         NIST provides a list of information, which can be PII in   \cite{mccallister_guide_2010}. This list includes internet protocol (IP) and media access control (MAC) addresses. While the public IP address of an individual device may change over time, the MAC address is a unique device identifier propagated in a network section.
         The IP address may be used to track a person's activities over the internet, which might have consequences for that person's security and privacy. 
@@ -53,6 +54,7 @@ These different applications use different techniques to strip personally identi
     %
     \subsection{Regulations}
         \label{subsec:related:law}
+        
         Anonymity is defined by DIN EN ISO/IEC 29100 as an information characteristic that does not allow the identification of a person directly or indirectly \cite{german_institute_for_standardization_din_2020}. It furthermore declares anonymization as a process in which personally identifiable information is irrevocably transformed. This transformation denies the ability of an entity to identify a person indirectly or directly by itself or in cooperation with another entity \cite{german_institute_for_standardization_din_2020}.\\
         
         A major advantage of anonymized data is the exclusion of the GDPR legislation. Recital 26 of the regulation excludes anonymized data explicitly.\\ 
@@ -70,7 +72,9 @@ These different applications use different techniques to strip personally identi
         \label{subsec:related:private_data_analysis}
     
         \subsubsection{\textit{k}-anonymity}
+        
             \label{subsec:related:kanon}
+            
             To avoid the identification of a user, based on the published data and its attributes, record linkage should not be possible. Therefore a system design should consider the so-called quasi identifier (QI). These quasi identifiers may allow to draw a connection between the data set and an external source \cite{sweeney_k-anonymity_2002}.
             If a set of attributes is contained in an external release that might contain PII and contained in a released data set, these sets of attributes are called quasi identifiers, as it allows the linkage between these two data sets.
             If a data set S has $QI_S$ associated with it, S satisfies \textit{k}-anonymity if each sequence of values S[$QI_S$] appears at least \textit{k} times. 
@@ -80,6 +84,7 @@ These different applications use different techniques to strip personally identi
 
         \subsubsection{\textit{l}-diversity}
             \label{subsec:related:l-div}
+            
             In  \cite{machanavajjhala_l-diversity_2007} Machanavajjhala et al. shows that k-anonymity is susceptible to the two attack vectors: homogeneity and background knowledge.
             The homogeneity attack works on datasets with groups that lack diversity in sensitive attributes. The background knowledge attack on the other hand uses available knowledge in addition to the provided dataset that is not directly matched to attributes.\\
             Machanavajjhala et al. introduce the \textit{l-}diversity framework to counter these weaknesses by requiring that the values of a sensitive attributes are well represented in each group. \textit{l}-diversity is not intended to replace \textit{k}-anonymity, but to extend it and improve privacy that way  \cite{machanavajjhala_l-diversity_2007}.
@@ -88,6 +93,7 @@ These different applications use different techniques to strip personally identi
         % differential privacy
         \subsubsection{Differential Privacy}
             \label{subsec:related:dif_privacy}
+            
             Differential privacy (DP) is a property of the data access mechanism and unrelated to auxiliary information available \cite{dwork_algorithmic_2013}. 
             It promises that the addition or removal of a single dataset to an existing database does not affect the outcome of an analysis with a strong mathematical definition of privacy. A protection against privacy attacks like re-identification, record linkage, and differencing is mathematically provable provided  \cite{agrawal_differential_2008},  \cite{wood_differential_2018}. \\
             This guarantees that anyone will make the same inference about an individual's PII or private information whether the individual's dataset was included in the analysis or not \cite{wood_differential_2018}. Therefore making post-processing impossible as an analyst can not make the output less differential private without additional knowledge of the private database \cite{nguyen_understanding_2019}.
@@ -122,16 +128,18 @@ These different applications use different techniques to strip personally identi
      
     %%% Tor %%%
     \subsubsection{Tor}
+    
         The so-called Onion Routing used  by Tor is a distributed overlay network to anonymize TCP-based applications. On its path from sender to receiver, each step in the network only knows its predecessor and successor. Therefore information is layered and secured with symmetric keys, which are unwrapped at each step, like the layers of an onion.
         Tor provides perfect forward secrecy by negotiating session keys with each successive hop. If one hop gets compromised, after the keys are deleted, old traffic can't be decrypted \cite{dingledine_tor_2004}, \cite{borisov_shining_2008}.\\
         Tor requires additional work on the client site to configure and set up. 
         The network is operated by a wide variety of people and organizations.
         Thousands of relay nodes are used to route traffic from the origin to the receiver. It was in 2009 and is of today the biggest network designed for anonymity in operation \cite{edman_anonymity_2009}.
         Therefore it is independent of the collecting entity. Tors systems provide anonymity for the sender against the server and an attacker in most cases \cite{arma_one_2009},  \cite{poulsen_feds_2013}, \cite{samson_tor_2013}, \cite{herrmann_website_2009}.\\
-        The use of the Tor network is free of charge. It is open source software, but connecting to it requires additional setup steps from the user. To route only traffic of one application through the Tor network, configuration files need to be adjusted and additional software installed. As the Tor network is spread around the globe and no path can, or should, be provided, delay and latency increase, if the tor network is used for all applications on the device. Also the available resources would be reduced for tasks that are not required to have an extended privacy protection.\\
+        The use of the Tor network is free of charge. It is open source software, but connecting to it requires additional setup steps from the user. To route only traffic of one application through the Tor network, configuration files need to be adjusted and additional software installed. As the Tor network is spread around the globe and no path can, or should, be provided, delay and latency increase, if the tor network is used for all applications on the device. Also the available resources would be reduced for tasks that are not required to have an extended privacy protection.
     
     %%% I2P %%%
     \subsubsection{The Invisible Internet Project - I2P}
+    
         I2P is an overlay network with privacy-by-design in mind intended to connect services within a closed network.
         Exit proxy servers are available but not recommended by the developer. Within the network, nodes can communicate in any way they want. I2P is free open source software and can be added to a regular web service to make it available on the closed network. Each network node has unidirectional inbound and outbound tunnels, and every node is visible on the network. However, the traffic of a node can not be seen by other network participants. The network is decentralized and uses distributed hash tables for a network database and contact information security \cite{i2p_intro_2014}.\\
         To contact another client, a message is sent out through its own outbound tunnel, trying to reach the other client's inbound tunnel. Each client can choose the tunnels' length to find a trade-off between latency and anonymity \cite{anoncoin_i2p_2018}.\\
@@ -142,6 +150,7 @@ These different applications use different techniques to strip personally identi
     
     %%% VPN %%%
     \subsubsection{Virtual Private Network - VPN}
+    
         A VPN provides an encrypted connection from the user's system to an exit point, the VPN server. For further communication, the IP address of the VPN server is used. This may change the country of origin and prevent things like geoblocking or other restrictions imposed by the internet service provider \cite{microsoft_virtual_2009}.\\
         A VPN provides privacy against prying eyes in the path from the client to the VPN server. It also provides anonymity to the web service requested. Virtual private networks can be self-hosted, hosted by a for-free or paid provider. Additional steps, like configuration, are required on the user's end to use it.\\
 
