@@ -282,7 +282,10 @@ Section \ref{sec:software_design:ref_impl} demonstrates how we realized the prop
      Equation \ref{eq:k1018} resolves to around $1.13x10^{16}$ possible IDs before we reach the probability of $10^{-18}$ for a collision. If we assumed that every available IPv4 address ($2^{32} = 4,294,967,296)$ would use dalec, this would be more than enough.\\
      
      We allow uppercase letters to be included in a generated ID. This information might or might not be preserved through the message traversal through the domain name system. We change any uppercase letter to lower case on the server-side. 
-     As we have collected the data and generated an ID, we need to process and transmit the information next.
+     As we have collected the data and generated an ID, we need to process and transmit the information next.\\
+     
+     If a user connects another network interface or exchanges an existing one, the ID changes. The change of physical hardware might change the systems overall behavior and performance. Through adding a new hardware former unavailable communication channels might open up. In addition, a new network interface card might introduce instabilities, due to driver problems or resource consumption. This justifies the identification as a new system with a different ID.
+     
      
      
 % 
